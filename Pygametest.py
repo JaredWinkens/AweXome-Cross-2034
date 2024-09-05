@@ -2,7 +2,12 @@ import pygame
 from pygame.locals import *
 import sys
 import random
- 
+
+score = 0
+scoreIncrement = 10
+
+pygame.init()
+pygame.font.init()
 pygame.init()
 vec = pygame.math.Vector2 #2 for two dimensional
  
@@ -16,7 +21,9 @@ FramePerSec = pygame.time.Clock()
  
 displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Game")
- 
+
+dummy = pygame.Rect(200, 400,30, 30)
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
@@ -86,6 +93,8 @@ platforms.add(PT1)
  
  
 while True: 
+    font = pygame.font.Font(None, 25)
+    
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
@@ -95,11 +104,22 @@ while True:
                 P1.jump()
          
     displaysurface.fill((0,0,0))
+    pygame.draw.rect(displaysurface, (0, 255, 0), dummy)
+    
+    # Detect collision
+    # Need revision
+    if P1.rect.colliderect(dummy):
+        score += scoreIncrement
+
     P1.update()
  
     for entity in all_sprites:
         displaysurface.blit(entity.surf, entity.rect)
         entity.move()
- 
+        #Render score to screen
+        scoreText = font.render(f'Score:{score}', True, (255, 255, 255))
+        displaysurface.blit(scoreText, (10, 10))
+
+
     pygame.display.update()
     FramePerSec.tick(FPS) 
