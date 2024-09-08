@@ -37,7 +37,7 @@ pygame.display.set_caption("Game")
 class Enemy(pygame.sprite.Sprite):
       def __init__(self):
         super().__init__() 
-        temp_image = pygame.image.load("Player.png")
+        temp_image = pygame.image.load('wheel.png')
         self.image = pygame.transform.scale(temp_image,(100,100))
         self.surf = pygame.Surface((42, 70))
         self.rect = self.surf.get_rect(center = (SCREEN_WIDTH,random.randint(40,SCREEN_HEIGHT-40)))
@@ -54,7 +54,7 @@ class Enemy(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
-        temp_image = pygame.image.load("Player.png")
+        temp_image = pygame.image.load('wheel.png')
         self.image = pygame.transform.scale(temp_image,(100,100))
         self.surf = pygame.Surface((42, 70))
         self.rect = self.surf.get_rect(center = (160, 520))
