@@ -13,7 +13,7 @@ pygame.init()
 vec = pygame.math.Vector2 #2 for two dimensional
  
 #Sound Initilization
-test_sfx = pygame.mixer.Sound("assets/vine-boom.mp3")
+coin_sfx = pygame.mixer.Sound("assets/coinGet.mp3")
 pygame.mixer.music.load("assets/Automation.mp3")
 pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1)
@@ -52,8 +52,8 @@ class Player(pygame.sprite.Sprite):
             self.acc.x = -ACC
         if pressed_keys[K_RIGHT]:
             self.acc.x = ACC
-        if pressed_keys[K_b]:
-            test_sfx.play()
+    
+            
                      
         self.acc.x += self.vel.x * FRIC
         self.vel += self.acc
@@ -118,6 +118,7 @@ while True:
     # Detect collision
     # Need revision
     if P1.rect.colliderect(dummy):
+        coin_sfx.play()
         score += scoreIncrement
 
     P1.update()
