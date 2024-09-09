@@ -17,7 +17,7 @@ black = (0, 0 , 0)
 red = (255, 0, 0)
 
 SCREEN_WIDTH = 1200
-SCREEN_HEIGHT = 500
+SCREEN_HEIGHT = 800
 SPEED = 5
 #HEIGHT = 450
 #WIDTH = 400
@@ -41,18 +41,18 @@ pygame.display.set_caption("Game")
 class Enemy(pygame.sprite.Sprite):
       def __init__(self):
         super().__init__() 
-        temp_image = pygame.image.load('ScrollingBackground_Jared/wheel.png')
+        temp_image = pygame.image.load('assets/enemy1.png')
         self.image = pygame.transform.scale(temp_image,(100,100))
-        self.surf = pygame.Surface((42, 70))
-        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH,random.randint(40,SCREEN_HEIGHT-40)))
+        self.surf = pygame.Surface((30, 30))
+        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH,700))
  
       def move(self):
         #global SCORE
         self.rect.move_ip(-SPEED,0)
         if (self.rect.left < 0):
-          #  SCORE += 1
+            #SCORE += 1
             self.rect.left = 0
-            self.rect.center = (SCREEN_WIDTH,random.randint(40, SCREEN_HEIGHT - 40))
+            self.rect.center = (SCREEN_WIDTH,700)
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -61,10 +61,10 @@ class Player(pygame.sprite.Sprite):
         '''self.surf = pygame.Surface((30, 30))
         self.surf.fill((128,255,40))
         self.rect = self.surf.get_rect()'''
-        temp_image = pygame.image.load('ScrollingBackground_Jared/wheel.png')
+        temp_image = pygame.image.load('assets/wheel.png')
         self.image = pygame.transform.scale(temp_image,(100,100))
-        self.surf = pygame.Surface((42, 70))
-        self.rect = self.surf.get_rect(center = (160, 520))
+        self.surf = pygame.Surface((40, 40))
+        self.rect = self.surf.get_rect(center = (160, 400))
 
         self.pos = vec((100, 360))
         self.vel = vec(0,0)
@@ -87,7 +87,7 @@ class Player(pygame.sprite.Sprite):
         if self.pos.x > SCREEN_WIDTH:
             self.pos.x = 0
         if self.pos.x < 0:
-            self.pos.x = SCREEN_HEIGHT
+            self.pos.x = 0
              
         self.rect.midbottom = self.pos
  
@@ -103,14 +103,14 @@ class Player(pygame.sprite.Sprite):
             if hits:
                 self.vel.y = 0
                 self.pos.y = hits[0].rect.top + 1
- 
 
 class platform(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((SCREEN_WIDTH, 20))
-        self.image.fill((255,0,0))
-        self.rect = self.image.get_rect(center = (SCREEN_WIDTH/2, SCREEN_HEIGHT - 10))
+        temp_image = pygame.image.load('assets/road.png')
+        self.image = pygame.transform.scale(temp_image,(SCREEN_WIDTH,100))
+        self.surf = pygame.Surface((SCREEN_WIDTH,40))
+        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH/2, 720))
  
     def move(self):
         pass
@@ -119,10 +119,10 @@ class platform(pygame.sprite.Sprite):
 class Coin(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        coin = pygame.image.load('images/coin.jpg')
-        #self.surf = pygame.Surface((20, 20)).convert()
+        coin = pygame.image.load('assets/coin.png')
         self.image = pygame.transform.scale(coin, (50, 50))
-        self.rect = self.image.get_rect(center = (SCREEN_WIDTH, 260))
+        self.surf = pygame.Surface((100, 100))
+        self.rect = self.image.get_rect(center = (SCREEN_WIDTH, 560))
         #self.image.set_colorkey()
         self.move_direction = 5
         #self.rect.y = y
@@ -138,7 +138,7 @@ class Button():
 # Horizontal Background
 class Background():
       def __init__(self):
-            self.bgimage = pygame.image.load('ScrollingBackground_Jared/background1.jpg')
+            self.bgimage = pygame.image.load('assets/background1.jpg')
             self.rectBGimg = self.bgimage.get_rect()
  
             self.bgY1 = 0
@@ -237,7 +237,7 @@ while True:
                 gameOver = -1
     #To be run if collision occurs between Player and Enemy
     if pygame.sprite.spritecollideany(P1, enemies):
-          pygame.mixer.Sound('ScrollingBackground_Jared/crash.mp3').play()
+          pygame.mixer.Sound('assets/crash.mp3').play()
           time.sleep(0.8)
                 
           displaysurface.fill(red)

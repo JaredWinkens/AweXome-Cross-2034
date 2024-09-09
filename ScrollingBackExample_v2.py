@@ -40,7 +40,7 @@ pygame.display.set_caption("Game")
 class Enemy(pygame.sprite.Sprite):
       def __init__(self):
         super().__init__() 
-        temp_image = pygame.image.load('enemy1.png')
+        temp_image = pygame.image.load('assets/enemy1.png')
         self.image = pygame.transform.scale(temp_image,(100,100))
         self.surf = pygame.Surface((30, 30))
         self.rect = self.surf.get_rect(center = (SCREEN_WIDTH,700))
@@ -57,7 +57,7 @@ class Enemy(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
-        temp_image = pygame.image.load('tire.gif')
+        temp_image = pygame.image.load('assets/tire.gif')
         self.image = pygame.transform.scale(temp_image,(100,100))
         self.surf = pygame.Surface((30, 30))
         self.rect = self.surf.get_rect(center = (160, 520))
@@ -100,7 +100,7 @@ class Player(pygame.sprite.Sprite):
 class platform(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        temp_image = pygame.image.load('road.png')
+        temp_image = pygame.image.load('assets/road.png')
         self.image = pygame.transform.scale(temp_image,(SCREEN_WIDTH,100))
         self.surf = pygame.Surface((SCREEN_WIDTH,40))
         self.rect = self.surf.get_rect(center = (SCREEN_WIDTH/2, 720))
@@ -111,7 +111,7 @@ class platform(pygame.sprite.Sprite):
 # Horizontal Background
 class Background():
       def __init__(self):
-            self.bgimage = pygame.image.load('background1.jpg')
+            self.bgimage = pygame.image.load('assets/background1.jpg')
             self.rectBGimg = self.bgimage.get_rect()
  
             self.bgY1 = 0
@@ -187,7 +187,7 @@ while True:
  
     #To be run if collision occurs between Player and Enemy
     if pygame.sprite.spritecollideany(P1, enemies):
-          pygame.mixer.Sound('crash.mp3').play()
+          pygame.mixer.Sound('assets/crash.mp3').play()
           time.sleep(0.8)
                     
           DISPLAYSURF.fill(RED)
