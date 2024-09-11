@@ -38,6 +38,7 @@ gameOver = 0
 FramePerSec = pygame.time.Clock()
 displaysurface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Game")
+coin_image = pygame.image.load('assets/coin.png')
 
 class Enemy(pygame.sprite.Sprite):
       def __init__(self):
@@ -130,8 +131,7 @@ class platform(pygame.sprite.Sprite):
 class Coin(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        coin = pygame.image.load('assets/coin.png')
-        self.image = pygame.transform.scale(coin, (50, 50))
+        self.image = pygame.transform.scale(coin_image, (50, 50))
         self.surf = pygame.Surface((100, 100))
         self.rect = self.surf.get_rect(center = (SCREEN_WIDTH, random.randint(40,SCREEN_HEIGHT-40)))
     '''
@@ -217,8 +217,8 @@ pygame.time.set_timer(INC_SPEED, 1000)
 while True: 
     #Cycles through all occurring events  
     for event in pygame.event.get():
-        if event.type == INC_SPEED:
-              SPEED += 0.5
+        #if event.type == INC_SPEED:
+              #SPEED += 0.5
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
@@ -237,7 +237,7 @@ while True:
         displaysurface.blit(entity.image, entity.rect)
         entity.move()
     
-    if (random.randint(1, 1000) < 3):
+    if (random.randint(1, 10) < 3):
         # THIS IS WHAT MAKES THE GAME LAG
         # Whenever a new object is created in the main game loop it lags
         generate_coin()
@@ -270,7 +270,8 @@ while True:
           time.sleep(1.5)
           pygame.quit()
           sys.exit()
-               
+    
+    print(FramePerSec.get_fps())
     pygame.display.update()
     FramePerSec.tick(FPS) 
 
