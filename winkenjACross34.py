@@ -7,6 +7,12 @@ import time
 pygame.mixer.pre_init(44100,16,2,4096)
 pygame.init()
 vec = pygame.math.Vector2 #2 for two dimensional
+screen_info = pygame.display.Info()
+
+#Image Initilization
+enemy_image = pygame.image.load('assets/enemy1.png')
+road_image = pygame.image.load('assets/road.png')
+coin_image = pygame.image.load('assets/coin.png')
 
 #Sound Initilization
 pygame.mixer.music.load("assets/Automation.mp3")
@@ -20,8 +26,8 @@ black = (0, 0 , 0)
 red = (255, 0, 0)
 
 # initialize constants
-SCREEN_WIDTH = 1200
-SCREEN_HEIGHT = 800
+SCREEN_WIDTH = screen_info.current_w
+SCREEN_HEIGHT = screen_info.current_h
 SPEED = 5
 ACC = 0.5
 FRIC = -0.12
@@ -36,23 +42,21 @@ scoreIncrement = 5
 energy = 100.01
 gameOver = 0
 FramePerSec = pygame.time.Clock()
-displaysurface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+displaysurface = pygame.display.set_mode((SCREEN_WIDTH-20, SCREEN_HEIGHT-100))
 pygame.display.set_caption("Game")
-coin_image = pygame.image.load('assets/coin.png')
 
 class Enemy(pygame.sprite.Sprite):
       def __init__(self):
         super().__init__() 
-        temp_image = pygame.image.load('assets/enemy1.png')
-        self.image = pygame.transform.scale(temp_image,(100,100))
+        self.image = pygame.transform.scale(enemy_image,(100,100))
         self.surf = pygame.Surface((30, 30))
-        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH,700))
+        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH,SCREEN_HEIGHT-170))
  
       def move(self):
         self.rect.move_ip(-SPEED,0)
-        if (self.rect.left < 0):
-            self.rect.left = 0
-            self.rect.center = (SCREEN_WIDTH,700)
+        # Check if enemy has gone off screen
+        if self.rect.right <= 0:
+            self.kill()
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -70,11 +74,11 @@ class Player(pygame.sprite.Sprite):
                           
         self.index = 0
         self.image = self.images[self.index]
-        self.surf = pygame.Surface((40, 40))
-        self.rect = self.surf.get_rect(center = (160, 400))
+        self.surf = pygame.Surface((30, 30))
+        self.rect = self.surf.get_rect(center = (160, SCREEN_HEIGHT-250))
 
 
-        self.pos = vec((100, 460))
+        self.pos = vec((160, 360))
         self.vel = vec(0,0)
         self.acc = vec(0,0)
 
@@ -105,8 +109,8 @@ class Player(pygame.sprite.Sprite):
            self.vel.y = -15
  
     def update(self):
-        hits = pygame.sprite.spritecollide(P1 ,platforms, False)
-        if P1.vel.y > 0:        
+        hits = pygame.sprite.spritecollide(self ,platforms, False)
+        if self.vel.y > 0:        
             if hits:
                 self.vel.y = 0
                 self.pos.y = hits[0].rect.top + 1
@@ -119,10 +123,9 @@ class Player(pygame.sprite.Sprite):
 class platform(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        temp_image = pygame.image.load('assets/road.png')
-        self.image = pygame.transform.scale(temp_image,(SCREEN_WIDTH,100))
+        self.image = pygame.transform.scale(road_image,(SCREEN_WIDTH,100))
         self.surf = pygame.Surface((SCREEN_WIDTH,40))
-        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH/2, 720))
+        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH/2, SCREEN_HEIGHT - 150))
  
     def move(self):
         pass
@@ -134,18 +137,11 @@ class Coin(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(coin_image, (50, 50))
         self.surf = pygame.Surface((100, 100))
         self.rect = self.surf.get_rect(center = (SCREEN_WIDTH, random.randint(40,SCREEN_HEIGHT-40)))
-    '''
-    def move(self):
-        self.rect.move_ip(-SPEED,0)
-        if (self.rect.left <= 0):
-            #self.rect.left = 0
-            self.rect.center = (SCREEN_WIDTH,random.randint(40,SCREEN_HEIGHT-40))
-    '''
     
     def move(self):
         self.rect.move_ip(-SPEED,0)
         # Check if coin has gone off screen
-        if self.rect.left <= 0:
+        if self.rect.right <= 0:
             self.kill()
     
 class Button():
@@ -188,6 +184,11 @@ def generate_coin():
     coinGroup.add(coin)
     all_sprites.add(coin)
 
+def generate_enemy():
+    enemy = Enemy()
+    enemies.add(enemy)
+    all_sprites.add(enemy)
+
 back_ground = Background()
 PT1 = platform()
 P1 = Player()
@@ -211,14 +212,14 @@ all_sprites.add(coin)
 
 #Adding a new User event 
 INC_SPEED = pygame.USEREVENT + 1
-pygame.time.set_timer(INC_SPEED, 1000)
+pygame.time.set_timer(INC_SPEED, 10000)
 
 #Game Loop
 while True: 
     #Cycles through all occurring events  
     for event in pygame.event.get():
-        #if event.type == INC_SPEED:
-              #SPEED += 0.5
+        if event.type == INC_SPEED:
+              SPEED += 0.1
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
@@ -237,16 +238,16 @@ while True:
         displaysurface.blit(entity.image, entity.rect)
         entity.move()
     
-    if (random.randint(1, 10) < 3):
-        # THIS IS WHAT MAKES THE GAME LAG
-        # Whenever a new object is created in the main game loop it lags
+    if (random.randint(1, 700) < 3):
         generate_coin()
-        
+    if (random.randint(1, 1000) < 3):
+        generate_enemy()
+
     # Display players energy level
     display_text(f'Energy Level: {energy:3.2f}%', 'Showcard Gothic', 30, green, 10, 40)
     if currentTime - startTime >= duration: 
             startTime = currentTime
-            energy -= .01
+            energy -= .1
             if energy == 0:
                 gameOver = -1
     
@@ -270,8 +271,6 @@ while True:
           time.sleep(1.5)
           pygame.quit()
           sys.exit()
-    
-    print(FramePerSec.get_fps())
+    print(FramePerSec.get_fps)
     pygame.display.update()
-    FramePerSec.tick(FPS) 
-
+    FramePerSec.tick(FPS)

@@ -275,6 +275,5 @@ while True:
           time.sleep(1.5)
           pygame.quit()
           sys.exit()
-               
     pygame.display.update()
     FramePerSec.tick(FPS)
