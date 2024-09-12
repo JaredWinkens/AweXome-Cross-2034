@@ -23,8 +23,12 @@ white = (253, 253, 253)
 black = (0, 0 , 0)
 red = (255, 0, 0)
 
-SCREEN_WIDTH = 1200
-SCREEN_HEIGHT = 800
+
+
+screen_info = pygame.display.Info()
+
+SCREEN_WIDTH = screen_info.current_w
+SCREEN_HEIGHT = screen_info.current_h
 SPEED = 5
 #HEIGHT = 450
 #WIDTH = 400
@@ -42,7 +46,7 @@ gameOver = 0
 
 FramePerSec = pygame.time.Clock()
 
-displaysurface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+displaysurface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
 pygame.display.set_caption("Game")
 
 class Enemy(pygame.sprite.Sprite):
@@ -50,28 +54,17 @@ class Enemy(pygame.sprite.Sprite):
         super().__init__() 
         temp_image = pygame.image.load('assets/enemy1.png')
         self.image = pygame.transform.scale(temp_image,(100,100))
-        self.surf = pygame.Surface((30, 30))
-        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH,700))
+        self.rect = self.image.get_rect(center = (SCREEN_WIDTH, SCREEN_HEIGHT - 150))
  
       def move(self):
-        #global SCORE
         self.rect.move_ip(-SPEED,0)
         if (self.rect.left < 0):
-            #SCORE += 1
             self.rect.left = 0
-            self.rect.center = (SCREEN_WIDTH,700)
+            self.rect.center = (SCREEN_WIDTH, SCREEN_HEIGHT - 150)
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
-        #self.image = pygame.image.load("character.png")
-        '''self.surf = pygame.Surface((30, 30))
-        self.surf.fill((128,255,40))
-        self.rect = self.surf.get_rect()'''
-        '''temp_image = pygame.image.load('assets/wheel.png')
-        self.image = pygame.transform.scale(temp_image,(100,100))
-        self.surf = pygame.Surface((40, 40))
-        self.rect = self.surf.get_rect(center = (160, 400))'''
 
         self.images = []
         self.images.append(pygame.transform.scale(pygame.image.load('assets/wheel1.png'), (100, 100)))
@@ -85,11 +78,10 @@ class Player(pygame.sprite.Sprite):
                           
         self.index = 0
         self.image = self.images[self.index]
-        self.surf = pygame.Surface((40, 40))
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect(midbottom = (160, SCREEN_HEIGHT - 10))
 
 
-        self.pos = vec((100, 460))
+        self.pos = vec(160, SCREEN_HEIGHT - 10)
         self.vel = vec(0,0)
         self.acc = vec(0,0)
 
@@ -110,7 +102,7 @@ class Player(pygame.sprite.Sprite):
         if self.pos.x > SCREEN_WIDTH:
             self.pos.x = 0
         if self.pos.x < 0:
-            self.pos.x = 0
+            self.pos.x = SCREEN_WIDTH
              
         self.rect.midbottom = self.pos
  
@@ -121,12 +113,12 @@ class Player(pygame.sprite.Sprite):
  
  
     def update(self):
-        hits = pygame.sprite.spritecollide(P1 ,platforms, False)
-        if P1.vel.y > 0:        
+        hits = pygame.sprite.spritecollide(self ,platforms, False)
+        if self.vel.y > 0:        
             if hits:
                 self.vel.y = 0
                 self.pos.y = hits[0].rect.top + 1
-
+    
         self.index += 1
         if self.index >= len(self.images):
             self.index = 0
@@ -136,9 +128,8 @@ class platform(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         temp_image = pygame.image.load('assets/road.png')
-        self.image = pygame.transform.scale(temp_image,(SCREEN_WIDTH,100))
-        self.surf = pygame.Surface((SCREEN_WIDTH,40))
-        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH/2, 720))
+        self.image = pygame.transform.scale(temp_image,(SCREEN_WIDTH, SCREEN_HEIGHT  - 300))
+        self.rect = self.image.get_rect(center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 200))
  
     def move(self):
         pass
@@ -149,14 +140,10 @@ class Coin(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         coin = pygame.image.load('assets/coin.png')
         self.image = pygame.transform.scale(coin, (50, 50))
-        self.surf = pygame.Surface((100, 100))
-        self.rect = self.image.get_rect(center = (SCREEN_WIDTH, 560))
-        #self.image.set_colorkey()
-        self.move_direction = 5
-        #self.rect.y = y
-    
+        self.rect = self.image.get_rect(center = (SCREEN_WIDTH, SCREEN_HEIGHT - 400))
+
     def move(self):
-        self.rect.x -= self.move_direction
+        self.rect.move_ip(-SPEED,0)
         # Check if coin has gone off screen
         if self.rect.right <= 0:
             self.kill()
@@ -166,7 +153,8 @@ class Button():
 # Horizontal Background
 class Background():
       def __init__(self):
-            self.bgimage = pygame.image.load('assets/background1.jpg')
+            self.bgimage = pygame.transform.scale(pygame.image.load('assets/background1.jpg'),
+                                                  (SCREEN_WIDTH, SCREEN_HEIGHT))
             self.rectBGimg = self.bgimage.get_rect()
  
             self.bgY1 = 0
@@ -196,17 +184,22 @@ def text(text, style, size, color, x, y):
     textImg = font.render(text, True, color)
     displaysurface.blit(textImg, (x, y))
 
+def generate_coin():
+    coin = Coin()
+    coinGroup.add(coin)
+    all_sprites.add(coin)
+
 back_ground = Background()
 PT1 = platform()
 P1 = Player()
 coin = Coin()
 E1 = Enemy()
 
-enemies = pygame.sprite.Group()
-enemies.add(E1)
+platforms = pygame.sprite.Group()
+platforms.add(PT1)
 
 coinGroup = pygame.sprite.Group()
-#coinGroup.add(coin)
+coinGroup.add(coin)
 
 all_sprites = pygame.sprite.Group()
 all_sprites.add(PT1)
@@ -214,18 +207,10 @@ all_sprites.add(P1)
 all_sprites.add(E1)
 all_sprites.add(coin)
 
-platforms = pygame.sprite.Group()
-platforms.add(PT1)
+enemies = pygame.sprite.Group()
+enemies.add(E1)
 
-'''y = 390
-# Randomize coins (test)
-for x in range(5):
-    x = random.randint(30, SCREEN_WIDTH - 20)'''
-
-#Adding a new User event 
-INC_SPEED = pygame.USEREVENT + 1
-pygame.time.set_timer(INC_SPEED, 1000)
- 
+fullscreen = True
 while True: 
     
     for event in pygame.event.get():
@@ -235,16 +220,20 @@ while True:
         if event.type == pygame.KEYDOWN:    
             if event.key == pygame.K_SPACE:
                 P1.jump()
+            if event.key == K_f:
+                fullscreen = not fullscreen
+                if fullscreen:
+                    displaysurface = pygame.display.set_mode((0, 0), FULLSCREEN)
+                else:
+                    displaysurface = pygame.display.set_mode((800, 600), RESIZABLE)
+
         if (random.randint(1, 10) < 3):
-            coin = Coin()
-            coinGroup.add(coin)
-            all_sprites.add(coin)
+            generate_coin()
         
     currentTime = pygame.time.get_ticks() 
 
     back_ground.update()
-    back_ground.render()   
-    #displaysurface.fill((0,0,0))
+    back_ground.render()
 
     # Detect collision
     if pygame.sprite.spritecollide(P1, coinGroup, True):
@@ -257,7 +246,8 @@ while True:
     for entity in all_sprites:
         displaysurface.blit(entity.image, entity.rect)
         entity.move()
-     # Display players energy level
+
+     #f Display players energy level
     text(f'Energy Level: {energy:3.2f}%', 'Showcard Gothic', 30, green, 10, 40)
     if currentTime - startTime >= duration: 
             startTime = currentTime
