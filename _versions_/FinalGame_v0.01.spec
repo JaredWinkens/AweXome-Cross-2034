@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['FinalGame.py'],
+    ['FinalGame_v0.01.py'],
     pathex=[],
     binaries=[],
     datas=[],
