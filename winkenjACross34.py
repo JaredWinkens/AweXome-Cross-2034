@@ -6,13 +6,7 @@ import time
 
 pygame.mixer.pre_init(44100,16,2,4096)
 pygame.init()
-vec = pygame.math.Vector2 #2 for two dimensional
 screen_info = pygame.display.Info()
-
-#Image Initilization
-enemy_image = pygame.image.load('assets/enemy1.png')
-road_image = pygame.image.load('assets/road.png')
-coin_image = pygame.image.load('assets/coin.png')
 
 #Sound Initilization
 pygame.mixer.music.load("assets/Automation.mp3")
@@ -33,6 +27,14 @@ ACC = 0.5
 FRIC = -0.12
 FPS = 60
 
+# load images
+background_image = pygame.image.load('assets/background1.jpg')
+cone_image = pygame.transform.scale(pygame.image.load('assets/enemy1.png'),(100,100))
+road_image = pygame.transform.scale(pygame.image.load('assets/road2.png'),(SCREEN_WIDTH,200))
+coin_image = pygame.transform.scale(pygame.image.load('assets/coin.png'),(70,70))
+wheel_images = []
+for i in range(7): wheel_images.append(pygame.transform.scale((pygame.image.load('assets/wheel%d.png' % (i+1))),(100,100)))
+
 # initialize global variables
 startTime = 0
 currentTime = 0
@@ -41,16 +43,41 @@ score = 0
 scoreIncrement = 5
 energy = 100.01
 gameOver = 0
+vec = pygame.math.Vector2 #2 for two dimensional
 FramePerSec = pygame.time.Clock()
 displaysurface = pygame.display.set_mode((SCREEN_WIDTH-20, SCREEN_HEIGHT-100))
 pygame.display.set_caption("Game")
 
+def splash_screen():
+    splash_active = True
+    displaysurface.fill(black)  # Fill the screen with a background color
+
+    # Display game title and controls
+    display_text("AWEXOME CROSS 2034", 'Showcard Gothic', 80, green, 200, 200)
+    display_text("Press SPACE to Start", 'Showcard Gothic', 50, white, 300, 400)
+    display_text("Controls:", 'Showcard Gothic', 50, white, 300, 500)
+    display_text("Move Left: Left Arrow Key", 'Showcard Gothic', 30, white, 300, 550)
+    display_text("Move Right: Right Arrow Key", 'Showcard Gothic', 30, white, 300, 600)
+    display_text("Jump: Space Bar", 'Showcard Gothic', 30, white, 300, 650)
+
+    pygame.display.update()
+
+    # Splash screen event loop, waits for SPACE key press
+    while splash_active:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:  # Start the game when space is pressed
+                    splash_active = False
+                    
 class Enemy(pygame.sprite.Sprite):
       def __init__(self):
         super().__init__() 
-        self.image = pygame.transform.scale(enemy_image,(100,100))
+        self.image = cone_image
         self.surf = pygame.Surface((30, 30))
-        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH,SCREEN_HEIGHT-170))
+        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH,SCREEN_HEIGHT-200))
  
       def move(self):
         self.rect.move_ip(-SPEED,0)
@@ -61,22 +88,11 @@ class Enemy(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
-
-        self.images = []
-        self.images.append(pygame.transform.scale(pygame.image.load('assets/wheel1.png'), (100, 100)))
-        self.images.append(pygame.transform.scale(pygame.image.load('assets/wheel2.png'), (100, 100)))
-        self.images.append(pygame.transform.scale(pygame.image.load('assets/wheel3.png'), (100, 100)))
-        self.images.append(pygame.transform.scale(pygame.image.load('assets/wheel4.png'), (100, 100)))
-        self.images.append(pygame.transform.scale(pygame.image.load('assets/wheel5.png'), (100, 100)))
-        self.images.append(pygame.transform.scale(pygame.image.load('assets/wheel6.png'), (100, 100)))
-        self.images.append(pygame.transform.scale(pygame.image.load('assets/wheel7.png'), (100, 100)))
-        self.images.append(pygame.transform.scale(pygame.image.load('assets/wheel8.png'), (100, 100)))
                           
         self.index = 0
-        self.image = self.images[self.index]
+        self.image = wheel_images[self.index]
         self.surf = pygame.Surface((30, 30))
         self.rect = self.surf.get_rect(center = (160, SCREEN_HEIGHT-250))
-
 
         self.pos = vec((160, 360))
         self.vel = vec(0,0)
@@ -97,7 +113,7 @@ class Player(pygame.sprite.Sprite):
         self.pos += self.vel + 0.5 * self.acc
          
         if self.pos.x > SCREEN_WIDTH:
-            self.pos.x = 0
+            self.pos.x = SCREEN_WIDTH-100
         if self.pos.x < 0:
             self.pos.x = 0
              
@@ -116,61 +132,73 @@ class Player(pygame.sprite.Sprite):
                 self.pos.y = hits[0].rect.top + 1
 
         self.index += 1
-        if self.index >= len(self.images):
+        if self.index >= len(wheel_images):
             self.index = 0
-        self.image = self.images[self.index]
-
-class platform(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.transform.scale(road_image,(SCREEN_WIDTH,100))
-        self.surf = pygame.Surface((SCREEN_WIDTH,40))
-        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH/2, SCREEN_HEIGHT - 150))
- 
-    def move(self):
-        pass
-
+        self.image = wheel_images[self.index]
+        
 # Class create a coin image
 class Coin(pygame.sprite.Sprite):
     def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.transform.scale(coin_image, (50, 50))
+        super().__init__()
+        self.image = coin_image
         self.surf = pygame.Surface((100, 100))
-        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH, random.randint(40,SCREEN_HEIGHT-40)))
+        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH, random.randint(SCREEN_HEIGHT-400,SCREEN_HEIGHT-300)))
     
     def move(self):
         self.rect.move_ip(-SPEED,0)
         # Check if coin has gone off screen
         if self.rect.right <= 0:
             self.kill()
+
+class platform(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = road_image
+        self.surf = pygame.Surface((SCREEN_WIDTH-10,100))
+        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH/2, SCREEN_HEIGHT - 150))
+ 
+        self.Y1 = SCREEN_HEIGHT-200
+        self.X1 = 0
+        self.Y2 = SCREEN_HEIGHT-200
+        self.X2 = self.rect.width
+         
+    def update(self):
+        self.X1 -= SPEED
+        self.X2 -= SPEED
+        if self.X1 <= -self.rect.width:
+            self.X1 = self.rect.width
+        if self.X2 <= -self.rect.width:
+            self.X2 = self.rect.width
+             
+    def render(self):
+         displaysurface.blit(self.image, (self.X1, self.Y1))
+         displaysurface.blit(self.image, (self.X2, self.Y2))
+         
+    def move(self):
+        pass
     
-class Button():
-    pass
 # Horizontal Background
 class Background():
-      def __init__(self):
-            self.bgimage = pygame.image.load('assets/background1.jpg')
-            self.rectBGimg = self.bgimage.get_rect()
- 
-            self.bgY1 = 0
-            self.bgX1 = 0
- 
-            self.bgY2 = 0
-            self.bgX2 = self.rectBGimg.width
- 
-            self.moving_speed = 5
-         
-      def update(self):
-        self.bgX1 -= self.moving_speed
-        self.bgX2 -= self.moving_speed
-        if self.bgX1 <= -self.rectBGimg.width:
-            self.bgX1 = self.rectBGimg.width
-        if self.bgX2 <= -self.rectBGimg.width:
-            self.bgX2 = self.rectBGimg.width
+    def __init__(self):
+        self.bgimage = background_image
+        self.rect = self.bgimage.get_rect()
+        
+        self.Y1 = 0
+        self.X1 = 0
+        self.Y2 = 0
+        self.X2 = self.rect.width
+          
+    def update(self):
+        self.X1 -= SPEED
+        self.X2 -= SPEED
+        if self.X1 <= -self.rect.width:
+            self.X1 = self.rect.width
+        if self.X2 <= -self.rect.width:
+            self.X2 = self.rect.width
              
-      def render(self):
-         displaysurface.blit(self.bgimage, (self.bgX1, self.bgY1))
-         displaysurface.blit(self.bgimage, (self.bgX2, self.bgY2))
+    def render(self):
+        displaysurface.blit(self.bgimage, (self.X1, self.Y1))
+        displaysurface.blit(self.bgimage, (self.X2, self.Y2))
 
 
 # Render text to screen  
@@ -179,12 +207,12 @@ def display_text(text, style, size, color, x, y):
     textImg = font.render(text, True, color)
     displaysurface.blit(textImg, (x, y))
 
-def generate_coin():
+def spawn_coin():
     coin = Coin()
     coinGroup.add(coin)
     all_sprites.add(coin)
 
-def generate_enemy():
+def spawn_enemy():
     enemy = Enemy()
     enemies.add(enemy)
     all_sprites.add(enemy)
@@ -205,14 +233,16 @@ platforms = pygame.sprite.Group()
 platforms.add(PT1)
 
 all_sprites = pygame.sprite.Group()
-all_sprites.add(PT1)
 all_sprites.add(P1)
 all_sprites.add(E1)
 all_sprites.add(coin)
 
 #Adding a new User event 
 INC_SPEED = pygame.USEREVENT + 1
-pygame.time.set_timer(INC_SPEED, 10000)
+pygame.time.set_timer(INC_SPEED, 1000)
+
+#calls splash screen before game loop
+splash_screen()
 
 #Game Loop
 while True: 
@@ -227,30 +257,33 @@ while True:
             if event.key == pygame.K_SPACE:
                 P1.jump()
         
-    currentTime = pygame.time.get_ticks() 
-
+    #currentTime = pygame.time.get_ticks() 
+    
     back_ground.update()
     back_ground.render()   
-
+    PT1.update()
+    PT1.render()
     P1.update()
+    
     
     for entity in all_sprites:
         displaysurface.blit(entity.image, entity.rect)
         entity.move()
     
     if (random.randint(1, 700) < 3):
-        generate_coin()
+        spawn_coin()
     if (random.randint(1, 1000) < 3):
-        generate_enemy()
+        spawn_enemy()
 
-    # Display players energy level
+    # Display players energy level (WIP)
+    '''
     display_text(f'Energy Level: {energy:3.2f}%', 'Showcard Gothic', 30, green, 10, 40)
     if currentTime - startTime >= duration: 
             startTime = currentTime
             energy -= .1
             if energy == 0:
                 gameOver = -1
-    
+    '''
     #To be run if collision occurs between Player and Coin
     if pygame.sprite.spritecollide(P1, coinGroup,True):
         pygame.mixer.Sound("assets/coinGet.mp3").play()
@@ -271,6 +304,7 @@ while True:
           time.sleep(1.5)
           pygame.quit()
           sys.exit()
-    print(FramePerSec.get_fps)
+          
+    print(FramePerSec.get_fps())
     pygame.display.update()
     FramePerSec.tick(FPS)
