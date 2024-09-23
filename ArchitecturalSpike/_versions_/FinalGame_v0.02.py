@@ -272,7 +272,7 @@ while True:
     
     if (random.randint(1, 700) < 3):
         spawn_coin()
-    if (random.randint(1, 1000) < 3):
+    if (random.randint(1, 500) < 3):
         spawn_enemy()
 
     # Display players energy level (WIP)

@@ -1,6 +1,1 @@
-# AweXome-Cross-2034
-# Hello -Jared
-# Sawyer -Hello
-# Aiden - Hello
-# Chakriya - Hello
-# Testing Git Notifications on Discord - Jared
+# AweXome Cross 2034 is an endless runner platformer sequel to AweXome Cross 1998 with enhanced physics and a futuristic theme.
