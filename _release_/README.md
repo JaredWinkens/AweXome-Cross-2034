@@ -1,1 +1,1 @@
-# All executable and builed-related files should be placed in this folder
+# All executable and build-related files should be placed in this folder
