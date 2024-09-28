@@ -1,5 +1,17 @@
 import pygame
+from pygame.locals import *
 import sys
+import platform
+import player
+
+screen_info = pygame.display.Info()
+
+SCREEN_WIDTH = screen_info.current_w
+SCREEN_HEIGHT = screen_info.current_h
+SPEED = 5
+ACC = 0.5
+FRIC = -0.12
+vec = pygame.math.Vector2
 
 
 def move(self):
@@ -24,10 +36,14 @@ def move(self):
         self.rect.midbottom = self.pos
  
 def jump(self):
-    hits = pygame.sprite.spritecollide(self, platforms, False)
+    hits = pygame.sprite.spritecollide(self, platform, False)
     if hits:
         self.vel.y = -15
+#might have to put in main game loop in main file not sure yet
+    #if event.type == pygame.KEYDOWN:    
+            #if event.key == pygame.K_SPACE:
+                #P1.jump()
 
-    if event.type == pygame.KEYDOWN:    
-            if event.key == pygame.K_SPACE:
-                P1.jump()
+
+P1 = player()
+P1.update()
