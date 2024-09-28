@@ -1,8 +1,8 @@
 # Author: Jared Winkens
 import platform
+import player
 import pygame
 import sys
-import player
 from pygame.locals import *
 
 # Constants
@@ -35,6 +35,13 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.KEYDOWN:    
+            if event.key == pygame.K_SPACE:
+                P1.jump(platforms)
+                
+    window.fill((0,0,0))
+    P1.move(SCREEN_WIDTH)
+    P1.update(platforms)
     
     # Render all sprites
     for entity in all_sprites:

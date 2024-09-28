@@ -1,0 +1,7 @@
+I manually tested that all the functions in the Player class work as expected. 
+I also tested the main.py file to ensure that the game runs as expected.
+
+Test Player().move() - Passed
+Test Player().jump() - Passed
+Test Player().update() - Passed
+Test main.py - Passed   
