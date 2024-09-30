@@ -32,14 +32,12 @@ def screen_height():
 
 # Written by: Chakriya Sou
 # Created: 09/27/2024
-# Last update: 09/29/2024 2p (Compute x,y coordinates)
+# Last update: 09/30/2024 2p (Players initial position was not on platform. Fixed problem)
 # Test: Player position (bottom left corner of screen) will 
 # adjust according to users display resolution
 def test_Player(screen_width, screen_height):
     player = Player(screen_width, screen_height)
-    assert player.rect.center == (math.ceil(screen_width * 0.1), screen_height * 0.75)
-    #assert player.rect.center == (screen_width // 15, screen_height - 
-    #                               (screen_height // 15))
+    assert player.rect.center == (math.ceil(screen_width * 0.1), math.ceil(screen_height * 0.95))
 
 # Written by: Chakriya Sou
 # Created: 09/28/2024
@@ -49,5 +47,3 @@ def test_Player(screen_width, screen_height):
 def test_Platform(screen_width, screen_height):
     platform = Platform(screen_width, screen_height)
     assert platform.rect.center == (screen_width // 2, math.ceil(screen_height * 0.95))
-    #assert platform.rect.center == (screen_width // 2, screen_height - 
-    #                               (screen_height * .075))
