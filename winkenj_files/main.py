@@ -39,7 +39,10 @@ while True:
             if event.key == pygame.K_SPACE:
                 P1.jump(platforms)
                 
+    # Fill the window with black            
     window.fill((0,0,0))
+    
+    # Move & update the player
     P1.move(SCREEN_WIDTH)
     P1.update(platforms)
     
