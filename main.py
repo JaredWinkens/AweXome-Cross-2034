@@ -1,10 +1,14 @@
 # Author: Jared Winkens
-import platform
-import player
+import winkenj_files.platform as platform
+import winkenj_files.player as player
+import carterad_files.Splash_screenv3 as Splash_screen
 import pygame
 import sys
 from pygame.locals import *
 
+# Initialize Pygame
+pygame.init()
+pygame.mixer.pre_init(44100, 16, 2, 4096)
 
 # Initialize constants
 screen_info = pygame.display.Info()
@@ -12,17 +16,14 @@ SCREEN_WIDTH = screen_info.current_w
 SCREEN_HEIGHT = screen_info.current_h
 FPS = 60
 
-# Initialize Pygame
-pygame.init()
-window = pygame.display.set_mode((SCREEN_WIDTH-20,SCREEN_HEIGHT-20),pygame.RESIZABLE)
+window = pygame.display.set_mode((SCREEN_WIDTH*0.85,SCREEN_HEIGHT*0.90),pygame.SCALED)
 pygame.display.set_caption("Game")
 
 # Create the player and platform objects
 P1 = player.Player(SCREEN_WIDTH,SCREEN_HEIGHT)
 PT1 = platform.Platform(SCREEN_WIDTH,SCREEN_HEIGHT)
 
-Splash_screen.SplashScreen.run(window,SCREEN_WIDTH, SCREEN_HEIGHT)
-
+Splash_screen.SplashScreen.run(window)
 
 # Create sprite groups
 platforms = pygame.sprite.Group()
