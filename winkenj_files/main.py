@@ -5,19 +5,24 @@ import pygame
 import sys
 from pygame.locals import *
 
-# Constants
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+
+# Initialize constants
+screen_info = pygame.display.Info()
+SCREEN_WIDTH = screen_info.current_w
+SCREEN_HEIGHT = screen_info.current_h
 FPS = 60
 
 # Initialize Pygame
 pygame.init()
-window = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT),pygame.SCALED)
+window = pygame.display.set_mode((SCREEN_WIDTH-20,SCREEN_HEIGHT-20),pygame.RESIZABLE)
 pygame.display.set_caption("Game")
 
 # Create the player and platform objects
 P1 = player.Player(SCREEN_WIDTH,SCREEN_HEIGHT)
 PT1 = platform.Platform(SCREEN_WIDTH,SCREEN_HEIGHT)
+
+Splash_screen.SplashScreen.run(window,SCREEN_WIDTH, SCREEN_HEIGHT)
+
 
 # Create sprite groups
 platforms = pygame.sprite.Group()
