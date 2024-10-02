@@ -4,6 +4,6 @@ Splash Screen Tests
 2. Random Key Presses Do Not Affect Splash Screen - PASSED
 3. Holding Keys While Launching Splash Screen Does Not Affect It - PASSED
 4. Holding Space Bar While Launching Splash Screen Does Not Instantly Close It - PASSED
-5. Resizing Window Doesn't Cut Off Text - PASSED
+5. Window Does not Allow Resizing - PASSED
 6. Splash Screen Format Adapts to Window Size - PASSED
 7. Splash Screen Stays Visible Forever Until Space Bar is Pressed - PASSED
