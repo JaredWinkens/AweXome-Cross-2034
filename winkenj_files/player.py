@@ -15,11 +15,11 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
 
         # Create the player
-        self.surf = pygame.Surface((screen_width*0.08, screen_height*0.1))
+        self.surf = pygame.Surface((screen_width*0.06, screen_height*0.1))
         self.surf.fill((255, 0, 0))
-        self.rect = self.surf.get_rect(center=(screen_width*0.1, screen_height * 0.95))
+        self.rect = self.surf.get_rect(center=(screen_width*0.1, screen_height))
         self.vec = pygame.math.Vector2
-        self.pos = self.vec((screen_width*0.1, screen_height * 0.95))
+        self.pos = self.vec((screen_width*0.1, screen_height))
         self.acc = self.vec(0,0)
         self.vel = self.vec(0,0)
     
