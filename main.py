@@ -12,11 +12,11 @@ pygame.mixer.pre_init(44100, 16, 2, 4096)
 
 # Initialize constants
 screen_info = pygame.display.Info()
-SCREEN_WIDTH = screen_info.current_w
-SCREEN_HEIGHT = screen_info.current_h
+SCREEN_WIDTH = screen_info.current_w*0.85
+SCREEN_HEIGHT = screen_info.current_h*0.90
 FPS = 60
 
-window = pygame.display.set_mode((SCREEN_WIDTH*0.85,SCREEN_HEIGHT*0.90),pygame.SCALED)
+window = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT),pygame.SCALED)
 pygame.display.set_caption("Game")
 
 # Create the player and platform objects
