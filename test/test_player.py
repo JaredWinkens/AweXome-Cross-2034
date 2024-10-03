@@ -19,7 +19,7 @@ pygame.init()
 def screen_width():
     info = pygame.display.Info()
     screen_width = info.current_w
-    return screen_width
+    return screen_width #1366
 
 # Written by: Chakriya Sou
 # Created: 09/27/2024
@@ -28,7 +28,7 @@ def screen_width():
 def screen_height():
     info = pygame.display.Info()
     screen_height = info.current_h
-    return screen_height
+    return screen_height # 768
 
 # Written by: Chakriya Sou
 # Created: 09/27/2024
@@ -37,4 +37,4 @@ def screen_height():
 # adjust according to users display resolution
 def test_Player(screen_width, screen_height):
     player = Player(screen_width, screen_height)
-    assert player.rect.center == (math.ceil(screen_width * 0.1), math.ceil(screen_height * 0.95))
+    assert player.rect.center == (137, 730)
