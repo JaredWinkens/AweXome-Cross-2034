@@ -15,6 +15,17 @@ screen_info = pygame.display.Info()
 SCREEN_WIDTH = screen_info.current_w*0.85
 SCREEN_HEIGHT = screen_info.current_h*0.90
 FPS = 60
+REG_SCORE = 59 
+BONUS_SCORE = 1000
+
+# Define variables for scorekeeper
+score: int = 0
+minute: int = 1000 * 60
+second: int = 1000
+fSizeScore = int(SCREEN_HEIGHT // 25)
+fColor = (0, 255, 0) # Green
+scoreXPos = SCREEN_HEIGHT * .01
+scoreYPos = SCREEN_WIDTH * .01
 
 window = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT),pygame.SCALED)
 pygame.display.set_caption("Game")
@@ -24,6 +35,14 @@ P1 = player.Player(SCREEN_WIDTH,SCREEN_HEIGHT)
 PT1 = platform.Platform(SCREEN_WIDTH,SCREEN_HEIGHT)
 
 Splash_screen.SplashScreen.run(window)
+
+# Timer (one minute)
+timerMin = pygame.event.custom_type()
+pygame.time.set_timer(timerMin, minute)
+
+# Timer (one second)
+timerSec = pygame.event.custom_type()
+pygame.time.set_timer(timerSec, second)
 
 # Create sprite groups
 platforms = pygame.sprite.Group()
@@ -44,7 +63,11 @@ while True:
         if event.type == pygame.KEYDOWN:    
             if event.key == pygame.K_SPACE:
                 P1.jump(platforms)
-                
+        if event.type == timerSec:
+            score += REG_SCORE
+        if event.type == timerMin:
+            score += BONUS_SCORE
+
     # Fill the window with black            
     window.fill((0,0,0))
     
@@ -56,6 +79,9 @@ while True:
     for entity in all_sprites:
         window.blit(entity.surf,entity.rect)
     
+    Splash_screen.SplashScreen.display_text(window, 'Score: ' + str(score),
+                                        'Cooperplate Gothic Bold', 
+                                        fSizeScore, fColor, scoreXPos, scoreYPos)
     # Update the display    
     pygame.display.update()
     pygame.time.Clock().tick(FPS)
