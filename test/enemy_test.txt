@@ -1,0 +1,27 @@
+By: Aiden Carter
+NonPassable:
+    1.Enemy Spawn Position:
+        - Visually check if the enemy is spawning at thje correct possition 
+    Passed
+    2.Emeny Movement Test:
+        - Watch the enemy and check if it moving smoothly v.s. studering
+    Passed
+    3.Player Collision Check:
+        - Does the player die when the enemey is touched
+    Passed
+    4. Player Jump Check
+        - Can I jump it? No = good
+    Passed
+Passable:
+    1.Enemy Spawn Position:
+        - Visually check if the enemy is spawning at the correct possition 
+    Passed
+    2.Emeny Movement Test:
+        - Watch the enemy and check if it moving smoothly v.s. studdering
+    Passed
+    3.Player Collision Check:
+        - Does the player die when the enemey is touched
+    Passed
+    4. Player Jump Check
+        - Can I jump it? Yes = good
+    Passed

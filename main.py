@@ -4,6 +4,7 @@ import winkenj_files.player as player
 import winkenj_files.passible_enemy as enemySmall
 import winkenj_files.not_passible_enemy as enemyLarge
 import carterad_files.Splash_screenv3 as Splash_screen
+import carterad_files.cop as cop  # Add the Cop class
 import pygame
 import sys
 from pygame.locals import *
@@ -52,6 +53,10 @@ pygame.time.set_timer(timerSec, second)
 timerSec2 = pygame.event.custom_type()
 pygame.time.set_timer(timerSec2, second*2)
 
+#Cop spawn timer
+timerSpawnCop = pygame.event.custom_type()
+pygame.time.set_timer(timerSpawnCop, 5000)
+
 # Create sprite groups
 platforms = pygame.sprite.Group()
 platforms.add(PT1)
@@ -59,6 +64,8 @@ all_sprites = pygame.sprite.Group()
 all_sprites.add(PT1)
 all_sprites.add(P1)
 enemies = pygame.sprite.Group()
+
+cop_spawned = False  # Track whether the cop has been spawned
 
 def display_text(displaysurface,text, style, size, color, x, y):
         font = pygame.font.SysFont(style, size)
@@ -96,6 +103,10 @@ while True:
             spawn_enemyLarge()
         if event.type == timerMin:
             score += BONUS_SCORE
+        if event.type == timerSpawnCop and not cop_spawned:
+            C1 = cop.Cop(SCREEN_WIDTH, SCREEN_HEIGHT, PT1)  # Spawn the cop
+            all_sprites.add(C1)
+            cop_spawned = True
 
     # Fill the window with black            
     window.fill((0,0,0))
@@ -111,6 +122,11 @@ while True:
     # Move all enemies
     for enemy in enemies:
         enemy.move()
+
+     # If the cop has been spawned, move and update it
+    if cop_spawned:
+        C1.move(enemies)  # Move cop and check for proximity to enemies
+        C1.update(PT1)
     
     # Render the score
     display_text(window, 'Score: ' + str(score),'Cooperplate Gothic Bold', fSizeScore, fColor, scoreXPos, scoreYPos)

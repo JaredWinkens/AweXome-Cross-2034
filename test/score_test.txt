@@ -1,0 +1,12 @@
+By: Aiden Carter
+    1. Does the Score Display
+        - Ooen game and check if the score displays
+    2. Score Starts at Zero Test
+        - Start game and watch score, If it starts at 0 it passed
+    Passed
+    3. Score Increments by the second
+        - Does the score increase by the second
+    Passed
+    4. Does the Bonus Score Work
+        - Open game without enemies and wait for 1 minute, does it give the bonus?
+    Passed
