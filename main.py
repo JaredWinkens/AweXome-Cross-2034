@@ -1,10 +1,14 @@
 # Author: Jared Winkens
 import winkenj_files.platform as platform
 import winkenj_files.player as player
+import winkenj_files.passible_enemy as enemySmall
+import winkenj_files.not_passible_enemy as enemyLarge
 import carterad_files.Splash_screenv3 as Splash_screen
 import pygame
 import sys
 from pygame.locals import *
+import random
+import time
 
 # Initialize Pygame
 pygame.init()
@@ -44,12 +48,34 @@ pygame.time.set_timer(timerMin, minute)
 timerSec = pygame.event.custom_type()
 pygame.time.set_timer(timerSec, second)
 
+# Timer (two second)
+timerSec2 = pygame.event.custom_type()
+pygame.time.set_timer(timerSec2, second*2)
+
 # Create sprite groups
 platforms = pygame.sprite.Group()
 platforms.add(PT1)
 all_sprites = pygame.sprite.Group()
 all_sprites.add(PT1)
 all_sprites.add(P1)
+enemies = pygame.sprite.Group()
+
+def display_text(displaysurface,text, style, size, color, x, y):
+        font = pygame.font.SysFont(style, size)
+        textImg = font.render(text, True, color)
+        displaysurface.blit(textImg, (x, y))
+        
+def spawn_enemySmall():
+    if (random.randint(1, 4) < 3):    
+        enemy = enemySmall.PassibleEnemy(SCREEN_WIDTH,SCREEN_HEIGHT,PT1)
+        enemies.add(enemy)
+        all_sprites.add(enemy)
+
+def spawn_enemyLarge():
+    if (random.randint(1, 5) < 3):
+        enemy = enemyLarge.NotPassibleEnemy(SCREEN_WIDTH,SCREEN_HEIGHT,PT1)
+        enemies.add(enemy)
+        all_sprites.add(enemy)
 
 ##############################################
 # GAME LOOP
@@ -65,6 +91,9 @@ while True:
                 P1.jump(platforms)
         if event.type == timerSec:
             score += REG_SCORE
+        if event.type == timerSec2:
+            spawn_enemySmall()
+            spawn_enemyLarge()
         if event.type == timerMin:
             score += BONUS_SCORE
 
@@ -79,9 +108,25 @@ while True:
     for entity in all_sprites:
         window.blit(entity.surf,entity.rect)
     
-    Splash_screen.SplashScreen.display_text(window, 'Score: ' + str(score),
-                                        'Cooperplate Gothic Bold', 
-                                        fSizeScore, fColor, scoreXPos, scoreYPos)
+    # Move all enemies
+    for enemy in enemies:
+        enemy.move()
+    
+    # Render the score
+    display_text(window, 'Score: ' + str(score),'Cooperplate Gothic Bold', fSizeScore, fColor, scoreXPos, scoreYPos)
+    
+    # Check for collisions with the player and enemies
+    if pygame.sprite.spritecollideany(P1, enemies):
+        time.sleep(0.8)
+        window.fill((255,0,0))
+        display_text(window,f'Game Over','Verdana', 60, (1,1,1), SCREEN_WIDTH*0.3, SCREEN_HEIGHT*0.5)
+        pygame.display.update()
+        for entity in all_sprites:
+                entity.kill() 
+        time.sleep(1.5)
+        pygame.quit()
+        sys.exit()
+    
     # Update the display    
     pygame.display.update()
     pygame.time.Clock().tick(FPS)
