@@ -4,7 +4,7 @@ import winkenj_files.player as player
 import winkenj_files.passible_enemy as enemySmall
 import winkenj_files.not_passible_enemy as enemyLarge
 import carterad_files.Splash_screenv3 as Splash_screen
-import carterad_files.cop as cop 
+import carterad_files.cop as cop  # Add the Cop class
 import pygame
 import sys
 from pygame.locals import *
@@ -31,6 +31,7 @@ fSizeScore = int(SCREEN_HEIGHT // 25)
 fColor = (0, 255, 0)  # Green
 scoreXPos = SCREEN_HEIGHT * .01
 scoreYPos = SCREEN_WIDTH * .01
+gameOver = 0
 
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SCALED)
 pygame.display.set_caption("Game")
@@ -66,11 +67,6 @@ all_sprites.add(P1)
 enemies = pygame.sprite.Group()
 
 cop_spawned = False  # Track whether the cop has been spawned
-
-def display_text(displaysurface, text, style, size, color, x, y):
-    font = pygame.font.SysFont(style, size)
-    textImg = font.render(text, True, color)
-    displaysurface.blit(textImg, (x, y))
         
 def spawn_enemySmall():
     if random.randint(1, 4) < 3:    
@@ -130,28 +126,34 @@ while True:
 
         # Check for collision between the player and cop
         if pygame.sprite.collide_rect(P1, C1):
-            time.sleep(0.8)
-            window.fill((255, 0, 0))
-            display_text(window, 'Game Over', 'Verdana', 60, (1, 1, 1), SCREEN_WIDTH * 0.3, SCREEN_HEIGHT * 0.5)
-            pygame.display.update()
+            pygame.time.set_timer(timerMin, 0)
+            pygame.time.set_timer(timerSec, 0)
+
+            gameOver = -1
+            deathScreen(window, score)
+
             for entity in all_sprites:
                 entity.kill() 
-            time.sleep(1.5)
+            time.sleep(5)
             pygame.quit()
             sys.exit()
 
     # Render the score
-    display_text(window, 'Score: ' + str(score), 'Cooperplate Gothic Bold', fSizeScore, fColor, scoreXPos, scoreYPos)
+    Splash_screen.SplashScreen.display_text(window, 'Score: ' + str(score), 
+                                        'Cooperplate Gothic Bold', fSizeScore, 
+                                        fColor, scoreXPos, scoreYPos)
     
     # Check for collisions with the player and enemies
     if pygame.sprite.spritecollideany(P1, enemies):
-        time.sleep(0.8)
-        window.fill((255, 0, 0))
-        display_text(window, 'Game Over', 'Verdana', 60, (1, 1, 1), SCREEN_WIDTH * 0.3, SCREEN_HEIGHT * 0.5)
-        pygame.display.update()
+        pygame.time.set_timer(timerMin, 0)
+        pygame.time.set_timer(timerSec, 0)
+
+        gameOver = -1
+        deathScreen(window, score)
+
         for entity in all_sprites:
             entity.kill() 
-        time.sleep(1.5)
+        time.sleep(5)
         pygame.quit()
         sys.exit()
     
