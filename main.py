@@ -5,6 +5,7 @@ import winkenj_files.passible_enemy as enemySmall
 import winkenj_files.not_passible_enemy as enemyLarge
 import carterad_files.Splash_screenv3 as Splash_screen
 import carterad_files.cop as cop  # Add the Cop class
+from souc_files.death import deathScreen
 import pygame
 import sys
 from pygame.locals import *
@@ -145,17 +146,10 @@ while True:
     
     # Check for collisions with the player and enemies
     if pygame.sprite.spritecollideany(P1, enemies):
-        pygame.time.set_timer(timerMin, 0)
-        pygame.time.set_timer(timerSec, 0)
-
-        gameOver = -1
-        deathScreen(window, score)
-
-        for entity in all_sprites:
-            entity.kill() 
-        time.sleep(5)
-        pygame.quit()
-        sys.exit()
+        # Cop moves forward
+        # Scrolling Background slows down(illusion that players pace has 
+        # slowed down after collision)
+        pass
     
     # Update the display    
     pygame.display.update()
