@@ -4,7 +4,7 @@ import winkenj_files.player as player
 import winkenj_files.passible_enemy as enemySmall
 import winkenj_files.not_passible_enemy as enemyLarge
 import carterad_files.Splash_screenv3 as Splash_screen
-import carterad_files.cop as cop  # Add the Cop class
+import carterad_files.cop as cop 
 import pygame
 import sys
 from pygame.locals import *
@@ -125,7 +125,7 @@ while True:
 
     # If the cop has been spawned, move and update it
     if cop_spawned:
-        C1.move(enemies)  # Move cop
+        C1.move(enemies, P1)  # Move cop
         C1.update(PT1)  # Update cop position if necessary
 
         # Check for collision between the player and cop
