@@ -1,0 +1,22 @@
+Chakriya Sou
+Test unit for file cop.py
+Visual test
+
+Timed to see if cop appears after five seconds - passed
+    -used stop watch-test 10 times
+    t1 - 5.14
+    t2 - 5.10
+    t3 - 5.20
+    t4 - 5.06
+    t5 - 5.31
+    t6 - 5.19
+    t7 - 5.16
+    t8 - 5.10
+    t9 - 5.21
+    t10 -5.16
+    Average: 5.163
+
+Check if cop collides with player the game is over - passed
+    Used left key to manually have player collide with cop.
+    Once collided the death screen appeared displaying text
+    game over and users score.

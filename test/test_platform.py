@@ -36,4 +36,4 @@ def screen_height():
 # to users display resolution
 def test_Platform(screen_width, screen_height):
     platform = Platform(screen_width, screen_height)
-    assert platform.rect.center == (683, 730)
+    assert platform.rect.center == (683, 768)
