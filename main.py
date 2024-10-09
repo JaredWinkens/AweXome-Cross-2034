@@ -6,6 +6,7 @@ import winkenj_files.not_passible_enemy as enemyLarge
 import carterad_files.Splash_screenv3 as Splash_screen
 import carterad_files.cop as cop  # Add the Cop class
 from souc_files.death import deathScreen
+import winkenj_files.background as bg
 import pygame
 import sys
 from pygame.locals import *
@@ -23,6 +24,7 @@ SCREEN_HEIGHT = screen_info.current_h * 0.90
 FPS = 60
 REG_SCORE = 59 
 BONUS_SCORE = 1000
+SPEED = 5
 
 # Define variables for scorekeeper
 score: int = 0
@@ -37,9 +39,14 @@ gameOver = 0
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SCALED)
 pygame.display.set_caption("Game")
 
+# Load the background image
+bg_img1 = pygame.transform.scale(pygame.image.load('assets/background1.jpg'), (SCREEN_WIDTH, SCREEN_HEIGHT))
+bg_imgs = [bg_img1]
+
 # Create the player and platform objects
 P1 = player.Player(SCREEN_WIDTH, SCREEN_HEIGHT)
 PT1 = platform.Platform(SCREEN_WIDTH, SCREEN_HEIGHT)
+BG = bg.Background(bg_imgs)
 
 Splash_screen.SplashScreen.run(window)
 
@@ -65,19 +72,23 @@ platforms.add(PT1)
 all_sprites = pygame.sprite.Group()
 all_sprites.add(PT1)
 all_sprites.add(P1)
+small_enemies = pygame.sprite.Group()
+large_enemies = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
 
 cop_spawned = False  # Track whether the cop has been spawned
         
 def spawn_enemySmall():
     if random.randint(1, 4) < 3:    
-        enemy = enemySmall.PassibleEnemy(SCREEN_WIDTH, SCREEN_HEIGHT, PT1)
+        enemy = enemySmall.PassibleEnemy(SCREEN_WIDTH, SCREEN_HEIGHT)
+        small_enemies.add(enemy)
         enemies.add(enemy)
         all_sprites.add(enemy)
 
 def spawn_enemyLarge():
     if random.randint(1, 5) < 3:
-        enemy = enemyLarge.NotPassibleEnemy(SCREEN_WIDTH, SCREEN_HEIGHT, PT1)
+        enemy = enemyLarge.NotPassibleEnemy(SCREEN_WIDTH, SCREEN_HEIGHT)
+        large_enemies.add(enemy)
         enemies.add(enemy)
         all_sprites.add(enemy)
 
@@ -108,6 +119,10 @@ while True:
     # Fill the window with black            
     window.fill((0, 0, 0))
     
+    # Render the background
+    BG.update(SPEED)
+    BG.render(window)
+    
     # Move & update the player
     P1.move(SCREEN_WIDTH)
     P1.update(platforms)
@@ -118,7 +133,7 @@ while True:
     
     # Move all enemies
     for enemy in enemies:
-        enemy.move()
+        enemy.move(SPEED)
 
     # If the cop has been spawned, move and update it
     if cop_spawned:
@@ -145,11 +160,16 @@ while True:
                                         fColor, scoreXPos, scoreYPos)
     
     # Check for collisions with the player and enemies
-    if pygame.sprite.spritecollideany(P1, enemies):
+    hits_large = pygame.sprite.spritecollide(P1, large_enemies, False)
+    hits_small = pygame.sprite.spritecollide(P1, small_enemies, False)
+    if hits_large:
         # Cop moves forward
         # Scrolling Background slows down(illusion that players pace has 
         # slowed down after collision)
-        pass
+        P1.vel.x = 0
+        P1.pos.x = hits_large[0].rect.left - P1.rect.width
+    if hits_small:
+        P1.vel.x = -2
     
     # Update the display    
     pygame.display.update()
