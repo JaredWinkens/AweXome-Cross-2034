@@ -1,0 +1,10 @@
+Scrolling Background Tests
+
+1. Background continuously Scrolls as long as the Game is Running - PASSED
+2. Bacground is a Perfect Loop with no Seam Visable - PASSED
+3. Key Presses do not Affect Background Generation - PASSED
+4. Moving Game Window Around Does Not Affect Background - PASSED
+5. Player Spawns and Remains In Front of Background - PASSED
+6. Cop Spawns and Remains In Front of Background - PASSED
+7. Obstacles Spawns and Remains In Front of Background - PASSED
+8. Background is not visable when Death or Splash Screen are Visable - PASSED

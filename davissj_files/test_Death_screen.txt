@@ -1,0 +1,10 @@
+Death Screen Tests
+
+1. Death Screen only Appears when Player and Cop Collide - PASSED
+2. Key Presses Do not Affect Death Screen Generation - PASSED
+3. Key Presses do not Affect Background Remaining on Screen - PASSED
+4. Moving Game Window Around Does Not Affect Death Screen - PASSED
+5. No other Assets are visable through Death Screen - PASSED
+6. Death Screen Score Matches the Last Visable Score Before Collision is Detected - PASSED
+7. Displayed Score Remains the Same as long as the Screen is Visable - PASSED
+8. Death Screen and Game Closes After a Period of Time - PASSED

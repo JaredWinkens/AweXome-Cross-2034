@@ -17,6 +17,11 @@ import time
 pygame.init()
 pygame.mixer.pre_init(44100, 16, 2, 4096)
 
+#Sound Initilization
+pygame.mixer.music.load("assets/Automation.mp3")
+pygame.mixer.music.set_volume(0.25)
+pygame.mixer.music.play(-1)
+
 # Initialize constants
 screen_info = pygame.display.Info()
 SCREEN_WIDTH = screen_info.current_w * 0.85
@@ -103,6 +108,7 @@ while True:
             sys.exit()
         if event.type == pygame.KEYDOWN:    
             if event.key == pygame.K_SPACE:
+                pygame.mixer.Sound('assets/jump.mp3').play()
                 P1.jump(platforms)
         if event.type == timerSec:
             score += REG_SCORE
@@ -144,6 +150,7 @@ while True:
         if pygame.sprite.collide_rect(P1, C1):
             pygame.time.set_timer(timerMin, 0)
             pygame.time.set_timer(timerSec, 0)
+            pygame.mixer.Sound('assets/handcuff.mp3').play()
 
             gameOver = -1
             deathScreen(window, score)
@@ -166,9 +173,11 @@ while True:
         # Cop moves forward
         # Scrolling Background slows down(illusion that players pace has 
         # slowed down after collision)
+        pygame.mixer.Sound('assets/dumpster.mp3').play()
         P1.vel.x = 0
         P1.pos.x = hits_large[0].rect.left - P1.rect.width
     if hits_small:
+        pygame.mixer.Sound('assets/cone.mp3').play()
         P1.vel.x = -2
     
     # Update the display    
