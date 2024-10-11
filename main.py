@@ -35,6 +35,7 @@ fColor = (0, 255, 0)  # Green
 scoreXPos = SCREEN_HEIGHT * .01
 scoreYPos = SCREEN_WIDTH * .01
 gameOver = 0
+FramePerSec = pygame.time.Clock()
 
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SCALED)
 pygame.display.set_caption("Game")
@@ -124,8 +125,8 @@ while True:
     BG.render(window)
     
     # Move & update the player
-    P1.move(SCREEN_WIDTH)
-    P1.update(platforms)
+    #P1.move(SCREEN_WIDTH)
+    P1.update(platforms, SCREEN_WIDTH)
     
     # Render all sprites
     for entity in all_sprites:
@@ -171,6 +172,7 @@ while True:
     if hits_small:
         P1.vel.x = -2
     
-    # Update the display    
+    # Update the display
+    print(FramePerSec.get_fps())
     pygame.display.update()
-    pygame.time.Clock().tick(FPS)
+    FramePerSec.tick(FPS)

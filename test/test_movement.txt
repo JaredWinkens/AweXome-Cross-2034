@@ -2,13 +2,8 @@ Author:  Jared Winkens
 Date:  09/10/2021
 
 Above the game loop in main.py I created a Player object.
-I then called the Player's move(), jump(), and update() functions in the approriate spots of the loop.
-I manually tested that these 3 functions in the Player class work as expected by the following methods. 
-
-Test Player().move() function:
-    - I tested if the player can move left and right by pressing the right and left arrow keys. (PASSED)
-    - I tested that no other key press would move the player in any way. (PASSED)
-    - I tested that the player cannot move off the screen to the left or right. (PASSED) 
+I then called the Player's jump() and update() functions in the approriate spots of the loop.
+I manually tested that these 2 functions in the Player class work as expected by the following methods.  
 
 Test Player().jump() function:
     - I tested if the player can jump by pressing the space bar. (PASSED)
@@ -18,9 +13,7 @@ Test Player().jump() function:
 
 Test Player().update() function:
     - I tested if the position of the player is updated correctly by:
-        - moving left and right (PASSED)
         - jumping stright up (PASSED)
-        - moving left and right while jumping (PASSED)
         - falling (PASSED)
     - I tested that the player always stays on the platform no matter what keys are pressed or how the player moves. (PASSED)
 

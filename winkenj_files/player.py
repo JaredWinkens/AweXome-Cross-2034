@@ -24,8 +24,10 @@ class Player(pygame.sprite.Sprite):
     
     # Move the player    
     def move(self,screen_width):
-        self.acc = self.vec(0,0.5)
+        pass
         '''
+        self.acc = self.vec(0,0.5)
+
         pressed_keys = pygame.key.get_pressed()
         
         # Change the acceleration based on the keys pressed        
@@ -33,20 +35,21 @@ class Player(pygame.sprite.Sprite):
             self.acc.x = -ACC
         if pressed_keys[K_RIGHT]:
             self.acc.x = ACC
-        '''
+        
         # Apply friction            
         self.acc.x += self.vel.x * FRIC
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
-        '''
+        
         # Keep the player on the screen    
         if self.pos.x > screen_width:
             self.pos.x = screen_width
         if self.pos.x < 0:
             self.pos.x = 0
-        '''
+        
         # Update the player's position        
         self.rect.midbottom = self.pos
+        '''
     
     # Jump the player
     def jump(self,platforms):
@@ -59,8 +62,12 @@ class Player(pygame.sprite.Sprite):
             self.vel.y = -15
     
     # Update the player
-    def update(self,platforms):
+    def update(self,platforms,screen_width):
+        self.acc = self.vec(0,0.5)
         
+        self.acc.x += self.vel.x * FRIC
+        self.vel += self.acc
+        self.pos += self.vel + 0.5 * self.acc
         # Check if the player is on the ground
         hits = pygame.sprite.spritecollide(self ,platforms, False)
         
@@ -69,4 +76,11 @@ class Player(pygame.sprite.Sprite):
             if hits:
                 self.vel.y = 0
                 self.pos.y = hits[0].rect.top + 1
+        
+        if self.pos.x > screen_width:
+            self.pos.x = screen_width
+        if self.pos.x < 0:
+            self.pos.x = 0
+                
+        self.rect.midbottom = self.pos
         
