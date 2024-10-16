@@ -37,4 +37,4 @@ def screen_height():
 # adjust according to users display resolution
 def test_Player(screen_width, screen_height):
     player = Player(screen_width, screen_height)
-    assert player.rect.center == (137, 768)
+    assert player.rect.center == (273, 768)

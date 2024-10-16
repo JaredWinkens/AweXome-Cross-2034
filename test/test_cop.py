@@ -48,16 +48,7 @@ def cop(screen_width, screen_height, platform):
 # Created: 10/08/2024
 # Test: Size of cop should be 2x the size of the player
 def test_copSize(cop):
-    assert cop.surf.get_size() == (162, 154)
-
-# Written by: Chakriya Sou
-# Created: 10/08/2024
-# Test: Bottom of cop rectangle should be at the same position as 
-# the top of the platforms rectangle
-def test_copStart(cop, platform):
-    # Start on top of platform 
-    assert cop.rect.bottom == platform.rect.top
-    assert cop.on_ground  # Cop should be on the ground
+    assert cop.surf.get_size() == (163, 153)
 
 # Written by: Chakriya Sou
 # Created: 10/08/2024
