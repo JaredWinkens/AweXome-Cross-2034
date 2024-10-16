@@ -41,3 +41,15 @@ class SplashScreen:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:  # Start the game when space is pressed
                         splash_active = False
+
+    def deathScreen(displaysurface, score):
+        displaysurface.fill((0, 0, 0))
+        w, h = displaysurface.get_size()
+        fSize = int(h / 8)
+        fColor = (255, 0, 0)
+        scoreColor = (255, 255, 255)
+        SplashScreen.display_text(displaysurface, 'Game Over', 'Showcard Gothic', 
+                                        fSize, fColor, int(w * 0.3), int(h * 0.3))
+        SplashScreen.display_text(displaysurface, 'Final Score: ' + str(score), 
+                                'Showcard Gothic', fSize, scoreColor, int(w * 0.2), int(h * 0.5))
+        pygame.display.update()

@@ -5,7 +5,7 @@ import winkenj_files.passible_enemy as enemySmall
 import winkenj_files.not_passible_enemy as enemyLarge
 import carterad_files.Splash_screenv3 as Splash_screen
 import carterad_files.cop as cop  # Add the Cop class
-from souc_files.death import deathScreen
+#from souc_files.death import deathScreen
 import winkenj_files.background as bg
 import pygame
 import sys
@@ -154,7 +154,7 @@ while True:
             pygame.mixer.Sound('assets/handcuff.mp3').play()
 
             gameOver = -1
-            deathScreen(window, score)
+            Splash_screen.SplashScreen.deathScreen(window, score)
 
             for entity in all_sprites:
                 entity.kill() 

@@ -12,11 +12,11 @@ from carterad_files.Splash_screenv3 import SplashScreen
 def deathScreen(displaysurface, score):
     displaysurface.fill((0, 0, 0))
     w, h = displaysurface.get_size()
-    fSize = int(h / 10)
+    fSize = int(h / 8)
     fColor = (255, 0, 0)
     scoreColor = (255, 255, 255)
     SplashScreen.display_text(displaysurface, 'Game Over', 'Showcard Gothic', 
-                                    fSize, fColor, int(w * 0.35), int(h * 0.3))
+                                    fSize, fColor, int(w * 0.3), int(h * 0.3))
     SplashScreen.display_text(displaysurface, 'Final Score: ' + str(score), 
-                            'Showcard Gothic', fSize, scoreColor, int(w * 0.3), int(h * 0.5))
+                            'Showcard Gothic', fSize, scoreColor, int(w * 0.2), int(h * 0.5))
     pygame.display.update()
