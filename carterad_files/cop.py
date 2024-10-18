@@ -7,11 +7,12 @@ JUMP_THRESHOLD = 100  # Distance at which the cop will jump when near an enemy
 MOVE_BACK_DELAY = 15 #Timer for moving back. If player avoids cones/dumpsters for 15sec cop oves back 1 space/to start
 
 class Cop(pygame.sprite.Sprite):
-    def __init__(self, screen_width, screen_height, platform):
+    def __init__(self, screen_width, screen_height, platform,image):
         super().__init__()
         # Cop size is 2x the player size
+        self.image = image
         self.surf = pygame.Surface((screen_width * 0.12, screen_height * 0.2))
-        self.surf.fill((255, 255, 0))  # Yellow to distinguish the cop
+        #self.surf.fill((255, 255, 0))  # Yellow to distinguish the cop
         self.rect = self.surf.get_rect(center=(-screen_width * 0.1, platform.rect.top))  # Start off the left edge
         self.vel = pygame.math.Vector2(0, 0)
         self.on_ground = True

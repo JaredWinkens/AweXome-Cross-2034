@@ -45,14 +45,21 @@ FramePerSec = pygame.time.Clock()
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SCALED)
 pygame.display.set_caption("Game")
 
-# Load the background image
-bg_img1 = pygame.transform.scale(pygame.image.load('assets/background1.jpg'), (SCREEN_WIDTH, SCREEN_HEIGHT))
-bg_imgs = [bg_img1]
+# Load images
+bg_img1 = pygame.transform.scale(pygame.image.load('assets/background_v2/foreground.png').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+bg_img2 = pygame.transform.scale(pygame.image.load('assets/background_v2/back-buildings.png').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+bg_img3 = pygame.transform.scale(pygame.image.load('assets/background_v2/far-buildings.png').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+bg_imgs = [bg_img3,bg_img2,bg_img1]
+player_imgs = []
+for i in range(8): player_imgs.append(pygame.transform.scale((pygame.image.load('assets/fugitive/fugitive_%d.png' % (i+1)).convert_alpha()),(SCREEN_WIDTH*0.06, SCREEN_HEIGHT*0.1)))
+cone_image = pygame.transform.scale(pygame.image.load('assets/cone.png').convert_alpha(),(SCREEN_WIDTH*0.06, SCREEN_HEIGHT*0.1))
+dumpster_image = pygame.transform.scale(pygame.image.load('assets/dumpster.png').convert_alpha(),(SCREEN_WIDTH*0.2, SCREEN_HEIGHT*0.3))
+cop_image = pygame.transform.scale(pygame.image.load('assets/cop.png').convert_alpha(),(SCREEN_WIDTH*0.12, SCREEN_HEIGHT*0.2))
 
 # Create the player and platform objects
-P1 = player.Player(SCREEN_WIDTH, SCREEN_HEIGHT)
+P1 = player.Player(SCREEN_WIDTH, SCREEN_HEIGHT, player_imgs)
 PT1 = platform.Platform(SCREEN_WIDTH, SCREEN_HEIGHT)
-BG = bg.Background(bg_imgs)
+BG = bg.Background(bg_imgs, [SPEED-2, SPEED-1, SPEED])
 
 Splash_screen.SplashScreen.run(window)
 
@@ -76,7 +83,7 @@ pygame.time.set_timer(timerSpawnCop, 5000)
 platforms = pygame.sprite.Group()
 platforms.add(PT1)
 all_sprites = pygame.sprite.Group()
-all_sprites.add(PT1)
+#all_sprites.add(PT1)
 all_sprites.add(P1)
 small_enemies = pygame.sprite.Group()
 large_enemies = pygame.sprite.Group()
@@ -86,14 +93,14 @@ cop_spawned = False  # Track whether the cop has been spawned
         
 def spawn_enemySmall():
     if random.randint(1, 4) < 3:    
-        enemy = enemySmall.PassibleEnemy(SCREEN_WIDTH, SCREEN_HEIGHT)
+        enemy = enemySmall.PassibleEnemy(SCREEN_WIDTH, SCREEN_HEIGHT, cone_image)
         small_enemies.add(enemy)
         enemies.add(enemy)
         all_sprites.add(enemy)
 
 def spawn_enemyLarge():
-    if random.randint(1, 5) < 3:
-        enemy = enemyLarge.NotPassibleEnemy(SCREEN_WIDTH, SCREEN_HEIGHT)
+    if random.randint(1, 100) < 3:
+        enemy = enemyLarge.NotPassibleEnemy(SCREEN_WIDTH, SCREEN_HEIGHT, dumpster_image)
         large_enemies.add(enemy)
         enemies.add(enemy)
         all_sprites.add(enemy)
@@ -119,15 +126,14 @@ while True:
         if event.type == timerMin:
             score += BONUS_SCORE
         if event.type == timerSpawnCop and not cop_spawned:
-            C1 = cop.Cop(SCREEN_WIDTH, SCREEN_HEIGHT, PT1)  # Spawn the cop
+            C1 = cop.Cop(SCREEN_WIDTH, SCREEN_HEIGHT, PT1, cop_image)  # Spawn the cop
             all_sprites.add(C1)
             cop_spawned = True
-
-    # Fill the window with black            
-    window.fill((0, 0, 0))
     
     # Render the background
-    BG.update(SPEED)
+    BG.update()
+    # Fill the window with black            
+    window.fill((0, 0, 0))
     BG.render(window)
     
     # Move & update the player
@@ -136,7 +142,7 @@ while True:
     
     # Render all sprites
     for entity in all_sprites:
-        window.blit(entity.surf, entity.rect)
+        window.blit(entity.image, entity.rect)
     
     # Move all enemies
     for enemy in enemies:

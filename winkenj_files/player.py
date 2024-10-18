@@ -10,12 +10,16 @@ FRIC = -0.12
 class Player(pygame.sprite.Sprite):
     def __init__(self,
                  screen_width,
-                 screen_height):
+                 screen_height,
+                 images):
         super().__init__()
 
         # Create the player
+        self.index = 0
+        self.images = images
+        self.image = self.images[self.index]
         self.surf = pygame.Surface((screen_width*0.06, screen_height*0.1))
-        self.surf.fill((255, 0, 0))
+        #self.surf.fill((255, 0, 0))
         self.rect = self.surf.get_rect(center=(screen_width*0.2, screen_height))
         self.vec = pygame.math.Vector2
         self.pos = self.vec((screen_width*0.2, screen_height))
@@ -81,6 +85,13 @@ class Player(pygame.sprite.Sprite):
             self.pos.x = screen_width
         if self.pos.x < 0:
             self.pos.x = 0
-                
+            
+        self.index += 1
+        if self.index >= len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+        
         self.rect.midbottom = self.pos
+        
+        
         
