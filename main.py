@@ -52,7 +52,7 @@ bg_img3 = pygame.transform.scale(pygame.image.load('assets/background_v2/far-bui
 bg_imgs = [bg_img3,bg_img2,bg_img1]
 player_imgs = []
 for i in range(8): player_imgs.append(pygame.transform.scale((pygame.image.load('assets/fugitive/fugitive_%d.png' % (i+1)).convert_alpha()),(SCREEN_WIDTH*0.06, SCREEN_HEIGHT*0.1)))
-cone_image = pygame.transform.scale(pygame.image.load('assets/cone.png').convert_alpha(),(SCREEN_WIDTH*0.06, SCREEN_HEIGHT*0.1))
+cone_image = pygame.transform.scale(pygame.image.load('assets/cone.png').convert_alpha(),(SCREEN_WIDTH*0.09, SCREEN_HEIGHT*0.13))
 dumpster_image = pygame.transform.scale(pygame.image.load('assets/dumpster.png').convert_alpha(),(SCREEN_WIDTH*0.2, SCREEN_HEIGHT*0.3))
 cop_image = pygame.transform.scale(pygame.image.load('assets/cop.png').convert_alpha(),(SCREEN_WIDTH*0.12, SCREEN_HEIGHT*0.2))
 
@@ -91,19 +91,20 @@ enemies = pygame.sprite.Group()
 
 cop_spawned = False  # Track whether the cop has been spawned
         
-def spawn_enemySmall():
-    if random.randint(1, 4) < 3:    
+def spawn_enemy():
+    seed = random.randint(1, 20)
+    if seed <= 10:    
         enemy = enemySmall.PassibleEnemy(SCREEN_WIDTH, SCREEN_HEIGHT, cone_image)
         small_enemies.add(enemy)
         enemies.add(enemy)
         all_sprites.add(enemy)
-
-def spawn_enemyLarge():
-    if random.randint(1, 100) < 3:
+    elif seed > 10 and seed <= 13:
         enemy = enemyLarge.NotPassibleEnemy(SCREEN_WIDTH, SCREEN_HEIGHT, dumpster_image)
         large_enemies.add(enemy)
         enemies.add(enemy)
         all_sprites.add(enemy)
+    else:
+        print("No enemy spawned")
 
 ##############################################
 # GAME LOOP
@@ -121,8 +122,7 @@ while True:
         if event.type == timerSec:
             score += REG_SCORE
         if event.type == timerSec2:
-            spawn_enemySmall()
-            spawn_enemyLarge()
+            spawn_enemy()
         if event.type == timerMin:
             score += BONUS_SCORE
         if event.type == timerSpawnCop and not cop_spawned:
