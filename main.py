@@ -12,6 +12,7 @@ import sys
 from pygame.locals import *
 import random
 import time
+import math
 
 # Initialize Pygame
 pygame.init()
@@ -62,6 +63,10 @@ PT1 = platform.Platform(SCREEN_WIDTH, SCREEN_HEIGHT)
 BG = bg.Background(bg_imgs, [SPEED-2, SPEED-1, SPEED])
 
 Splash_screen.SplashScreen.run(window)
+
+# Timer (Speed Timer) CHANGE MULTIPLIER TO TWEAK GAME SPEED
+timerSpeed = pygame.event.custom_type()
+pygame.time.set_timer(timerSpeed, second * 5)
 
 # Timer (one minute)
 timerMin = pygame.event.custom_type()
@@ -125,6 +130,8 @@ while True:
             spawn_enemy()
         if event.type == timerMin:
             score += BONUS_SCORE
+        if event.type == timerSpeed:
+            SPEED = SPEED + math.sqrt(SPEED)
         if event.type == timerSpawnCop and not cop_spawned:
             C1 = cop.Cop(SCREEN_WIDTH, SCREEN_HEIGHT, PT1, cop_image)  # Spawn the cop
             all_sprites.add(C1)
