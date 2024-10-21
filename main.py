@@ -121,6 +121,9 @@ while True:
             pygame.quit()
             sys.exit()
         if event.type == pygame.KEYDOWN:    
+            if event.key == pygame.K_p:
+                Splash_screen.SplashScreen.pauseScreen(window)
+        if event.type == pygame.KEYDOWN:    
             if event.key == pygame.K_SPACE:
                 pygame.mixer.Sound('assets/jump.mp3').play()
                 P1.jump(platforms)
