@@ -66,7 +66,7 @@ Splash_screen.SplashScreen.run(window)
 
 # Timer (Speed Timer) CHANGE MULTIPLIER TO TWEAK GAME SPEED
 timerSpeed = pygame.event.custom_type()
-pygame.time.set_timer(timerSpeed, second * 5)
+pygame.time.set_timer(timerSpeed, second * 1)
 
 # Timer (one minute)
 timerMin = pygame.event.custom_type()
@@ -131,7 +131,7 @@ while True:
         if event.type == timerMin:
             score += BONUS_SCORE
         if event.type == timerSpeed:
-            SPEED = SPEED + math.sqrt(SPEED)
+            SPEED = 5 + math.sqrt(SPEED)
         if event.type == timerSpawnCop and not cop_spawned:
             C1 = cop.Cop(SCREEN_WIDTH, SCREEN_HEIGHT, PT1, cop_image)  # Spawn the cop
             all_sprites.add(C1)
