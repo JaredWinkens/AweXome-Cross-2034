@@ -138,7 +138,7 @@ while True:
             cop_spawned = True
     
     # Render the background
-    BG.update()
+    BG.update(SPEED)
     # Fill the window with black            
     window.fill((0, 0, 0))
     BG.render(window)
