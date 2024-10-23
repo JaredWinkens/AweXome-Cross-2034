@@ -5,6 +5,7 @@ import winkenj_files.passible_enemy as enemySmall
 import winkenj_files.not_passible_enemy as enemyLarge
 import carterad_files.Splash_screenv3 as Splash_screen
 import carterad_files.cop as cop  # Add the Cop class
+import carterad_files.cash as cash
 import souc_files.random_platform as rPlatform
 import winkenj_files.background as bg
 import pygame
@@ -60,6 +61,9 @@ cop_image = pygame.transform.scale(pygame.image.load('assets/cop.png').convert_a
 r_platform_image = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .25, SCREEN_HEIGHT * .075))
 r_platform_image2 = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .15, SCREEN_HEIGHT * .075))
 
+coin_image = pygame.transform.scale(pygame.image.load('assets/coin.png').convert_alpha(), (SCREEN_WIDTH * 0.05, SCREEN_HEIGHT * 0.05))  # Load coin image
+coin_sound = pygame.mixer.Sound('assets/coinGet.mp3')
+
 # Create the player and platform objects
 P1 = player.Player(SCREEN_WIDTH, SCREEN_HEIGHT, player_imgs)
 PT1 = platform.Platform(SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -101,6 +105,10 @@ small_enemies = pygame.sprite.Group()
 large_enemies = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
 ranPlat = pygame.sprite.Group()
+coins = pygame.sprite.Group()
+
+#Create an instance of the cash class
+cash_instance = cash.Cash(SCREEN_WIDTH, SCREEN_HEIGHT, coin_image)
 
 cop_spawned = False  # Track whether the cop has been spawned
         
@@ -144,6 +152,18 @@ def spawnRandomPlatform():
     platforms.add(newPlatform)
     all_sprites.add(newPlatform)
 
+def spawn_coin():
+    # Randomly choose a position within the screen boundaries
+    x_pos = SCREEN_WIDTH + coin_image.get_width()
+    y_pos = random.randint(int(SCREEN_HEIGHT / 2), int(SCREEN_HEIGHT * 0.9))
+
+    coin = cash.Cash(SCREEN_WIDTH, SCREEN_HEIGHT, coin_image)  # Create a new coin instance
+    coin.rect.center = (x_pos, y_pos)
+
+    coins.add(coin)
+    all_sprites.add(coin)
+
+
 ##############################################
 # GAME LOOP
 ##############################################
@@ -174,7 +194,9 @@ while True:
             C1 = cop.Cop(SCREEN_WIDTH, SCREEN_HEIGHT, PT1, cop_image)  # Spawn the cop
             all_sprites.add(C1)
             cop_spawned = True
-    
+    if (random.randint(1, 700) < 3):
+        spawn_coin()
+
     # Render the background
     BG.update(SPEED)
     # Fill the window with black            
@@ -217,10 +239,23 @@ while True:
             pygame.quit()
             sys.exit()
 
+# Check for coin collection
+    for coin in coins:
+        if pygame.sprite.collide_rect(P1, coin):
+            coin_sound.play()  # Play the collection sound
+            cash_instance.collect()  # Increment coins collected in the cash instance
+            coin.kill()  # Remove the coin from the game
+
+    # Update coins and remove off-screen coins
+    coins.update()
+
     # Render the score
     Splash_screen.SplashScreen.display_text(window, 'Score: ' + str(score), 
                                         'Cooperplate Gothic Bold', fSizeScore, 
                                         fColor, scoreXPos, scoreYPos)
+    
+    # Display the number of coins collected using the Cash class
+    cash_instance.display_coins(window, SCREEN_WIDTH)
     
     # Check for collisions with the player and enemies
     hits_large = pygame.sprite.spritecollide(P1, large_enemies, False)
