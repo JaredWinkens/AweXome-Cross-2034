@@ -153,6 +153,8 @@ def spawnRandomPlatform():
     all_sprites.add(newPlatform)
 
 def spawn_coin():
+   coin_spawned = False
+   while not coin_spawned:
     # Randomly choose a position within the screen boundaries
     x_pos = SCREEN_WIDTH + coin_image.get_width()
     y_pos = random.randint(int(SCREEN_HEIGHT / 2), int(SCREEN_HEIGHT * 0.9))
@@ -160,8 +162,10 @@ def spawn_coin():
     coin = cash.Cash(SCREEN_WIDTH, SCREEN_HEIGHT, coin_image)  # Create a new coin instance
     coin.rect.center = (x_pos, y_pos)
 
-    coins.add(coin)
-    all_sprites.add(coin)
+    if not pygame.sprite.spritecollideany(coin, large_enemies):
+        coins.add(coin)
+        all_sprites.add(coin)
+        coin_spawned = True
 
 
 ##############################################
