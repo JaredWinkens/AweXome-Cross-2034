@@ -60,8 +60,18 @@ class SplashScreen:
         fSize = int(h / 8)
         fColor = (255, 0, 0)
         scoreColor = (255, 255, 255)
-        SplashScreen.display_text(displaysurface, 'Game Paused', 'Showcard Gothic', 
+        isActive = True
+        while isActive:
+            SplashScreen.display_text(displaysurface, 'Game Paused', 'Showcard Gothic', 
                                         fSize, fColor, int(w * 0.3), int(h * 0.3))
-        SplashScreen.display_text(displaysurface, 'Press P to Unpause', 
+            SplashScreen.display_text(displaysurface, 'Press P to Unpause', 
                                 'Showcard Gothic', fSize, scoreColor, int(w * 0.2), int(h * 0.5))
-        pygame.display.update()
+            pygame.display.update()
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_p:
+                        isActive = False
+            
