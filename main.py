@@ -5,7 +5,7 @@ import winkenj_files.passible_enemy as enemySmall
 import winkenj_files.not_passible_enemy as enemyLarge
 import carterad_files.Splash_screenv3 as Splash_screen
 import carterad_files.cop as cop  # Add the Cop class
-#from souc_files.death import deathScreen
+import souc_files.random_platform as rPlatform
 import winkenj_files.background as bg
 import pygame
 import sys
@@ -57,6 +57,9 @@ cone_image = pygame.transform.scale(pygame.image.load('assets/cone.png').convert
 dumpster_image = pygame.transform.scale(pygame.image.load('assets/dumpster.png').convert_alpha(),(SCREEN_WIDTH*0.2, SCREEN_HEIGHT*0.3))
 cop_image = pygame.transform.scale(pygame.image.load('assets/cop.png').convert_alpha(),(SCREEN_WIDTH*0.12, SCREEN_HEIGHT*0.2))
 
+r_platform_image = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .25, SCREEN_HEIGHT * .075))
+r_platform_image2 = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .15, SCREEN_HEIGHT * .075))
+
 # Create the player and platform objects
 P1 = player.Player(SCREEN_WIDTH, SCREEN_HEIGHT, player_imgs)
 PT1 = platform.Platform(SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -80,6 +83,10 @@ pygame.time.set_timer(timerSec, second)
 timerSec2 = pygame.event.custom_type()
 pygame.time.set_timer(timerSec2, second * 2)
 
+# Timer (three seconds)
+timerSec3 = pygame.event.custom_type()
+pygame.time.set_timer(timerSec3, 3000)
+
 # Cop spawn timer
 timerSpawnCop = pygame.event.custom_type()
 pygame.time.set_timer(timerSpawnCop, 5000)
@@ -93,6 +100,7 @@ all_sprites.add(P1)
 small_enemies = pygame.sprite.Group()
 large_enemies = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
+ranPlat = pygame.sprite.Group()
 
 cop_spawned = False  # Track whether the cop has been spawned
         
@@ -108,8 +116,33 @@ def spawn_enemy():
         large_enemies.add(enemy)
         enemies.add(enemy)
         all_sprites.add(enemy)
+
+        newPlatform = rPlatform.RandomPlatform(SCREEN_WIDTH, SCREEN_HEIGHT, r_platform_image)
+        platforms.add(newPlatform)
+        enemies.add(newPlatform)
+        all_sprites.add(newPlatform)
     else:
         print("No enemy spawned")
+
+# Description: Randomize platform at y position. Check for overlapping
+# before spawning a new platform.
+def spawnRandomPlatform():
+    # Set bounds
+    xPos = SCREEN_WIDTH
+    yPos = random.randint(int(SCREEN_HEIGHT * 0.6), int(SCREEN_HEIGHT * 0.8))
+
+    newPlatform = rPlatform.RandomPlatform(SCREEN_WIDTH, SCREEN_HEIGHT, r_platform_image2)
+    newPlatform.rect.center = (xPos, yPos)
+
+    # Check for overlapping
+    for platform in platforms:
+        if newPlatform.rect.colliderect(platform.rect):
+            return  # If overlapping, do not spawn
+
+    # If no overlap, add to groups
+    ranPlat.add(newPlatform)
+    platforms.add(newPlatform)
+    all_sprites.add(newPlatform)
 
 ##############################################
 # GAME LOOP
@@ -133,6 +166,8 @@ while True:
             spawn_enemy()
         if event.type == timerMin:
             score += BONUS_SCORE
+        if event.type == timerSec3:
+            spawnRandomPlatform()
         if event.type == timerSpeed:
             SPEED = 5 + math.sqrt(SPEED)
         if event.type == timerSpawnCop and not cop_spawned:
@@ -150,6 +185,10 @@ while True:
     #P1.move(SCREEN_WIDTH)
     P1.update(platforms, SCREEN_WIDTH)
     
+    # Move randomize platforms
+    for platform in ranPlat:
+        platform.move(SPEED)
+
     # Render all sprites
     for entity in all_sprites:
         window.blit(entity.image, entity.rect)
