@@ -30,9 +30,9 @@ SCREEN_HEIGHT = screen_info.current_h * 0.90
 FPS = 60
 REG_SCORE = 59 
 BONUS_SCORE = 1000
-SPEED = 5
 
 # Define variables for scorekeeper
+speed = 5
 score: int = 0
 minute: int = 1000 * 60
 second: int = 1000
@@ -63,13 +63,13 @@ r_platform_image2 = pygame.transform.scale(pygame.image.load('assets/r_platform.
 # Create the player and platform objects
 P1 = player.Player(SCREEN_WIDTH, SCREEN_HEIGHT, player_imgs)
 PT1 = platform.Platform(SCREEN_WIDTH, SCREEN_HEIGHT)
-BG = bg.Background(bg_imgs, [SPEED-2, SPEED-1, SPEED])
+BG = bg.Background(bg_imgs, [speed-2, speed-1, speed])
 
 Splash_screen.SplashScreen.run(window)
 
 # Timer (Speed Timer) CHANGE MULTIPLIER TO TWEAK GAME SPEED
 timerSpeed = pygame.event.custom_type()
-pygame.time.set_timer(timerSpeed, second * 1)
+pygame.time.set_timer(timerSpeed, 100)
 
 # Timer (one minute)
 timerMin = pygame.event.custom_type()
@@ -169,14 +169,15 @@ while True:
         if event.type == timerSec3:
             spawnRandomPlatform()
         if event.type == timerSpeed:
-            SPEED = 5 + math.sqrt(SPEED)
+            speed += 0.01
+            print(speed)
         if event.type == timerSpawnCop and not cop_spawned:
             C1 = cop.Cop(SCREEN_WIDTH, SCREEN_HEIGHT, PT1, cop_image)  # Spawn the cop
             all_sprites.add(C1)
             cop_spawned = True
     
     # Render the background
-    BG.update(SPEED)
+    BG.update(speed)
     # Fill the window with black            
     window.fill((0, 0, 0))
     BG.render(window)
@@ -187,7 +188,7 @@ while True:
     
     # Move randomize platforms
     for platform in ranPlat:
-        platform.move(SPEED)
+        platform.move(speed)
 
     # Render all sprites
     for entity in all_sprites:
@@ -195,7 +196,7 @@ while True:
     
     # Move all enemies
     for enemy in enemies:
-        enemy.move(SPEED)
+        enemy.move(speed)
 
     # If the cop has been spawned, move and update it
     if cop_spawned:
@@ -237,6 +238,6 @@ while True:
         P1.vel.x = -2
     
     # Update the display
-    print(FramePerSec.get_fps())
+    #print(FramePerSec.get_fps())
     pygame.display.update()
     FramePerSec.tick(FPS)
