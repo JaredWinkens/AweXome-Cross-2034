@@ -21,11 +21,11 @@ def run(window):
 def pauseScreen(displaysurface):
     displaysurface.fill((0, 0, 0))
     w, h = displaysurface.get_size()
-    fSize = int(h / 8)
+    fSize = int(h / 7)
     fColor = (255, 0, 0)
     scoreColor = (255, 255, 255)
     SplashScreen.display_text(displaysurface, 'Game Paused', 'Showcard Gothic', 
-                                    fSize, fColor, int(w * 0.3), int(h * 0.3))
+                                    fSize, fColor, int(w * 0.2), int(h * 0.2))
     SplashScreen.display_text(displaysurface, 'Press P to Unpause', 
-                            'Showcard Gothic', fSize, scoreColor, int(w * 0.2), int(h * 0.5))
+                            'Showcard Gothic', fSize, scoreColor, int(w * 0.1), int(h * 0.4))
     pygame.display.update()
