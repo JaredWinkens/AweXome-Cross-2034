@@ -103,7 +103,8 @@ enemies = pygame.sprite.Group()
 ranPlat = pygame.sprite.Group()
 
 cop_spawned = False  # Track whether the cop has been spawned
-        
+large_spawn = False
+
 def spawn_enemy():
     seed = random.randint(1, 20)
     if seed <= 10:    
@@ -121,6 +122,7 @@ def spawn_enemy():
         platforms.add(newPlatform)
         enemies.add(newPlatform)
         all_sprites.add(newPlatform)
+        large_spawn = True
     else:
         print("No enemy spawned")
 
@@ -167,7 +169,9 @@ while True:
         if event.type == timerMin:
             score += BONUS_SCORE
         if event.type == timerSec3:
-            spawnRandomPlatform()
+            if large_spawn == True:
+                large_spawn = False
+            else: spawnRandomPlatform()
         if event.type == timerSpeed:
             SPEED = 5 + math.sqrt(SPEED)
         if event.type == timerSpawnCop and not cop_spawned:
@@ -236,6 +240,16 @@ while True:
         pygame.mixer.Sound('assets/cone.mp3').play()
         P1.vel.x = -2
     
+    collision = pygame.sprite.spritecollide(P1, ranPlat, False)
+    if collision:
+        for platform in collision:
+            if P1.rect.bottom == platform.rect.top:
+                P1.vel.y = 0 
+                P1.pos.y = platform.rect.top - P1.rect.height
+            else:
+                if P1.rect.right == platform.rect.left:
+                    P1.pos.y = SCREEN_HEIGHT
+                    
     # Update the display
     print(FramePerSec.get_fps())
     pygame.display.update()

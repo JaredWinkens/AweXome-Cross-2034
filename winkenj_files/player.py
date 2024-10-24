@@ -78,9 +78,8 @@ class Player(pygame.sprite.Sprite):
         # If the player is on the ground, stop falling
         if self.vel.y > 0:        
             if hits:
-                highestPlatform = max(hits, key = lambda hit: hit.rect.top) # Compute for highest 
-                self.vel.y = 0                                              # rect.top position player
-                self.pos.y = hits[0].rect.top + 1                           # is colliding with
+                self.vel.y = 0
+                self.pos.y = hits[0].rect.top + 1
         
         if self.pos.x > screen_width:
             self.pos.x = screen_width
