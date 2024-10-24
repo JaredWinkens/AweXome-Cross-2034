@@ -111,9 +111,10 @@ coins = pygame.sprite.Group()
 cash_instance = cash.Cash(SCREEN_WIDTH, SCREEN_HEIGHT, coin_image)
 
 cop_spawned = False  # Track whether the cop has been spawned
-large_spawn = False
+largeSpawn = False
 
 def spawn_enemy():
+    global largeSpawn
     seed = random.randint(1, 20)
     if seed <= 10:    
         enemy = enemySmall.PassibleEnemy(SCREEN_WIDTH, SCREEN_HEIGHT, cone_image)
@@ -130,13 +131,14 @@ def spawn_enemy():
         platforms.add(newPlatform)
         enemies.add(newPlatform)
         all_sprites.add(newPlatform)
-        large_spawn = True
+        largeSpawn = True
     else:
         print("No enemy spawned")
 
 # Description: Randomize platform at y position. Check for overlapping
 # before spawning a new platform.
 def spawnRandomPlatform():
+    global largeSpawn
     # Set bounds
     xPos = SCREEN_WIDTH
     yPos = random.randint(int(SCREEN_HEIGHT * 0.6), int(SCREEN_HEIGHT * 0.8))
@@ -146,7 +148,7 @@ def spawnRandomPlatform():
 
     # Check for overlapping
     for platform in platforms:
-        if newPlatform.rect.colliderect(platform.rect):
+        if newPlatform.rect.colliderect(platform.rect) or largeSpawn == True:
             return  # If overlapping, do not spawn
 
     # If no overlap, add to groups
@@ -193,9 +195,10 @@ while True:
         if event.type == timerMin:
             score += BONUS_SCORE
         if event.type == timerSec3:
-            if large_spawn == True:
-                large_spawn = False
-            else: spawnRandomPlatform()
+            #if largeSpawn == True:
+                #largeSpawn = False
+            spawnRandomPlatform()
+            largeSpawn = False
         if event.type == timerSpeed:
             speed += 0.01
             print(speed)
@@ -289,6 +292,16 @@ while True:
             else:
                 if P1.rect.right == platform.rect.left:
                     P1.pos.y = SCREEN_HEIGHT
+
+    '''for platform in ranPlat:
+        if P1.rect.colliderect(platform.rect.x, platform.rect.y + P1.vel.y, 
+                               platform.rect.width, platform.rect.height):
+            if P1.vel.y < 0: # Below platform
+                P1.pos.y = platform.rect.bottom + P1.rect.top 
+                P1.vel.y = 0
+            if P1.vel.y >= 0: # Above platform
+                P1.pos.y = platform.rect.top - P1.rect.bottom
+                P1.vel.y = 0'''
                     
     # Update the display
     #print(FramePerSec.get_fps())
