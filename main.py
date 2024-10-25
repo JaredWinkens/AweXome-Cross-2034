@@ -128,8 +128,7 @@ def spawn_enemy():
         all_sprites.add(enemy)
 
         newPlatform = rPlatform.RandomPlatform(SCREEN_WIDTH, SCREEN_HEIGHT, r_platform_image)
-        platforms.add(newPlatform)
-        enemies.add(newPlatform)
+        ranPlat.add(newPlatform)
         all_sprites.add(newPlatform)
         largeSpawn = True
     else:
@@ -153,7 +152,6 @@ def spawnRandomPlatform():
 
     # If no overlap, add to groups
     ranPlat.add(newPlatform)
-    platforms.add(newPlatform)
     all_sprites.add(newPlatform)
 
 def spawn_coin():
@@ -187,7 +185,7 @@ while True:
         if event.type == pygame.KEYDOWN:    
             if event.key == pygame.K_SPACE:
                 pygame.mixer.Sound('assets/jump.mp3').play()
-                P1.jump(platforms)
+                P1.jump(platforms,ranPlat)
         if event.type == timerSec:
             score += REG_SCORE
         if event.type == timerSec2:
@@ -217,11 +215,11 @@ while True:
     
     # Move & update the player
     #P1.move(SCREEN_WIDTH)
-    P1.update(platforms, SCREEN_WIDTH)
+    P1.update(platforms, ranPlat, SCREEN_WIDTH)
     
     # Move randomize platforms
-    for platform in ranPlat:
-        platform.move(speed)
+    for plat in ranPlat:
+        plat.move(speed)
 
     # Render all sprites
     for entity in all_sprites:
@@ -251,7 +249,7 @@ while True:
             pygame.quit()
             sys.exit()
 
-# Check for coin collection
+    # Check for coin collection
     for coin in coins:
         if pygame.sprite.collide_rect(P1, coin):
             coin_sound.play()  # Play the collection sound
@@ -282,18 +280,18 @@ while True:
     if hits_small:
         pygame.mixer.Sound('assets/cone.mp3').play()
         P1.vel.x = -2
-    
+    '''
     collision = pygame.sprite.spritecollide(P1, ranPlat, False)
     if collision:
-        for platform in collision:
-            if P1.rect.bottom == platform.rect.top:
+        for plat in collision:
+            if P1.rect.bottom == plat.rect.top:
                 P1.vel.y = 0 
-                P1.pos.y = platform.rect.top - P1.rect.height
+                P1.pos.y = plat.rect.top + 1
             else:
                 if P1.rect.right == platform.rect.left:
                     P1.pos.y = SCREEN_HEIGHT
 
-    '''for platform in ranPlat:
+    for platform in ranPlat:
         if P1.rect.colliderect(platform.rect.x, platform.rect.y + P1.vel.y, 
                                platform.rect.width, platform.rect.height):
             if P1.vel.y < 0: # Below platform
@@ -301,7 +299,8 @@ while True:
                 P1.vel.y = 0
             if P1.vel.y >= 0: # Above platform
                 P1.pos.y = platform.rect.top - P1.rect.bottom
-                P1.vel.y = 0'''
+                P1.vel.y = 0
+    '''
                     
     # Update the display
     #print(FramePerSec.get_fps())

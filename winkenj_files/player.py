@@ -56,17 +56,17 @@ class Player(pygame.sprite.Sprite):
         '''
     
     # Jump the player
-    def jump(self,platforms):
+    def jump(self,platforms,ranPlats):
         
         # Check if the player is on the ground
         hits = pygame.sprite.spritecollide(self, platforms, False)
-        
+        hits2 = pygame.sprite.spritecollide(self, ranPlats, False)
         # If the player is on the ground, jump
-        if hits:
+        if hits or hits2:
             self.vel.y = -15
     
     # Update the player
-    def update(self,platforms,screen_width):
+    def update(self,platforms,ranPlats,screen_width):
         self.acc = self.vec(0,0.5)
         
         self.acc.x += self.vel.x * FRIC
@@ -74,13 +74,30 @@ class Player(pygame.sprite.Sprite):
         self.pos += self.vel + 0.5 * self.acc
         # Check if the player is on the ground
         hits = pygame.sprite.spritecollide(self ,platforms, False)
+        hits2 = pygame.sprite.spritecollide(self, ranPlats, False)
         
-        # If the player is on the ground, stop falling
-        if self.vel.y > 0:        
+        # If the player is falling
+        if self.vel.y > 0:
             if hits:
                 self.vel.y = 0
                 self.pos.y = hits[0].rect.top + 1
-        
+            if hits2:
+                if self.rect.bottom >= hits2[0].rect.top:
+                    self.vel.y = 0
+                    self.pos.y = hits2[0].rect.top + 1
+                else:
+                    self.pos.x = hits2[0].rect.left - self.rect.width
+                    
+        # If the player is jumping up            
+        if self.vel.y < 0:
+            if hits2:
+                if self.rect.top <= hits2[0].rect.bottom:
+                    self.vel.y = 0
+                    self.pos.y = hits2[0].rect.bottom + self.rect.height
+                else:
+                    self.pos.x = hits2[0].rect.left - self.rect.width
+                    
+        # Ensure the player stays within screen bounds
         if self.pos.x > screen_width:
             self.pos.x = screen_width
         if self.pos.x < 0:
