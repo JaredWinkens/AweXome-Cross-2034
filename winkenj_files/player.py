@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.index = 0
         self.images = images
         self.image = self.images[self.index]
-        self.surf = pygame.Surface((screen_width*0.03, screen_height*0.08))
+        self.surf = pygame.Surface((screen_width*0.06, screen_height*0.1))
         #self.surf.fill((255, 0, 0))
         self.rect = self.surf.get_rect(center=(screen_width*0.2, screen_height))
         self.vec = pygame.math.Vector2
@@ -85,8 +85,31 @@ class Player(pygame.sprite.Sprite):
                 if self.rect.bottom >= hits2[0].rect.top:
                     self.vel.y = 0
                     self.pos.y = hits2[0].rect.top + 1
+                    
+                elif self.rect.right + 10 == hits2[0].rect.left:
+                    for plats in platforms:
+                        self.pos.y = plats.rect.top + 1
+                        #self.vel += self.acc
+                        self.vel.y = 0
                 else:
                     self.pos.x = hits2[0].rect.left - self.rect.width
+
+        '''if self.vel.y > 0:  # Falling
+            if hits:
+                self.vel.y = 0
+                self.pos.y = hits[0].rect.top + 1
+            if hits2:
+                if self.rect.bottom == hits2[0].rect.top:
+                    self.vel.y = 0
+                    self.pos.y = hits2[0].rect.top + 1
+            
+                elif self.rect.right + 10 == hits2[0].rect.left:
+                    for plats in platforms:
+                        self.pos.y = plats.rect.top + 1
+                        #self.vel += self.acc
+                        self.vel.y = 0
+                else:
+                    self.pos.x = hits2[0].rect.left - self.rect.width'''
                     
         # If the player is jumping up            
         if self.vel.y < 0:
@@ -110,5 +133,6 @@ class Player(pygame.sprite.Sprite):
         
         self.rect.midbottom = self.pos
         
-        
+    def draw(self, displaysurface):
+        pygame.draw.rect(displaysurface, (255, 0, 0), self.rect, 2)
         

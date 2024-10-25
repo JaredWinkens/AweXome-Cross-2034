@@ -58,8 +58,8 @@ cone_image = pygame.transform.scale(pygame.image.load('assets/cone.png').convert
 dumpster_image = pygame.transform.scale(pygame.image.load('assets/dumpster.png').convert_alpha(),(SCREEN_WIDTH*0.2, SCREEN_HEIGHT*0.3))
 cop_image = pygame.transform.scale(pygame.image.load('assets/cop.png').convert_alpha(),(SCREEN_WIDTH*0.12, SCREEN_HEIGHT*0.2))
 
-r_platform_image = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .25, SCREEN_HEIGHT * .075))
-r_platform_image2 = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .15, SCREEN_HEIGHT * .075))
+r_platform_image = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .25, SCREEN_HEIGHT * .045))
+r_platform_image2 = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .15, SCREEN_HEIGHT * .045))
 
 coin_image = pygame.transform.scale(pygame.image.load('assets/coin.png').convert_alpha(), (SCREEN_WIDTH * 0.05, SCREEN_HEIGHT * 0.05))  # Load coin image
 coin_sound = pygame.mixer.Sound('assets/coinGet.mp3')
@@ -140,7 +140,7 @@ def spawnRandomPlatform():
     global largeSpawn
     # Set bounds
     xPos = SCREEN_WIDTH
-    yPos = random.randint(int(SCREEN_HEIGHT * 0.6), int(SCREEN_HEIGHT * 0.8))
+    yPos = random.randint(int(SCREEN_HEIGHT * 0.65), int(SCREEN_HEIGHT * 0.8))
 
     newPlatform = rPlatform.RandomPlatform(SCREEN_WIDTH, SCREEN_HEIGHT, r_platform_image2)
     newPlatform.rect.center = (xPos, yPos)
@@ -216,10 +216,11 @@ while True:
     # Move & update the player
     #P1.move(SCREEN_WIDTH)
     P1.update(platforms, ranPlat, SCREEN_WIDTH)
-    
+    P1.draw(window)
     # Move randomize platforms
     for plat in ranPlat:
         plat.move(speed)
+        plat.draw(window)
 
     # Render all sprites
     for entity in all_sprites:
