@@ -6,6 +6,7 @@ import winkenj_files.not_passible_enemy as enemyLarge
 import carterad_files.Splash_screenv3 as Splash_screen
 import carterad_files.cop as cop  # Add the Cop class
 import carterad_files.cash as cash
+from carterad_files.cash import save_cash
 import souc_files.random_platform as rPlatform
 import winkenj_files.background as bg
 import pygame
@@ -175,6 +176,7 @@ while True:
     # Cycle through all events
     for event in pygame.event.get():
         if event.type == QUIT:
+            #save_cash(cash_instance.coins_collected)
             pygame.quit()
             sys.exit()
         if event.type == pygame.KEYDOWN:    
@@ -231,6 +233,7 @@ while True:
 
         # Check for collision between the player and cop
         if pygame.sprite.collide_rect(P1, C1):
+            #save_cash(cash_instance.coins_collected)
             pygame.time.set_timer(timerMin, 0)
             pygame.time.set_timer(timerSec, 0)
             pygame.mixer.Sound('assets/handcuff.mp3').play()
@@ -252,7 +255,7 @@ while True:
             coin.kill()  # Remove the coin from the game
 
     # Update coins and remove off-screen coins
-    coins.update()
+    coins.update(speed)
 
     # Render the score
     Splash_screen.SplashScreen.display_text(window, 'Score: ' + str(score), 
