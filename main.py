@@ -59,8 +59,8 @@ cone_image = pygame.transform.scale(pygame.image.load('assets/cone.png').convert
 dumpster_image = pygame.transform.scale(pygame.image.load('assets/dumpster.png').convert_alpha(),(SCREEN_WIDTH*0.2, SCREEN_HEIGHT*0.3))
 cop_image = pygame.transform.scale(pygame.image.load('assets/cop.png').convert_alpha(),(SCREEN_WIDTH*0.12, SCREEN_HEIGHT*0.2))
 
-r_platform_image = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .25, SCREEN_HEIGHT * .075))
-r_platform_image2 = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .15, SCREEN_HEIGHT * .075))
+r_platform_image = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .25, SCREEN_HEIGHT * .045))
+r_platform_image2 = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .15, SCREEN_HEIGHT * .045))
 
 coin_image = pygame.transform.scale(pygame.image.load('assets/coin.png').convert_alpha(), (SCREEN_WIDTH * 0.05, SCREEN_HEIGHT * 0.05))  # Load coin image
 coin_sound = pygame.mixer.Sound('assets/coinGet.mp3')
@@ -112,8 +112,10 @@ coins = pygame.sprite.Group()
 cash_instance = cash.Cash(SCREEN_WIDTH, SCREEN_HEIGHT, coin_image)
 
 cop_spawned = False  # Track whether the cop has been spawned
-        
+largeSpawn = False
+
 def spawn_enemy():
+    global largeSpawn
     seed = random.randint(1, 20)
     if seed <= 10:    
         enemy = enemySmall.PassibleEnemy(SCREEN_WIDTH, SCREEN_HEIGHT, cone_image)
@@ -127,30 +129,30 @@ def spawn_enemy():
         all_sprites.add(enemy)
 
         newPlatform = rPlatform.RandomPlatform(SCREEN_WIDTH, SCREEN_HEIGHT, r_platform_image)
-        platforms.add(newPlatform)
-        enemies.add(newPlatform)
+        ranPlat.add(newPlatform)
         all_sprites.add(newPlatform)
+        largeSpawn = True
     else:
         print("No enemy spawned")
 
 # Description: Randomize platform at y position. Check for overlapping
 # before spawning a new platform.
 def spawnRandomPlatform():
+    global largeSpawn
     # Set bounds
     xPos = SCREEN_WIDTH
-    yPos = random.randint(int(SCREEN_HEIGHT * 0.6), int(SCREEN_HEIGHT * 0.8))
+    yPos = random.randint(int(SCREEN_HEIGHT * 0.65), int(SCREEN_HEIGHT * 0.8))
 
     newPlatform = rPlatform.RandomPlatform(SCREEN_WIDTH, SCREEN_HEIGHT, r_platform_image2)
     newPlatform.rect.center = (xPos, yPos)
 
     # Check for overlapping
     for platform in platforms:
-        if newPlatform.rect.colliderect(platform.rect):
+        if newPlatform.rect.colliderect(platform.rect) or largeSpawn == True:
             return  # If overlapping, do not spawn
 
     # If no overlap, add to groups
     ranPlat.add(newPlatform)
-    platforms.add(newPlatform)
     all_sprites.add(newPlatform)
 
 def spawn_coin():
@@ -185,7 +187,7 @@ while True:
         if event.type == pygame.KEYDOWN:    
             if event.key == pygame.K_SPACE:
                 pygame.mixer.Sound('assets/jump.mp3').play()
-                P1.jump(platforms)
+                P1.jump(platforms,ranPlat)
         if event.type == timerSec:
             score += REG_SCORE
         if event.type == timerSec2:
@@ -193,7 +195,10 @@ while True:
         if event.type == timerMin:
             score += BONUS_SCORE
         if event.type == timerSec3:
+            #if largeSpawn == True:
+                #largeSpawn = False
             spawnRandomPlatform()
+            largeSpawn = False
         if event.type == timerSpeed:
             speed += 0.01
             print(speed)
@@ -212,11 +217,12 @@ while True:
     
     # Move & update the player
     #P1.move(SCREEN_WIDTH)
-    P1.update(platforms, SCREEN_WIDTH)
-    
+    P1.update(platforms, ranPlat, SCREEN_WIDTH)
+    P1.draw(window)
     # Move randomize platforms
-    for platform in ranPlat:
-        platform.move(speed)
+    for plat in ranPlat:
+        plat.move(speed)
+        plat.draw(window)
 
     # Render all sprites
     for entity in all_sprites:
@@ -247,7 +253,7 @@ while True:
             pygame.quit()
             sys.exit()
 
-# Check for coin collection
+    # Check for coin collection
     for coin in coins:
         if pygame.sprite.collide_rect(P1, coin):
             coin_sound.play()  # Play the collection sound
@@ -278,7 +284,28 @@ while True:
     if hits_small:
         pygame.mixer.Sound('assets/cone.mp3').play()
         P1.vel.x = -2
-    
+    '''
+    collision = pygame.sprite.spritecollide(P1, ranPlat, False)
+    if collision:
+        for plat in collision:
+            if P1.rect.bottom == plat.rect.top:
+                P1.vel.y = 0 
+                P1.pos.y = plat.rect.top + 1
+            else:
+                if P1.rect.right == platform.rect.left:
+                    P1.pos.y = SCREEN_HEIGHT
+
+    for platform in ranPlat:
+        if P1.rect.colliderect(platform.rect.x, platform.rect.y + P1.vel.y, 
+                               platform.rect.width, platform.rect.height):
+            if P1.vel.y < 0: # Below platform
+                P1.pos.y = platform.rect.bottom + P1.rect.top 
+                P1.vel.y = 0
+            if P1.vel.y >= 0: # Above platform
+                P1.pos.y = platform.rect.top - P1.rect.bottom
+                P1.vel.y = 0
+    '''
+                    
     # Update the display
     #print(FramePerSec.get_fps())
     pygame.display.update()

@@ -1,17 +1,19 @@
 Author:  Jared Winkens
 Date:  10/22/2024
 
-Test RandomPlatforms class
-    - Width of the platform is at least as long as the big enemy (PASSED)
-    Test the move method
-        - The platform moves left across the screen (PASSED)
-        - The platform disappears when it reaches the left side of the screen (PASSED)
+This is a test file for the random platforms. It is a simple text file that will be used to test the random platforms functionality.
 
-Test main.py
-    - The platform is spawned at random time intervals (PASSED)
-    - The platform is spawned at random heights (PASSED)
-    - A platform always spawns when a big enemy spaws (PASSED)
-    - The platform always gives the player a way to avoid the bg enemy (FAILED)
-    - The platform sprite does not overlap with the big enemy sprite or another platform (PASSED)
+Test RandomPlatforms class
+    1. Width of the platform is at least as long as the big enemy (PASSED)
+    Test the move method
+        2. The platform moves left across the screen (PASSED)
+        3. The platform disappears when it reaches the left side of the screen (PASSED)
+
+Testing random platfoms in main.py
+    4. The platform is spawned at random time intervals (PASSED)
+    5. The platform is spawned at random heights (PASSED)
+    6. A platform always spawns when a big enemy spaws (PASSED)
+    7. The platform always gives the player a way to avoid the bg enemy (FAILED)
+    8. The platform sprite does not overlap with the big enemy sprite or another platform (PASSED)
 
 Results: 7/8 tests passed
