@@ -6,6 +6,7 @@ import sys
 green = (0, 255, 0)
 white = (253, 253, 253)
 black = (0, 0, 0)
+red = (255, 0, 0)
 
 class SplashScreen:
     def display_text(displaysurface,text, style, size, color, x, y):
@@ -14,26 +15,28 @@ class SplashScreen:
         textImg = font.render(text, True, color)
         displaysurface.blit(textImg, (x, y))
 
-    def show(displaysurface):
+    def show(displaysurface,splash_image):
         """Display the splash screen content"""
-        displaysurface.fill(black)  # Fill the screen with a background color
+        #displaysurface.fill(black)  # Fill the screen with a background color
+        displaysurface.blit(splash_image, (0, 0))  # Display the splash image
+        w, h = displaysurface.get_size()
 
         # Display game title and controls with adjusted positions
-        SplashScreen.display_text(displaysurface,"WELCOME TO THE GAME!", 'Showcard Gothic', 80, green, 200, 200)
-        SplashScreen.display_text(displaysurface,"Press SPACE to Start", 'Showcard Gothic', 50, white, 300, 400)
-        SplashScreen.display_text(displaysurface,"Controls:", 'Showcard Gothic', 50, white, 300, 500)
-        SplashScreen.display_text(displaysurface,"Move Left: Left Arrow Key", 'Showcard Gothic', 30, white, 300, 550)
-        SplashScreen.display_text(displaysurface,"Move Right: Right Arrow Key", 'Showcard Gothic', 30, white, 300, 600)
-        SplashScreen.display_text(displaysurface,"Jump: Space Bar", 'Showcard Gothic', 30, white, 300, 650)
+        SplashScreen.display_text(displaysurface,"AWEXOME CROSS 2034", 'Showcard Gothic', 80, green, w*0.01, h*0.05)
+        SplashScreen.display_text(displaysurface,"Press SPACE", 'Showcard Gothic', 45, red, w*0.48, h*0.5)
+        SplashScreen.display_text(displaysurface,"to Start", 'Showcard Gothic', 45, red, w*0.48, h*0.55)
+        SplashScreen.display_text(displaysurface,"Controls:", 'Showcard Gothic', 45, green, w*0.48, h*0.65)
+        SplashScreen.display_text(displaysurface,"Jump: Space Bar", 'Showcard Gothic', 30, green, w*0.48, h*0.72)
+        SplashScreen.display_text(displaysurface,"Pause: [P]", 'Showcard Gothic', 30, green, w*0.48, h*0.77)
 
         pygame.display.update()
 
-    def run(window):
+    def run(window, splash_image):
         """Combines showing the splash screen and running the event loop in one method"""
         splash_active = True
         displaysurface = window
         while splash_active:
-            SplashScreen.show(displaysurface)
+            SplashScreen.show(displaysurface, splash_image)
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()

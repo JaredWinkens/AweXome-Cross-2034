@@ -6,7 +6,7 @@ import winkenj_files.not_passible_enemy as enemyLarge
 import carterad_files.Splash_screenv3 as Splash_screen
 import carterad_files.cop as cop  # Add the Cop class
 import carterad_files.cash as cash
-from carterad_files.cash import save_cash
+#from carterad_files.cash import save_cash
 import souc_files.random_platform as rPlatform
 import winkenj_files.background as bg
 import pygame
@@ -65,12 +65,13 @@ r_platform_image2 = pygame.transform.scale(pygame.image.load('assets/r_platform.
 coin_image = pygame.transform.scale(pygame.image.load('assets/coin.png').convert_alpha(), (SCREEN_WIDTH * 0.05, SCREEN_HEIGHT * 0.05))  # Load coin image
 coin_sound = pygame.mixer.Sound('assets/coinGet.mp3')
 
+splash_image = pygame.transform.scale(pygame.image.load('assets/spalsh_screen.jpeg').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
 # Create the player and platform objects
 P1 = player.Player(SCREEN_WIDTH, SCREEN_HEIGHT, player_imgs)
 PT1 = platform.Platform(SCREEN_WIDTH, SCREEN_HEIGHT)
 BG = bg.Background(bg_imgs, [speed-2, speed-1, speed])
 
-Splash_screen.SplashScreen.run(window)
+Splash_screen.SplashScreen.run(window,splash_image)
 
 # Timer (Speed Timer) CHANGE MULTIPLIER TO TWEAK GAME SPEED
 timerSpeed = pygame.event.custom_type()
