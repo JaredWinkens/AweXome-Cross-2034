@@ -6,15 +6,15 @@ I then called the Player's jump() and update() functions in the approriate spots
 I manually tested that these 2 functions in the Player class work as expected by the following methods.  
 
 Test Player().jump() function:
-    - I tested if the player can jump by pressing the space bar. (PASSED)
-    - I tested that the player cannot jump while in the air. (PASSED)
-    - I tested that no other key press would move the player in any way. (PASSED)
-    - I tested that the player cannot jump off the screen in any direction. (PASSED)
+    1. The player can jump by pressing the space bar. (PASSED)
+    2. The player cannot jump while in the air. (PASSED)
+    3. No other key press would move the player in any way. (PASSED)
+    4. The player cannot jump off the screen in any direction. (PASSED)
 
 Test Player().update() function:
-    - I tested if the position of the player is updated correctly by:
-        - jumping stright up (PASSED)
-        - falling (PASSED)
-    - I tested that the player always stays on the platform no matter what keys are pressed or how the player moves. (PASSED)
+    The position of the player is updated correctly by:
+        5. jumping stright up (PASSED)
+        6. falling (PASSED)
+    7. tested that the player always stays on the platform no matter what keys are pressed or how the player moves. (PASSED)
 
-Results: All tests passed. The Player movement funcionality is working as expected.
+Results: 7/7 tests passed
