@@ -1,5 +1,7 @@
 # Written by: Chakriya Sou
 # Created: 10/08/2024 at 4:00p
+# Modified: 10/27/20204 @ 4:15pm (Properly initailize display window to 
+#                                  load image)
 # Language: Python
 # Description: (pytest) These test functions will be implemented in
 # testing features in file cop.py
@@ -10,25 +12,28 @@ from winkenj_files.player import Player
 from winkenj_files.platform import Platform
 import pygame
 
-pygame.init()
+# Chatgpt assisted
+# Description: Intialize display window for image to be loaded properly
+@pytest.fixture(scope='module', autouse=True)
+def init_pygame():
+    """Initialize Pygame and create a display."""
+    pygame.init()
+    # Create a display to allow image loading
+    screen_width = 1366  # You can adjust this as needed
+    screen_height = 768
+    pygame.display.set_mode((screen_width, screen_height))
 
-# Written by: Chakriya Sou
-# Created: 10/08/2024
-# Declare fixtures as argument for user screen width
+    yield  # This allows the test to run after initializing Pygame
+
+    pygame.quit()  # Cleanup after tests are done
+
 @pytest.fixture
 def screen_width():
-    info = pygame.display.Info()
-    screen_width = info.current_w
-    return screen_width # 1366 
+    return 1366
 
-# Written by: Chakriya Sou
-# Created: 10/08/2024
-# Declare fixtures as argument for users screen height
 @pytest.fixture
 def screen_height():
-    info = pygame.display.Info()
-    screen_height = info.current_h
-    return screen_height # 768
+    return 768
 
 # Written by: Chakriya Sou
 # Created: 10/08/2024
@@ -42,7 +47,8 @@ def platform(screen_width, screen_height):
 # Declare fixtures as argument for cop attributes
 @pytest.fixture
 def cop(screen_width, screen_height, platform):
-    return Cop(screen_width, screen_height, platform)
+    image = pygame.image.load('assets/cop.png').convert_alpha()
+    return Cop(screen_width, screen_height, platform, image)
 
 # Written by: Chakriya Sou
 # Created: 10/08/2024

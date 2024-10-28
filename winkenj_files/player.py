@@ -86,40 +86,6 @@ class Player(pygame.sprite.Sprite):
                     self.vel.y = 0
                     self.pos.y = hits2[0].rect.top + 1
                     
-                elif self.rect.right + 10 == hits2[0].rect.left:
-                    for plats in platforms:
-                        self.pos.y = plats.rect.top + 1
-                        #self.vel += self.acc
-                        self.vel.y = 0
-                else:
-                    self.pos.x = hits2[0].rect.left - self.rect.width
-
-        '''if self.vel.y > 0:  # Falling
-            if hits:
-                self.vel.y = 0
-                self.pos.y = hits[0].rect.top + 1
-            if hits2:
-                if self.rect.bottom == hits2[0].rect.top:
-                    self.vel.y = 0
-                    self.pos.y = hits2[0].rect.top + 1
-            
-                elif self.rect.right + 10 == hits2[0].rect.left:
-                    for plats in platforms:
-                        self.pos.y = plats.rect.top + 1
-                        #self.vel += self.acc
-                        self.vel.y = 0
-                else:
-                    self.pos.x = hits2[0].rect.left - self.rect.width'''
-                    
-        # If the player is jumping up            
-        if self.vel.y < 0:
-            if hits2:
-                if self.rect.top <= hits2[0].rect.bottom:
-                    self.vel.y = 0
-                    self.pos.y = hits2[0].rect.bottom + self.rect.height
-                else:
-                    self.pos.x = hits2[0].rect.left - self.rect.width
-                    
         # Ensure the player stays within screen bounds
         if self.pos.x > screen_width:
             self.pos.x = screen_width
