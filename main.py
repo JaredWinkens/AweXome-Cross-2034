@@ -6,7 +6,7 @@ import winkenj_files.not_passible_enemy as enemyLarge
 import carterad_files.Splash_screenv3 as Splash_screen
 import carterad_files.cop as cop  # Add the Cop class
 import carterad_files.cash as cash
-#from carterad_files.cash import save_cash
+from carterad_files.cash import save_cash
 import souc_files.random_platform as rPlatform
 import winkenj_files.background as bg
 import pygame
@@ -66,6 +66,9 @@ coin_image = pygame.transform.scale(pygame.image.load('assets/coin.png').convert
 coin_sound = pygame.mixer.Sound('assets/coinGet.mp3')
 
 splash_image = pygame.transform.scale(pygame.image.load('assets/spalsh_screen.jpeg').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+death_image = pygame.transform.scale(pygame.image.load('assets/death_screen.jpeg').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+pause_image = pygame.transform.scale(pygame.image.load('assets/pause_screen.jpeg').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+
 # Create the player and platform objects
 P1 = player.Player(SCREEN_WIDTH, SCREEN_HEIGHT, player_imgs)
 PT1 = platform.Platform(SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -179,12 +182,12 @@ while True:
     # Cycle through all events
     for event in pygame.event.get():
         if event.type == QUIT:
-            #save_cash(cash_instance.coins_collected)
+            save_cash(cash_instance.coins_collected)
             pygame.quit()
             sys.exit()
         if event.type == pygame.KEYDOWN:    
             if event.key == pygame.K_p:
-                Splash_screen.SplashScreen.pauseScreen(window)
+                Splash_screen.SplashScreen.pauseScreen(window, pause_image)
         if event.type == pygame.KEYDOWN:    
             if event.key == pygame.K_SPACE:
                 pygame.mixer.Sound('assets/jump.mp3').play()
@@ -240,13 +243,13 @@ while True:
 
         # Check for collision between the player and cop
         if pygame.sprite.collide_rect(P1, C1):
-            #save_cash(cash_instance.coins_collected)
+            save_cash(cash_instance.coins_collected)
             pygame.time.set_timer(timerMin, 0)
             pygame.time.set_timer(timerSec, 0)
             pygame.mixer.Sound('assets/handcuff.mp3').play()
 
             gameOver = -1
-            Splash_screen.SplashScreen.deathScreen(window, score)
+            Splash_screen.SplashScreen.deathScreen(window, score, death_image)
 
             for entity in all_sprites:
                 entity.kill() 
