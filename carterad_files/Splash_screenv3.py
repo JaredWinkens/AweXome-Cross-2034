@@ -45,20 +45,20 @@ class SplashScreen:
                     if event.key == pygame.K_SPACE:  # Start the game when space is pressed
                         splash_active = False
 
-    def deathScreen(displaysurface, score):
-        displaysurface.fill((0, 0, 0))
+    def deathScreen(displaysurface, score,death_image):
+        displaysurface.blit(death_image,(0, 0))
         w, h = displaysurface.get_size()
         fSize = int(h / 8)
         fColor = (255, 0, 0)
         scoreColor = (255, 255, 255)
         SplashScreen.display_text(displaysurface, 'Game Over', 'Showcard Gothic', 
-                                        fSize, fColor, int(w * 0.3), int(h * 0.3))
+                                        fSize, fColor, int(w * 0.3), int(h * 0.01))
         SplashScreen.display_text(displaysurface, 'Final Score: ' + str(score), 
-                                'Showcard Gothic', fSize, scoreColor, int(w * 0.2), int(h * 0.5))
+                                'Showcard Gothic', fSize, scoreColor, int(w * 0.2), int(h * 0.87))
         pygame.display.update()
     
-    def pauseScreen(displaysurface):
-        displaysurface.fill((0, 0, 0))
+    def pauseScreen(displaysurface,pause_image):
+        displaysurface.blit(pause_image,(0, 0))
         w, h = displaysurface.get_size()
         fSize = int(h / 8)
         fColor = (255, 0, 0)
@@ -66,9 +66,9 @@ class SplashScreen:
         isActive = True
         while isActive:
             SplashScreen.display_text(displaysurface, 'Game Paused', 'Showcard Gothic', 
-                                        fSize, fColor, int(w * 0.25), int(h * 0.3))
+                                        fSize, fColor, int(w * 0.25), int(h * 0.01))
             SplashScreen.display_text(displaysurface, 'Press [P] to Unpause', 
-                                'Showcard Gothic', fSize, scoreColor, int(w * .06), int(h * 0.5))
+                                'Showcard Gothic', fSize, scoreColor, int(w * .09), int(h * 0.87))
             pygame.display.update()
             for event in pygame.event.get():
                 if event.type == QUIT:

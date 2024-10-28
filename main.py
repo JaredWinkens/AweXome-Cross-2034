@@ -66,6 +66,9 @@ coin_image = pygame.transform.scale(pygame.image.load('assets/coin.png').convert
 coin_sound = pygame.mixer.Sound('assets/coinGet.mp3')
 
 splash_image = pygame.transform.scale(pygame.image.load('assets/spalsh_screen.jpeg').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+death_image = pygame.transform.scale(pygame.image.load('assets/death_screen.jpeg').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+pause_image = pygame.transform.scale(pygame.image.load('assets/pause_screen.jpeg').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+
 # Create the player and platform objects
 P1 = player.Player(SCREEN_WIDTH, SCREEN_HEIGHT, player_imgs)
 PT1 = platform.Platform(SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -184,7 +187,7 @@ while True:
             sys.exit()
         if event.type == pygame.KEYDOWN:    
             if event.key == pygame.K_p:
-                Splash_screen.SplashScreen.pauseScreen(window)
+                Splash_screen.SplashScreen.pauseScreen(window, pause_image)
         if event.type == pygame.KEYDOWN:    
             if event.key == pygame.K_SPACE:
                 pygame.mixer.Sound('assets/jump.mp3').play()
@@ -246,7 +249,7 @@ while True:
             pygame.mixer.Sound('assets/handcuff.mp3').play()
 
             gameOver = -1
-            Splash_screen.SplashScreen.deathScreen(window, score)
+            Splash_screen.SplashScreen.deathScreen(window, score, death_image)
 
             for entity in all_sprites:
                 entity.kill() 

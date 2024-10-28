@@ -2,3 +2,15 @@ Author:  Jared Winkens
 Date:  10/26/2024
 
 This is a test file for the cash class. It is a simple text file that will be used to test the cash functionality.
+
+Testing the cash class
+    1. Tracks the amount of cash collected
+    2. Displays the amount of cash collected
+    3. Has a move function that moves the cash across the screen
+        4. Moves the cash left across the screen 
+        5. Kills the cash when it reaches the end of the screen
+
+Testing main.py
+    6. Spawns the coin
+        7. Spawns the coin at a random location
+        8. Spawns the coin at a random time
