@@ -61,11 +61,11 @@ class Player(pygame.sprite.Sprite):
         hits2 = pygame.sprite.spritecollide(self, ranPlats, False)
         # If the player is on the ground, jump
         if hits or hits2:
-            self.vel.y = -15
+            self.vel.y = -25
     
     # Update the player
     def update(self,platforms,ranPlats,screen_width):
-        self.acc = self.vec(0,0.5)
+        self.acc = self.vec(0,1)
         
         self.acc.x += self.vel.x * FRIC
         self.vel += self.acc
