@@ -203,9 +203,10 @@ while True:
                 #largeSpawn = False
             spawnRandomPlatform()
             largeSpawn = False
-        if event.type == timerSpeed:
-            speed += 0.01
-            print(speed)
+        if speed < 15:
+            if event.type == timerSpeed:
+                speed += 0.01
+                print(speed)
         if event.type == timerSpawnCop and not cop_spawned:
             C1 = cop.Cop(SCREEN_WIDTH, SCREEN_HEIGHT, PT1, cop_image)  # Spawn the cop
             all_sprites.add(C1)
