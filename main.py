@@ -191,7 +191,7 @@ while True:
         if event.type == pygame.KEYDOWN:    
             if event.key == pygame.K_SPACE:
                 pygame.mixer.Sound('assets/jump.mp3').play()
-                P1.jump(platforms,ranPlat)
+                P1.jump(platforms,ranPlat, SCREEN_HEIGHT)
         if event.type == timerSec:
             score += REG_SCORE
         if event.type == timerSec2:
