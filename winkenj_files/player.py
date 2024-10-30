@@ -65,7 +65,7 @@ class Player(pygame.sprite.Sprite):
     
     # Update the player
     def update(self,platforms,ranPlats,screen_width):
-        self.acc = self.vec(0,1)
+        self.acc = self.vec(0,0.95)
         
         self.acc.x += self.vel.x * FRIC
         self.vel += self.acc
