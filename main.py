@@ -55,9 +55,9 @@ bg_img3 = pygame.transform.scale(pygame.image.load('assets/background_v2/far-bui
 bg_imgs = [bg_img3,bg_img2,bg_img1]
 player_imgs = []
 for i in range(8): player_imgs.append(pygame.transform.scale((pygame.image.load('assets/fugitive/fugitive_%d.png' % (i+1)).convert_alpha()),(SCREEN_WIDTH*0.06, SCREEN_HEIGHT*0.1)))
-cone_image = pygame.transform.scale(pygame.image.load('assets/cone.png').convert_alpha(),(SCREEN_WIDTH*0.09, SCREEN_HEIGHT*0.13))
-dumpster_image = pygame.transform.scale(pygame.image.load('assets/dumpster.png').convert_alpha(),(SCREEN_WIDTH*0.2, SCREEN_HEIGHT*0.3))
-cop_image = pygame.transform.scale(pygame.image.load('assets/cop.png').convert_alpha(),(SCREEN_WIDTH*0.12, SCREEN_HEIGHT*0.2))
+cone_image = pygame.transform.scale(pygame.image.load('assets/cone.png').convert_alpha(),(SCREEN_WIDTH*0.08, SCREEN_HEIGHT*0.14))
+dumpster_image = pygame.transform.scale(pygame.image.load('assets/dumpster.png').convert_alpha(),(SCREEN_WIDTH*0.2, SCREEN_HEIGHT*0.2))
+cop_image = pygame.transform.scale(pygame.image.load('assets/cop.png').convert_alpha(),(SCREEN_WIDTH*0.06, SCREEN_HEIGHT*0.2))
 
 r_platform_image = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .25, SCREEN_HEIGHT * .045))
 r_platform_image2 = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .15, SCREEN_HEIGHT * .045))
@@ -193,7 +193,7 @@ while True:
         if event.type == pygame.KEYDOWN:    
             if event.key == pygame.K_SPACE:
                 pygame.mixer.Sound('assets/jump.mp3').play()
-                P1.jump(platforms,ranPlat)
+                P1.jump(platforms,ranPlat, SCREEN_HEIGHT)
         if event.type == timerSec:
             score += REG_SCORE
         if event.type == timerSec2:
@@ -205,9 +205,10 @@ while True:
                 #largeSpawn = False
             spawnRandomPlatform()
             largeSpawn = False
-        if event.type == timerSpeed:
-            speed += 0.01
-            print(speed)
+        if speed < 15:
+            if event.type == timerSpeed:
+                speed += 0.01
+                print(speed)
         if event.type == timerSpawnCop and not cop_spawned:
             C1 = cop.Cop(SCREEN_WIDTH, SCREEN_HEIGHT, PT1, cop_image)  # Spawn the cop
             all_sprites.add(C1)
@@ -243,6 +244,7 @@ while True:
     if cop_spawned:
         C1.move(enemies, P1)  # Move cop
         C1.update(PT1)  # Update cop position if necessary
+        C1.draw(window)  # Draw the cop
 
         # Check for collision between the player and cop
         if pygame.sprite.collide_rect(P1, C1):
@@ -268,6 +270,7 @@ while True:
 
     # Check for coin collection
     for coin in coins:
+        coin.draw(window)
         if pygame.sprite.collide_rect(P1, coin):
             coin_sound.play()  # Play the collection sound
             cash_instance.collect()  # Increment coins collected in the cash instance
@@ -275,6 +278,7 @@ while True:
 
     # Update coins and remove off-screen coins
     coins.update(speed)
+    
 
     # Render the score
     Splash_screen.SplashScreen.display_text(window, 'Score: ' + str(score), 
@@ -297,6 +301,7 @@ while True:
     if hits_small:
         pygame.mixer.Sound('assets/cone.mp3').play()
         P1.vel.x = -2
+<<<<<<< HEAD
     '''
     collision = pygame.sprite.spritecollide(P1, ranPlat, False)
     if collision:
@@ -318,6 +323,13 @@ while True:
                 P1.pos.y = platform.rect.top - P1.rect.bottom
                 P1.vel.y = 0
     '''
+=======
+    
+    #original_speed = P1.vel.x
+    #if P1.vel.x < original_speed:
+        #P1.vel.x = 0.1
+        
+>>>>>>> c7975508a291ead4159810a40bf8e1e3aef69f4c
                     
     # Update the display
     #print(FramePerSec.get_fps())

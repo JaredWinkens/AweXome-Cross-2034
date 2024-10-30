@@ -11,9 +11,9 @@ class Cop(pygame.sprite.Sprite):
         super().__init__()
         # Cop size is 2x the player size
         self.image = image
-        self.surf = pygame.Surface((screen_width * 0.12, screen_height * 0.2))
+        #self.surf = pygame.Surface((screen_width * 0.12, screen_height * 0.2))
         #self.surf.fill((255, 255, 0))  # Yellow to distinguish the cop
-        self.rect = self.surf.get_rect(center=(-screen_width * 0.1, platform.rect.top))  # Start off the left edge
+        self.rect = self.image.get_rect(center=(-screen_width * 0.05, platform.rect.top))  # Start off the left edge
         self.vel = pygame.math.Vector2(0, 0)
         self.on_ground = True
         self.screen_width = screen_width
@@ -57,3 +57,6 @@ class Cop(pygame.sprite.Sprite):
             self.rect.bottom = platform.rect.top
             self.vel.y = 0
             self.on_ground = True  # Cop is back on the ground
+            
+    def draw(self, displaysurface):
+        pygame.draw.rect(displaysurface, (255, 0, 0), self.rect, 2)

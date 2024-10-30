@@ -18,9 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.index = 0
         self.images = images
         self.image = self.images[self.index]
-        self.surf = pygame.Surface((screen_width*0.06, screen_height*0.1))
-        #self.surf.fill((255, 0, 0))
-        self.rect = self.surf.get_rect(center=(screen_width*0.2, screen_height))
+        self.rect = self.image.get_rect(center=(screen_width*0.2, screen_height))
         self.vec = pygame.math.Vector2
         self.pos = self.vec((screen_width*0.2, screen_height))
         self.acc = self.vec(0,0)
@@ -56,20 +54,20 @@ class Player(pygame.sprite.Sprite):
         '''
     
     # Jump the player
-    def jump(self,platforms,ranPlats):
+    def jump(self,platforms,ranPlats, screen_height):
         
         # Check if the player is on the ground
         hits = pygame.sprite.spritecollide(self, platforms, False)
         hits2 = pygame.sprite.spritecollide(self, ranPlats, False)
         # If the player is on the ground, jump
         if hits or hits2:
-            self.vel.y = -15
+            self.vel.y = -(screen_height * 0.035)
     
     # Update the player
     def update(self,platforms,ranPlats,screen_width):
-        self.acc = self.vec(0,0.5)
+        self.acc = self.vec(0,0.95)
         
-        self.acc.x += self.vel.x * FRIC
+        #self.acc.x += self.vel.x * FRIC
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
         # Check if the player is on the ground
