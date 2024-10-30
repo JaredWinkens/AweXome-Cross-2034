@@ -70,10 +70,16 @@ death_image = pygame.transform.scale(pygame.image.load('assets/death_screen.jpeg
 pause_image = pygame.transform.scale(pygame.image.load('assets/pause_screen.jpeg').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Create the player and platform objects
-P1 = player.Player(SCREEN_WIDTH, SCREEN_HEIGHT, player_imgs)
-PT1 = platform.Platform(SCREEN_WIDTH, SCREEN_HEIGHT)
-BG = bg.Background(bg_imgs, [speed-2, speed-1, speed])
+def create_objects():
+    global P1, PT1, BG, cash_instance, cop_spawned, score
+    P1 = player.Player(SCREEN_WIDTH, SCREEN_HEIGHT, player_imgs)
+    PT1 = platform.Platform(SCREEN_WIDTH, SCREEN_HEIGHT)
+    BG = bg.Background(bg_imgs, [speed-2, speed-1, speed])
+    cash_instance = cash.Cash(SCREEN_WIDTH, SCREEN_HEIGHT, coin_image)
+    cop_spawned = False
+    score = 0  # Reset score
 
+create_objects()
 Splash_screen.SplashScreen.run(window,splash_image)
 
 # Timer (Speed Timer) CHANGE MULTIPLIER TO TWEAK GAME SPEED
@@ -111,9 +117,6 @@ large_enemies = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
 ranPlat = pygame.sprite.Group()
 coins = pygame.sprite.Group()
-
-#Create an instance of the cash class
-cash_instance = cash.Cash(SCREEN_WIDTH, SCREEN_HEIGHT, coin_image)
 
 cop_spawned = False  # Track whether the cop has been spawned
 largeSpawn = False
@@ -160,20 +163,19 @@ def spawnRandomPlatform():
     all_sprites.add(newPlatform)
 
 def spawn_coin():
-   coin_spawned = False
-   while not coin_spawned:
-    # Randomly choose a position within the screen boundaries
-    x_pos = SCREEN_WIDTH + coin_image.get_width()
-    y_pos = random.randint(int(SCREEN_HEIGHT / 2), int(SCREEN_HEIGHT * 0.9))
+    coin_spawned = False
+    while not coin_spawned:
+        # Randomly choose a position within the screen boundaries
+        x_pos = SCREEN_WIDTH + coin_image.get_width()
+        y_pos = random.randint(int(SCREEN_HEIGHT / 2), int(SCREEN_HEIGHT * 0.9))
 
-    coin = cash.Cash(SCREEN_WIDTH, SCREEN_HEIGHT, coin_image)  # Create a new coin instance
-    coin.rect.center = (x_pos, y_pos)
+        coin = cash.Cash(SCREEN_WIDTH, SCREEN_HEIGHT, coin_image)  # Create a new coin instance
+        coin.rect.center = (x_pos, y_pos)
 
-    if not pygame.sprite.spritecollideany(coin, large_enemies):
-        coins.add(coin)
-        all_sprites.add(coin)
-        coin_spawned = True
-
+        if not pygame.sprite.spritecollideany(coin, large_enemies):
+            coins.add(coin)
+            all_sprites.add(coin)
+            coin_spawned = True
 
 ##############################################
 # GAME LOOP
@@ -218,7 +220,7 @@ while True:
     # Fill the window with black            
     window.fill((0, 0, 0))
     BG.render(window)
-    
+
     # Move & update the player
     #P1.move(SCREEN_WIDTH)
     P1.update(platforms, ranPlat, SCREEN_WIDTH)
@@ -231,7 +233,7 @@ while True:
     # Render all sprites
     for entity in all_sprites:
         window.blit(entity.image, entity.rect)
-    
+
     # Move all enemies
     for enemy in enemies:
         enemy.move(speed)
@@ -244,19 +246,25 @@ while True:
 
         # Check for collision between the player and cop
         if pygame.sprite.collide_rect(P1, C1):
+            entity.kill()
             save_cash(cash_instance.coins_collected)
-            pygame.time.set_timer(timerMin, 0)
-            pygame.time.set_timer(timerSec, 0)
-            pygame.mixer.Sound('assets/handcuff.mp3').play()
-
-            gameOver = -1
-            Splash_screen.SplashScreen.deathScreen(window, score, death_image)
-
-            for entity in all_sprites:
-                entity.kill() 
-            time.sleep(5)
-            pygame.quit()
-            sys.exit()
+        
+            while True:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_r:  # Restart game
+                            game_over = False
+                            create_objects()  # Reset game state
+                        if event.key == pygame.K_e:  # Exit game
+                            pygame.quit()
+                            sys.exit()
+                    # Keep the death screen displayed until input is received
+                    pygame.time.delay(10)  # Slight delay to reduce CPU usage
+                    Splash_screen.SplashScreen.deathScreen(window, score, death_image)
+                    pygame.display.flip()
 
     # Check for coin collection
     for coin in coins:
@@ -272,10 +280,10 @@ while True:
     Splash_screen.SplashScreen.display_text(window, 'Score: ' + str(score), 
                                         'Cooperplate Gothic Bold', fSizeScore, 
                                         fColor, scoreXPos, scoreYPos)
-    
+
     # Display the number of coins collected using the Cash class
     cash_instance.display_coins(window, SCREEN_WIDTH)
-    
+
     # Check for collisions with the player and enemies
     hits_large = pygame.sprite.spritecollide(P1, large_enemies, False)
     hits_small = pygame.sprite.spritecollide(P1, small_enemies, False)
@@ -302,7 +310,7 @@ while True:
 
     for platform in ranPlat:
         if P1.rect.colliderect(platform.rect.x, platform.rect.y + P1.vel.y, 
-                               platform.rect.width, platform.rect.height):
+                            platform.rect.width, platform.rect.height):
             if P1.vel.y < 0: # Below platform
                 P1.pos.y = platform.rect.bottom + P1.rect.top 
                 P1.vel.y = 0
