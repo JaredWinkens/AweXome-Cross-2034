@@ -16,3 +16,6 @@ class NotPassibleEnemy(pygame.sprite.Sprite):
         # Check if enemy has gone off screen
         if self.rect.right <= 0:
             self.kill()
+            
+      def draw(self, displaysurface):
+        pygame.draw.rect(displaysurface, (255, 0, 0), self.rect, 2)

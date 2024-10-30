@@ -235,6 +235,7 @@ while True:
     # Move all enemies
     for enemy in enemies:
         enemy.move(speed)
+        enemy.draw(window)
 
     # If the cop has been spawned, move and update it
     if cop_spawned:
