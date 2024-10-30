@@ -55,9 +55,9 @@ bg_img3 = pygame.transform.scale(pygame.image.load('assets/background_v2/far-bui
 bg_imgs = [bg_img3,bg_img2,bg_img1]
 player_imgs = []
 for i in range(8): player_imgs.append(pygame.transform.scale((pygame.image.load('assets/fugitive/fugitive_%d.png' % (i+1)).convert_alpha()),(SCREEN_WIDTH*0.06, SCREEN_HEIGHT*0.1)))
-cone_image = pygame.transform.scale(pygame.image.load('assets/cone.png').convert_alpha(),(SCREEN_WIDTH*0.09, SCREEN_HEIGHT*0.13))
-dumpster_image = pygame.transform.scale(pygame.image.load('assets/dumpster.png').convert_alpha(),(SCREEN_WIDTH*0.2, SCREEN_HEIGHT*0.3))
-cop_image = pygame.transform.scale(pygame.image.load('assets/cop.png').convert_alpha(),(SCREEN_WIDTH*0.12, SCREEN_HEIGHT*0.2))
+cone_image = pygame.transform.scale(pygame.image.load('assets/cone.png').convert_alpha(),(SCREEN_WIDTH*0.08, SCREEN_HEIGHT*0.14))
+dumpster_image = pygame.transform.scale(pygame.image.load('assets/dumpster.png').convert_alpha(),(SCREEN_WIDTH*0.2, SCREEN_HEIGHT*0.2))
+cop_image = pygame.transform.scale(pygame.image.load('assets/cop.png').convert_alpha(),(SCREEN_WIDTH*0.06, SCREEN_HEIGHT*0.2))
 
 r_platform_image = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .25, SCREEN_HEIGHT * .045))
 r_platform_image2 = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .15, SCREEN_HEIGHT * .045))
@@ -241,6 +241,7 @@ while True:
     if cop_spawned:
         C1.move(enemies, P1)  # Move cop
         C1.update(PT1)  # Update cop position if necessary
+        C1.draw(window)  # Draw the cop
 
         # Check for collision between the player and cop
         if pygame.sprite.collide_rect(P1, C1):
@@ -260,6 +261,7 @@ while True:
 
     # Check for coin collection
     for coin in coins:
+        coin.draw(window)
         if pygame.sprite.collide_rect(P1, coin):
             coin_sound.play()  # Play the collection sound
             cash_instance.collect()  # Increment coins collected in the cash instance
@@ -267,6 +269,7 @@ while True:
 
     # Update coins and remove off-screen coins
     coins.update(speed)
+    
 
     # Render the score
     Splash_screen.SplashScreen.display_text(window, 'Score: ' + str(score), 
@@ -289,27 +292,6 @@ while True:
     if hits_small:
         pygame.mixer.Sound('assets/cone.mp3').play()
         P1.vel.x = -2
-    '''
-    collision = pygame.sprite.spritecollide(P1, ranPlat, False)
-    if collision:
-        for plat in collision:
-            if P1.rect.bottom == plat.rect.top:
-                P1.vel.y = 0 
-                P1.pos.y = plat.rect.top + 1
-            else:
-                if P1.rect.right == platform.rect.left:
-                    P1.pos.y = SCREEN_HEIGHT
-
-    for platform in ranPlat:
-        if P1.rect.colliderect(platform.rect.x, platform.rect.y + P1.vel.y, 
-                               platform.rect.width, platform.rect.height):
-            if P1.vel.y < 0: # Below platform
-                P1.pos.y = platform.rect.bottom + P1.rect.top 
-                P1.vel.y = 0
-            if P1.vel.y >= 0: # Above platform
-                P1.pos.y = platform.rect.top - P1.rect.bottom
-                P1.vel.y = 0
-    '''
                     
     # Update the display
     #print(FramePerSec.get_fps())

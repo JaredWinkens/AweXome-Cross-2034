@@ -37,4 +37,7 @@ class Cash(pygame.sprite.Sprite):
         font = pygame.font.SysFont('Cooperplate Gothic Bold', int(screen_width // 15))
         coin_text = font.render(f'Coins: {self.coins_collected}', True, (0, 255, 0))
         window.blit(coin_text, (screen_width - coin_text.get_width() - 10, 10))  # Position in the top right corner
+    
+    def draw(self, displaysurface):
+        pygame.draw.rect(displaysurface, (255, 0, 0), self.rect, 2)
 
