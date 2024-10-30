@@ -293,6 +293,11 @@ while True:
     if hits_small:
         pygame.mixer.Sound('assets/cone.mp3').play()
         P1.vel.x = -2
+    
+    #original_speed = P1.vel.x
+    #if P1.vel.x < original_speed:
+        #P1.vel.x = 0.1
+        
                     
     # Update the display
     #print(FramePerSec.get_fps())
