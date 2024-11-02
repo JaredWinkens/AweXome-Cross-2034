@@ -292,44 +292,12 @@ while True:
     hits_large = pygame.sprite.spritecollide(P1, large_enemies, False)
     hits_small = pygame.sprite.spritecollide(P1, small_enemies, False)
     if hits_large:
-        # Cop moves forward
-        # Scrolling Background slows down(illusion that players pace has 
-        # slowed down after collision)
         pygame.mixer.Sound('assets/dumpster.mp3').play()
         P1.vel.x = 0
         P1.pos.x = hits_large[0].rect.left - P1.rect.width
     if hits_small:
         pygame.mixer.Sound('assets/cone.mp3').play()
         P1.vel.x = -2
-<<<<<<< HEAD
-    '''
-    collision = pygame.sprite.spritecollide(P1, ranPlat, False)
-    if collision:
-        for plat in collision:
-            if P1.rect.bottom == plat.rect.top:
-                P1.vel.y = 0 
-                P1.pos.y = plat.rect.top + 1
-            else:
-                if P1.rect.right == platform.rect.left:
-                    P1.pos.y = SCREEN_HEIGHT
-
-    for platform in ranPlat:
-        if P1.rect.colliderect(platform.rect.x, platform.rect.y + P1.vel.y, 
-                            platform.rect.width, platform.rect.height):
-            if P1.vel.y < 0: # Below platform
-                P1.pos.y = platform.rect.bottom + P1.rect.top 
-                P1.vel.y = 0
-            if P1.vel.y >= 0: # Above platform
-                P1.pos.y = platform.rect.top - P1.rect.bottom
-                P1.vel.y = 0
-    '''
-=======
-    
-    #original_speed = P1.vel.x
-    #if P1.vel.x < original_speed:
-        #P1.vel.x = 0.1
-        
->>>>>>> c7975508a291ead4159810a40bf8e1e3aef69f4c
                     
     # Update the display
     #print(FramePerSec.get_fps())

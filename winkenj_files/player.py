@@ -5,6 +5,7 @@ from pygame.locals import *
 # Constants
 ACC = 0.5
 FRIC = -0.12
+vec = pygame.math.Vector2
 
 # Player class
 class Player(pygame.sprite.Sprite):
@@ -19,10 +20,9 @@ class Player(pygame.sprite.Sprite):
         self.images = images
         self.image = self.images[self.index]
         self.rect = self.image.get_rect(center=(screen_width*0.2, screen_height))
-        self.vec = pygame.math.Vector2
-        self.pos = self.vec((screen_width*0.2, screen_height))
-        self.acc = self.vec(0,0)
-        self.vel = self.vec(0,0)
+        self.pos = vec((screen_width*0.2, screen_height))
+        self.acc = vec(0,0)
+        self.vel = vec(0,0)
     
     # Move the player    
     def move(self,screen_width):
@@ -65,7 +65,7 @@ class Player(pygame.sprite.Sprite):
     
     # Update the player
     def update(self,platforms,ranPlats,screen_width):
-        self.acc = self.vec(0,0.95)
+        self.acc = vec(0,0.95)
         
         #self.acc.x += self.vel.x * FRIC
         self.vel += self.acc
