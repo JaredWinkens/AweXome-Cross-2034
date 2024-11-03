@@ -1,0 +1,7 @@
+1. Death Screen is Terminated by Pressing R - PASSED
+2. Random Key Presses Do Not Affect Reset Functionality - PASSED
+3. Holding Keys While Restarting Does Not Affect It - PASSED
+4. Holding R While Launching During the Death Screen Does Not Instanly Restart Game- PASSED
+5. Window Does not Allow Resizing - PASSED
+6. All Objects are Created Again Before Main Game Loop Is Called - PASSED
+7. Restart Option Stays Visible Forever Until Space Bar is Pressed - PASSED
