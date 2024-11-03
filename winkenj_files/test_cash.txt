@@ -4,16 +4,17 @@ Date:  10/26/2024
 This is a test file for the cash class. It is a simple text file that will be used to test the cash functionality.
 
 Testing the cash class
-    1. Tracks the amount of cash collected
-    2. Displays the amount of cash collected
-    3. Has a move function that moves the cash across the screen
-        3a. Moves the cash left across the screen 
-        3b. Kills the cash when it reaches the end of the screen
+    1. Tracks the amount of cash collected (PASSED)
+    2. Displays the amount of cash collected (PASSED)
+    3. Has a move function that moves the cash across the screen (PASSED)
+        3a. Moves the cash left across the screen (PASSED)
+        3b. Kills the cash when it reaches the end of the screen (PASSED)
+        3c. Speed increases at the same rate as the game's speed (PASSED)
 
 Testing main.py
-    4. Spawns the coin
-        4a. Spawns the coin at a random location
-        4b. Spawns the coin at a random time
-    5. The coin never spawns inside another sprite
+    4. Spawns the coin (PASSED)
+        4a. Spawns the coin at a random location (PASSED)
+        4b. Spawns the coin at a random time (PASSED)
+    5. The coin never spawns inside another sprite (PASSED)
 
-Results: 
+Results: 5/5 tests passed

@@ -67,7 +67,7 @@ class Player(pygame.sprite.Sprite):
     def update(self,platforms,ranPlats,screen_width):
         self.acc = vec(0,0.95)
         
-        #self.acc.x += self.vel.x * FRIC
+        self.acc.x += self.vel.x * FRIC
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
         # Check if the player is on the ground

@@ -13,7 +13,7 @@ Testing random platfoms in main.py
     4. The platform is spawned at random time intervals (PASSED)
     5. The platform is spawned at random heights (PASSED)
     6. A platform always spawns when a big enemy spaws (PASSED)
-    7. The platform always gives the player a way to avoid the bg enemy (FAILED)
-    8. The platform sprite does not overlap with the big enemy sprite or another platform (PASSED)
+    7. The platform always gives the player a way to avoid the bg enemy (PASSED)
+    8. The platform sprite does not overlap with the big enemy sprite or another platform (FAILED)
 
 Results: 7/8 tests passed
