@@ -56,6 +56,9 @@ class SplashScreen:
         SplashScreen.display_text(displaysurface, 'Final Score: ' + str(score), 
                                 'Showcard Gothic', fSize, scoreColor, int(w * 0.2), int(h * 0.87))
         pygame.display.update()
+        # Display "R to Restart" and "E to Exit" on the left side of the screen
+        SplashScreen.display_text(displaysurface, 'R to Restart', 'Showcard Gothic', 50, red, int(w * 0.05), int(h * 0.2))
+        SplashScreen.display_text(displaysurface, 'E to Exit', 'Showcard Gothic', 50, red, int(w * 0.05), int(h * 0.3))
     
     def pauseScreen(displaysurface,pause_image):
         displaysurface.blit(pause_image,(0, 0))
