@@ -7,9 +7,8 @@ Visual test:
     Check to see that all instances of class RandomPlatform, NotPassibleEnemy, PassibleEnemy, 
     and Background pace increases in movement from right to left of the screen as the game progress. (Passed)
 
-    Check to see at what point game is unplayable. 
-        - When speed > 16, scrolling background becomes overwhemling. 
-
+    Check to see at what point game is unplayable. (Passed)
+        - Set speed <= 15
 Code:
 
 	Check the current speed every three seconds to see if it has increased. (Passed)
@@ -43,3 +42,50 @@ Results:
     Current speed: 10.379999999999885
     Current speed: 10.679999999999879
     Current speed: 10.969999999999873
+
+Check that speed does not exceed 15 to maintain playability. (Passed)
+    main - while loop (run game
+
+        if event.type == timerSec3:
+            print("Current speed: " + str(speed))
+
+Results:
+    
+    Current speed: 5.289999999999994
+    Current speed: 5.589999999999987
+    Current speed: 5.889999999999981
+    Current speed: 6.189999999999975
+    Current speed: 6.489999999999968
+    Current speed: 6.789999999999962
+    Current speed: 7.0899999999999554
+    Current speed: 7.389999999999949
+    Current speed: 7.689999999999943
+    Current speed: 7.989999999999936
+    Current speed: 8.27999999999993
+    Current speed: 8.579999999999924
+    Current speed: 8.879999999999917
+    Current speed: 9.179999999999911
+    Current speed: 9.479999999999905
+    Current speed: 9.779999999999898
+    Current speed: 9.999999999999893
+    Current speed: 10.299999999999887
+    Current speed: 10.58999999999988
+    Current speed: 10.889999999999874
+    Current speed: 11.189999999999868
+    Current speed: 11.489999999999862
+    Current speed: 11.789999999999855
+    Current speed: 12.089999999999849
+    Current speed: 12.389999999999842
+    Current speed: 12.689999999999836
+    Current speed: 12.98999999999983
+    Current speed: 13.279999999999824
+    Current speed: 13.579999999999817
+    Current speed: 13.87999999999981
+    Current speed: 14.179999999999804
+    Current speed: 14.469999999999798
+    Current speed: 14.769999999999792
+    Current speed: 15.009999999999787
+    Current speed: 15.009999999999787
+    Current speed: 15.009999999999787
+    Current speed: 15.009999999999787
+    Current speed: 15.009999999999787
