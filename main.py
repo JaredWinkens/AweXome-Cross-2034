@@ -28,11 +28,7 @@ SCREEN_HEIGHT = screen_info.current_h * 0.90
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SCALED)
 pygame.display.set_caption("Game")
 
-frameCount = 0
-largeSpawn = False
 def main():
-    global largeSpawn, frameCount
-    #largeSpawn = False
     #Sound Initilization
     pygame.mixer.music.load("assets/Automation.mp3")
     pygame.mixer.music.set_volume(0.25)
@@ -129,16 +125,16 @@ def main():
     coins = pygame.sprite.Group()
 
     cop_spawned = False  # Track whether the cop has been spawned
-    largeSpawn = False
 
     def spawn_enemy():
-        global largeSpawn
         seed = random.randint(1, 20)
         if seed <= 10:    
             enemy = enemySmall.PassibleEnemy(SCREEN_WIDTH, SCREEN_HEIGHT, cone_image)
             small_enemies.add(enemy)
             enemies.add(enemy)
             all_sprites.add(enemy)
+            if seed % 2 == 0 or seed == 1 or seed == 9:
+                spawnRandomPlatform()
         elif seed > 10 and seed <= 13:
             enemy = enemyLarge.NotPassibleEnemy(SCREEN_WIDTH, SCREEN_HEIGHT, dumpster_image)
             large_enemies.add(enemy)
@@ -148,36 +144,23 @@ def main():
             newPlatform = rPlatform.RandomPlatform(SCREEN_WIDTH, SCREEN_HEIGHT, r_platform_image)
             ranPlat.add(newPlatform)
             all_sprites.add(newPlatform)
-            largeSpawn = True
         else:
+            spawnRandomPlatform()
             print("No enemy spawned")
 
     # Description: Randomize platform at y position. Check for overlapping
     # before spawning a new platform.
     def spawnRandomPlatform():
-        global largeSpawn
-        if largeSpawn:
-            return
         # Set bounds
         xPos = SCREEN_WIDTH
         yPos = random.randint(int(SCREEN_HEIGHT * 0.65), int(SCREEN_HEIGHT * 0.8))
 
         newPlatform = rPlatform.RandomPlatform(SCREEN_WIDTH, SCREEN_HEIGHT, r_platform_image2)
         newPlatform.rect.center = (xPos, yPos)
-
-        # Check for overlapping
-        for platform in ranPlat:
-            if newPlatform.rect.colliderect(platform.rect):
-                return # If overlapping, do not spawn
-
-        for enemy in large_enemies:
-            if newPlatform.rect.colliderect(enemy.rect):
-                return # If overlapping with a large enemy
-            
-        # If no overlap, add to groups
+                
         ranPlat.add(newPlatform)
         all_sprites.add(newPlatform)
-        
+
     def spawn_coin():
         coin_spawned = False
         while not coin_spawned:
@@ -216,8 +199,6 @@ def main():
                 spawn_enemy()
             if event.type == timerMin:
                 score += BONUS_SCORE
-            if event.type == timerSec3:
-                spawnRandomPlatform()
             if speed < 15:
                 if event.type == timerSpeed:
                     speed += 0.01
@@ -228,11 +209,6 @@ def main():
                 cop_spawned = True
         if (random.randint(1, 700) < 3):
             spawn_coin()
-
-        frameCount += 1
-        if frameCount >= FPS * 3:
-            largeSpawn = False
-            frameCount = 0
 
         # Render the background
         BG.update(speed)
