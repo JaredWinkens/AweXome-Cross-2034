@@ -1,6 +1,7 @@
 # Author: Jared Winkens
 import pygame
 from pygame.locals import *
+import math
 
 # Constants
 ACC = 0.5
@@ -23,6 +24,8 @@ class Player(pygame.sprite.Sprite):
         self.pos = vec((screen_width*0.2, screen_height))
         self.acc = vec(0,0)
         self.vel = vec(0,0)
+        self.cnt = 0
+        self.rot_speed = 1/6
     
     # Move the player    
     def move(self,screen_width):
@@ -62,9 +65,10 @@ class Player(pygame.sprite.Sprite):
         # If the player is on the ground, jump
         if hits or hits2:
             self.vel.y = -(screen_height * 0.035)
+            self.rot_speed = 1/4
     
     # Update the player
-    def update(self,platforms,ranPlats,screen_width):
+    def update(self,platforms,ranPlats,screen_width,speed):
         self.acc = vec(0,0.95)
         
         self.acc.x += self.vel.x * FRIC
@@ -77,9 +81,11 @@ class Player(pygame.sprite.Sprite):
         # If the player is falling
         if self.vel.y > 0:
             if hits:
+                self.rot_speed = 1/6
                 self.vel.y = 0
                 self.pos.y = hits[0].rect.top + 1
             if hits2:
+                self.rot_speed = 1/6
                 if self.rect.bottom >= hits2[0].rect.top:
                     self.vel.y = 0
                     self.pos.y = hits2[0].rect.top + 1
@@ -89,10 +95,10 @@ class Player(pygame.sprite.Sprite):
             self.pos.x = screen_width
         if self.pos.x < 0:
             self.pos.x = 0
-            
-        self.index += 1
-        if self.index >= len(self.images):
-            self.index = 0
+        
+        # rotate the player based on the speed of the game
+        self.cnt += (self.rot_speed + (speed / 100))
+        self.index = round(self.cnt) % 8
         self.image = self.images[self.index]
         
         self.rect.midbottom = self.pos

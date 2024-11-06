@@ -232,7 +232,7 @@ def main():
 
         # Move & update the player
         #P1.move(SCREEN_WIDTH)
-        P1.update(platforms, ranPlat, SCREEN_WIDTH)
+        P1.update(platforms, ranPlat, SCREEN_WIDTH, speed)
         P1.draw(window)
         # Move randomize platforms
         for plat in ranPlat:
