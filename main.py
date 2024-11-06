@@ -197,12 +197,14 @@ def main():
                 score += REG_SCORE
             if event.type == timerSec2:
                 spawn_enemy()
+            if event.type == timerSec3:
+                print("Current speed: " + str(speed))
             if event.type == timerMin:
                 score += BONUS_SCORE
-            if speed < 15:
+            if speed < 20:
                 if event.type == timerSpeed:
-                    speed += 0.01
-                    print(speed)
+                    speed += 0.02
+                    #print(speed)
             if event.type == timerSpawnCop and not cop_spawned:
                 C1 = cop.Cop(SCREEN_WIDTH, SCREEN_HEIGHT, PT1, cop_image)  # Spawn the cop
                 all_sprites.add(C1)
