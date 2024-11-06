@@ -28,9 +28,11 @@ SCREEN_HEIGHT = screen_info.current_h * 0.90
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SCALED)
 pygame.display.set_caption("Game")
 
+frameCount = 0
+largeSpawn = False
 def main():
-    global largeSpawn
-    largeSpawn = False
+    global largeSpawn, frameCount
+    #largeSpawn = False
     #Sound Initilization
     pygame.mixer.music.load("assets/Automation.mp3")
     pygame.mixer.music.set_volume(0.25)
@@ -154,6 +156,8 @@ def main():
     # before spawning a new platform.
     def spawnRandomPlatform():
         global largeSpawn
+        if largeSpawn:
+            return
         # Set bounds
         xPos = SCREEN_WIDTH
         yPos = random.randint(int(SCREEN_HEIGHT * 0.65), int(SCREEN_HEIGHT * 0.8))
@@ -162,14 +166,18 @@ def main():
         newPlatform.rect.center = (xPos, yPos)
 
         # Check for overlapping
-        for platform in platforms:
-            if newPlatform.rect.colliderect(platform.rect) or largeSpawn == True:
-                return  # If overlapping, do not spawn
+        for platform in ranPlat:
+            if newPlatform.rect.colliderect(platform.rect):
+                return # If overlapping, do not spawn
 
+        for enemy in large_enemies:
+            if newPlatform.rect.colliderect(enemy.rect):
+                return # If overlapping with a large enemy
+            
         # If no overlap, add to groups
         ranPlat.add(newPlatform)
         all_sprites.add(newPlatform)
-
+        
     def spawn_coin():
         coin_spawned = False
         while not coin_spawned:
@@ -209,10 +217,7 @@ def main():
             if event.type == timerMin:
                 score += BONUS_SCORE
             if event.type == timerSec3:
-                #if largeSpawn == True:
-                    #largeSpawn = False
                 spawnRandomPlatform()
-                largeSpawn = False
             if speed < 15:
                 if event.type == timerSpeed:
                     speed += 0.01
@@ -223,6 +228,11 @@ def main():
                 cop_spawned = True
         if (random.randint(1, 700) < 3):
             spawn_coin()
+
+        frameCount += 1
+        if frameCount >= FPS * 3:
+            largeSpawn = False
+            frameCount = 0
 
         # Render the background
         BG.update(speed)
@@ -306,7 +316,7 @@ def main():
         if hits_small:
             pygame.mixer.Sound('assets/cone.mp3').play()
             P1.vel.x = -2
-                        
+
         # Update the display
         #print(FramePerSec.get_fps())
         pygame.display.update()
