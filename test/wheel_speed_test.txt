@@ -1,0 +1,8 @@
+BY: Aiden Carter
+
+1. Does the wheel start at a slow speed similar to background speed?
+Passed
+2. Does wheel speed up as time goes on?
+Passed
+3. Does wheel look choppy/visually bad over time?
+Passed
