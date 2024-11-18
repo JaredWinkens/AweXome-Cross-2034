@@ -6,6 +6,8 @@ import math
 # Constants
 ACC = 0.5
 FRIC = -0.12
+BOUNCEABSORPTION = 0.45
+
 vec = pygame.math.Vector2
 
 # Player class
@@ -64,16 +66,16 @@ class Player(pygame.sprite.Sprite):
         hits2 = pygame.sprite.spritecollide(self, ranPlats, False)
         # If the player is on the ground, jump
         if hits or hits2:
-            self.vel.y = -(screen_height * 0.030)
+            self.vel.y = -(screen_height * 0.040)
             self.rot_speed = 1/4
     
     # Update the player
     def update(self,platforms,ranPlats,screen_width,speed):
-        self.acc = vec(0,0.95)
+        self.acc = vec(0,1.7)
         
         self.acc.x += self.vel.x * FRIC
         self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
+        self.pos += self.vel + 0.4 * self.acc
         # Check if the player is on the ground
         hits = pygame.sprite.spritecollide(self ,platforms, False)
         hits2 = pygame.sprite.spritecollide(self, ranPlats, False)
@@ -82,12 +84,12 @@ class Player(pygame.sprite.Sprite):
         if self.vel.y > 0:
             if hits:
                 self.rot_speed = 1/6
-                self.vel.y = 0
+                self.vel.y = -self.vel.y * BOUNCEABSORPTION
                 self.pos.y = hits[0].rect.top + 1
             if hits2:
                 self.rot_speed = 1/6
                 if self.rect.bottom >= hits2[0].rect.top:
-                    self.vel.y = 0
+                    self.vel.y = -self.vel.y * BOUNCEABSORPTION
                     self.pos.y = hits2[0].rect.top + 1
                     
         # Ensure the player stays within screen bounds
