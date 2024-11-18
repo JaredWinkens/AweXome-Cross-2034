@@ -1,10 +1,9 @@
-# Author: Jared Winkens
 import winkenj_files.platform as platform
 import winkenj_files.player as player
 import winkenj_files.passible_enemy as enemySmall
 import winkenj_files.not_passible_enemy as enemyLarge
 import carterad_files.Splash_screenv3 as Splash_screen
-import carterad_files.cop as cop  # Add the Cop class
+import carterad_files.cop as cop
 import carterad_files.cash as cash
 from carterad_files.cash import save_cash
 import souc_files.random_platform as rPlatform
@@ -65,8 +64,8 @@ def main():
     dumpster_image = pygame.transform.scale(pygame.image.load('assets/dumpster.png').convert_alpha(),(SCREEN_WIDTH*0.2, SCREEN_HEIGHT*0.2))
     cop_image = pygame.transform.scale(pygame.image.load('assets/cop.png').convert_alpha(),(SCREEN_WIDTH*0.06, SCREEN_HEIGHT*0.2))
 
-    r_platform_image = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .25, SCREEN_HEIGHT * .045))
-    r_platform_image2 = pygame.transform.scale(pygame.image.load('assets/r_platform.png'), (SCREEN_WIDTH * .15, SCREEN_HEIGHT * .045))
+    r_platform_image = pygame.transform.scale(pygame.image.load('assets/new_platform2.png'), (SCREEN_WIDTH * .25, SCREEN_HEIGHT * .045))
+    r_platform_image2 = pygame.transform.scale(pygame.image.load('assets/new_platform2.png'), (SCREEN_WIDTH * .15, SCREEN_HEIGHT * .045))
 
     coin_image = pygame.transform.scale(pygame.image.load('assets/coin.png').convert_alpha(), (SCREEN_WIDTH * 0.05, SCREEN_HEIGHT * 0.05))  # Load coin image
     coin_sound = pygame.mixer.Sound('assets/coinGet.mp3')

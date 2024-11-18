@@ -75,20 +75,20 @@ class Player(pygame.sprite.Sprite):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
         # Check if the player is on the ground
-        hits = pygame.sprite.spritecollide(self ,platforms, False)
-        hits2 = pygame.sprite.spritecollide(self, ranPlats, False)
+        hits = pygame.sprite.spritecollide(self ,platforms, False) # Check if the player is on the main platform
+        hits2 = pygame.sprite.spritecollide(self, ranPlats, False) # Check if the player is on a random platform
         
         # If the player is falling
         if self.vel.y > 0:
-            if hits:
-                self.rot_speed = 1/6
-                self.vel.y = 0
-                self.pos.y = hits[0].rect.top + 1
-            if hits2:
-                self.rot_speed = 1/6
-                if self.rect.bottom >= hits2[0].rect.top:
-                    self.vel.y = 0
-                    self.pos.y = hits2[0].rect.top + 1
+            if hits: # If the player is on a the main platform
+                self.rot_speed = 1/6 # Set the rotation speed
+                self.vel.y = 0 # Stop the player from falling
+                self.pos.y = hits[0].rect.top + 1 # Set the player's position to the top of the platform
+            if hits2: # If the player is on a random platform
+                self.rot_speed = 1/6 # Set the rotation speed
+                if self.rect.bottom >= hits2[0].rect.top: # If the player is on top of the platform
+                    self.vel.y = 0 # Stop the player from falling
+                    self.pos.y = hits2[0].rect.top + 1 # Set the player's position to the top of the platform
                     
         # Ensure the player stays within screen bounds
         if self.pos.x > screen_width:

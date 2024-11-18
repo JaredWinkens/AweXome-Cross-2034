@@ -19,7 +19,8 @@ class Background():
                 "x": 0,
                 "speed": speeds[i]
             })
-            
+    
+    # Update the background
     def update(self,speed):
         '''
         self.X1 -= speed
@@ -29,15 +30,14 @@ class Background():
         if self.X2 <= -self.rect.width:
             self.X2 = self.rect.width
         '''
-        i = 3
-        for layer in self.layers:
-            layer["speed"] = speed-i
+        layer_index = len(self.layers)  # Start at the back
+        for layer in self.layers: 
+            layer["speed"] = speed-layer_index # Set the speed of the layer
             layer["x"] -= layer["speed"]  # Move each layer based on its speed
             if layer["x"] <= -layer["image"].get_width():
                 layer["x"] = 0 # Reset when it goes off-screen
-            i -= 1
-        i = 3
-        
+            layer_index -= 1 # Move to the next layer
+            
     def render(self,window):
         '''
         window.blit(self.bg_img, (self.X1, self.Y1))
