@@ -6,3 +6,5 @@ Passed
 Passed
 3. Does wheel look choppy/visually bad over time?
 Passed
+4. Wheel speeds up when jumping?
+Passed

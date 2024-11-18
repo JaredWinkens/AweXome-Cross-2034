@@ -132,6 +132,7 @@ def main():
             small_enemies.add(enemy)
             enemies.add(enemy)
             all_sprites.add(enemy)
+            spawn_coin()
             if seed % 2 == 0 or seed == 1 or seed == 9:
                 spawnRandomPlatform()
         elif seed > 10 and seed <= 13:
@@ -143,6 +144,7 @@ def main():
             newPlatform = rPlatform.RandomPlatform(SCREEN_WIDTH, SCREEN_HEIGHT, r_platform_image)
             ranPlat.add(newPlatform)
             all_sprites.add(newPlatform)
+            spawn_coin()
         else:
             spawnRandomPlatform()
             print("No enemy spawned")
@@ -178,7 +180,9 @@ def main():
     ##############################################
     # GAME LOOP
     ##############################################
-    while True: 
+    count = 0
+    while True:
+        count += 1
         # Cycle through all events
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -194,8 +198,12 @@ def main():
                     P1.jump(platforms,ranPlat, SCREEN_HEIGHT)
             if event.type == timerSec:
                 score += REG_SCORE
-            if event.type == timerSec2:
-                spawn_enemy()
+            if speed < 15:   
+                if event.type == timerSec2:
+                    spawn_enemy()
+            if speed >= 15:
+                if event.type == timerSec:
+                    spawn_enemy()
             if event.type == timerSec3:
                 print("Current speed: " + str(speed))
             if event.type == timerMin:
@@ -208,8 +216,8 @@ def main():
                 C1 = cop.Cop(SCREEN_WIDTH, SCREEN_HEIGHT, PT1, cop_image)  # Spawn the cop
                 all_sprites.add(C1)
                 cop_spawned = True
-        if (random.randint(1, 700) < 3):
-            spawn_coin()
+        #if (random.randint(1, 700) < 3):
+            #spawn_coin()
 
         # Render the background
         BG.update(speed)
@@ -298,4 +306,5 @@ def main():
         #print(FramePerSec.get_fps())
         pygame.display.update()
         FramePerSec.tick(FPS)
+        
 main()
