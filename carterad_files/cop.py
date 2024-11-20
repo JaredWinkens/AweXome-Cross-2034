@@ -5,7 +5,7 @@ SPEED = 5
 JUMP_HEIGHT = 15
 JUMP_THRESHOLD = 100  # Distance at which the cop will jump when near an enemy
 MOVE_BACK_DELAY = 15 #Timer for moving back. If player avoids cones/dumpsters for 15sec cop oves back 1 space/to start
-
+GRAVITY = 1.7
 class Cop(pygame.sprite.Sprite):
     def __init__(self, screen_width, screen_height, platform,image):
         super().__init__()
@@ -17,6 +17,7 @@ class Cop(pygame.sprite.Sprite):
         self.vel = pygame.math.Vector2(0, 0)
         self.on_ground = True
         self.screen_width = screen_width
+        self.screen_height = screen_height
         self.moving_forward = True  # Track if cop is moving forward
         self.moving_back = False  # Track if cop is moving back
         self.stop_x_position = screen_width * 0.05 # Stop position (half on, half off the screen)
@@ -44,14 +45,14 @@ class Cop(pygame.sprite.Sprite):
 
     def jump(self):
         if self.on_ground:
-            self.vel.y = -JUMP_HEIGHT  # Set the upward velocity for the jump
+            self.vel.y = -(self.screen_height * 0.040)  # Set the upward velocity for the jump
             self.on_ground = False  # Cop is no longer on the ground
 
     def update(self, platform):
         # Apply gravity
-        self.vel.y += 0.5  # Gravity acceleration
+        self.vel.y += GRAVITY  # Gravity acceleration
         self.rect.y += self.vel.y
-
+        
         # Check if the cop lands on the platform again
         if self.rect.bottom >= platform.rect.top:
             self.rect.bottom = platform.rect.top
