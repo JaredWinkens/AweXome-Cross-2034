@@ -176,13 +176,12 @@ def main():
                 coins.add(coin)
                 all_sprites.add(coin)
                 coin_spawned = True
-
+                
+    bx = P1.pos.x
     ##############################################
     # GAME LOOP
     ##############################################
-    count = 0
     while True:
-        count += 1
         # Cycle through all events
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -297,11 +296,17 @@ def main():
         hits_small = pygame.sprite.spritecollide(P1, small_enemies, False)
         if hits_large:
             pygame.mixer.Sound('assets/dumpster.mp3').play()
-            P1.vel.x = 0
+            #P1.vel.x = 0
             P1.pos.x = hits_large[0].rect.left - P1.rect.width
         if hits_small:
             pygame.mixer.Sound('assets/cone.mp3').play()
-            P1.vel.x = -2
+            #P1.vel.x -= 1
+            P1.pos.x -= 5
+        
+        P1.pos.x += (bx - P1.pos.x) * 0.01
+        #print(P1.vel.x)
+        #print("Bx: " + str(bx))
+        #print("Px: " + str(P1.pos.x))
 
         # Update the display
         #print(FramePerSec.get_fps())
