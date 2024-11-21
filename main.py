@@ -5,6 +5,7 @@ import winkenj_files.not_passible_enemy as enemyLarge
 import carterad_files.Splash_screenv3 as Splash_screen
 import carterad_files.cop as cop
 import carterad_files.cash as cash
+import winkenj_files.speed_boost as speed_boost
 from carterad_files.cash import save_cash
 import souc_files.random_platform as rPlatform
 import winkenj_files.background as bg
@@ -73,6 +74,7 @@ def main():
     splash_image = pygame.transform.scale(pygame.image.load('assets/spalsh_screen.jpeg').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
     death_image = pygame.transform.scale(pygame.image.load('assets/death_screen.jpeg').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
     pause_image = pygame.transform.scale(pygame.image.load('assets/pause_screen.jpeg').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+    speed_boost_image = pygame.transform.scale(pygame.image.load('assets/speed_boost.png').convert_alpha(), (SCREEN_WIDTH * 0.05, SCREEN_HEIGHT * 0.05))
 
     # Create the player and platform objects
     def create_objects():
@@ -85,6 +87,9 @@ def main():
         score = 0  # Reset score
 
     create_objects()
+    
+    bx = P1.pos.x # Player base x position
+
     Splash_screen.SplashScreen.run(window,splash_image)
 
     # Timer (Speed Timer) CHANGE MULTIPLIER TO TWEAK GAME SPEED
@@ -122,8 +127,10 @@ def main():
     enemies = pygame.sprite.Group()
     ranPlat = pygame.sprite.Group()
     coins = pygame.sprite.Group()
+    power_ups = pygame.sprite.Group()
 
     cop_spawned = False  # Track whether the cop has been spawned
+    big_enemy_spawned = False  # Track whether the big enemy has been spawned
 
     def spawn_enemy():
         seed = random.randint(1, 20)
@@ -132,19 +139,21 @@ def main():
             small_enemies.add(enemy)
             enemies.add(enemy)
             all_sprites.add(enemy)
-            spawn_coin()
-            if seed % 2 == 0 or seed == 1 or seed == 9:
-                spawnRandomPlatform()
+            #spawn_coin()
+            #spawn_speed_boost()
+            #if seed % 2 == 0 or seed == 1 or seed == 9:
+            spawnRandomPlatform()
         elif seed > 10 and seed <= 13:
             enemy = enemyLarge.NotPassibleEnemy(SCREEN_WIDTH, SCREEN_HEIGHT, dumpster_image)
             large_enemies.add(enemy)
             enemies.add(enemy)
             all_sprites.add(enemy)
-
+            big_enemy_spawned = True
             newPlatform = rPlatform.RandomPlatform(SCREEN_WIDTH, SCREEN_HEIGHT, r_platform_image)
             ranPlat.add(newPlatform)
             all_sprites.add(newPlatform)
-            spawn_coin()
+            #spawn_coin()
+            #spawn_speed_boost()
         else:
             spawnRandomPlatform()
             print("No enemy spawned")
@@ -152,32 +161,60 @@ def main():
     # Description: Randomize platform at y position. Check for overlapping
     # before spawning a new platform.
     def spawnRandomPlatform():
+        seed = random.randint(1, 20)
         # Set bounds
         xPos = SCREEN_WIDTH
         yPos = random.randint(int(SCREEN_HEIGHT * 0.65), int(SCREEN_HEIGHT * 0.8))
 
         newPlatform = rPlatform.RandomPlatform(SCREEN_WIDTH, SCREEN_HEIGHT, r_platform_image2)
         newPlatform.rect.center = (xPos, yPos)
-                
-        ranPlat.add(newPlatform)
-        all_sprites.add(newPlatform)
+        
+        hits_large = pygame.sprite.spritecollideany(newPlatform, large_enemies)
+        hits_small = pygame.sprite.spritecollideany(newPlatform, small_enemies)
+        #hits_platform = pygame.sprite.spritecollideany(newPlatform, ranPlat)
+        if hits_large or hits_small: #or hits_platform:
+            print("Platform collided with enemy")
+        elif seed <= 10:
+            ranPlat.add(newPlatform)
+            all_sprites.add(newPlatform)
 
     def spawn_coin():
-        coin_spawned = False
-        while not coin_spawned:
-            # Randomly choose a position within the screen boundaries
-            x_pos = SCREEN_WIDTH + coin_image.get_width()
-            y_pos = random.randint(int(SCREEN_HEIGHT / 2), int(SCREEN_HEIGHT * 0.9))
+        #coin_spawned = False
+        #while not coin_spawned:
+        seed = random.randint(1, 20)
+        # Randomly choose a position within the screen boundaries
+        x_pos = SCREEN_WIDTH + coin_image.get_width()
+        y_pos = random.randint(int(SCREEN_HEIGHT / 2), int(SCREEN_HEIGHT * 0.9))
 
-            coin = cash.Cash(SCREEN_WIDTH, SCREEN_HEIGHT, coin_image)  # Create a new coin instance
-            coin.rect.center = (x_pos, y_pos)
+        coin = cash.Cash(SCREEN_WIDTH, SCREEN_HEIGHT, coin_image)  # Create a new coin instance
+        coin.rect.center = (x_pos, y_pos)
 
-            if not pygame.sprite.spritecollideany(coin, large_enemies):
-                coins.add(coin)
-                all_sprites.add(coin)
-                coin_spawned = True
+        hits_large = pygame.sprite.spritecollideany(coin, large_enemies)
+        hits_small = pygame.sprite.spritecollideany(coin, small_enemies)
+        if hits_large or hits_small:
+            print("Coin collided with enemy")
+        elif seed <= 10:
+            coins.add(coin)
+            all_sprites.add(coin)
+            #coin_spawned = True
                 
-    bx = P1.pos.x
+    def spawn_speed_boost():
+        seed = random.randint(1, 20)
+        # Randomly choose a position within the screen boundaries
+        x_pos = SCREEN_WIDTH + speed_boost_image.get_width()
+        y_pos = random.randint(int(SCREEN_HEIGHT / 2), int(SCREEN_HEIGHT * 0.8))
+
+        boost = speed_boost.SpeedBoost(SCREEN_WIDTH, SCREEN_HEIGHT, speed_boost_image)  # Create a new coin instance
+        boost.rect.center = (x_pos, y_pos)
+
+        hits_large = pygame.sprite.spritecollideany(boost, large_enemies)
+        hits_small = pygame.sprite.spritecollideany(boost, small_enemies)
+        if hits_large or hits_small:
+            print("Boost collided with enemy")
+        elif seed <= 3:
+            power_ups.add(boost)
+            all_sprites.add(boost)
+            
     ##############################################
     # GAME LOOP
     ##############################################
@@ -197,26 +234,26 @@ def main():
                     P1.jump(platforms,ranPlat, SCREEN_HEIGHT)
             if event.type == timerSec:
                 score += REG_SCORE
-            if speed < 15:   
-                if event.type == timerSec2:
+                if speed >= 15:
                     spawn_enemy()
-            if speed >= 15:
-                if event.type == timerSec:
+                    spawn_coin()
+            if event.type == timerSec2:
+                if speed < 15:   
                     spawn_enemy()
+                    spawn_coin()        
             if event.type == timerSec3:
+                spawn_speed_boost()
                 print("Current speed: " + str(speed))
             if event.type == timerMin:
                 score += BONUS_SCORE
-            if speed < 20:
-                if event.type == timerSpeed:
+            if event.type == timerSpeed:
+                if speed < 20:
                     speed += 0.02
                     #print(speed)
             if event.type == timerSpawnCop and not cop_spawned:
                 C1 = cop.Cop(SCREEN_WIDTH, SCREEN_HEIGHT, PT1, cop_image)  # Spawn the cop
                 all_sprites.add(C1)
                 cop_spawned = True
-        #if (random.randint(1, 700) < 3):
-            #spawn_coin()
 
         # Render the background
         BG.update(speed)
@@ -224,23 +261,33 @@ def main():
         window.fill((0, 0, 0))
         BG.render(window)
 
-        # Move & update the player
-        #P1.move(SCREEN_WIDTH)
+        # update the player
         P1.update(platforms, ranPlat, SCREEN_WIDTH, speed)
         P1.draw(window)
-        # Move randomize platforms
-        for plat in ranPlat:
-            plat.move(speed)
-            plat.draw(window)
 
         # Render all sprites
         for entity in all_sprites:
             window.blit(entity.image, entity.rect)
 
-        # Move all enemies
+        # Move and draw randomize platforms
+        for plat in ranPlat:
+            plat.move(speed)
+            plat.draw(window)
+            
+        # Move and draw all enemies
         for enemy in enemies:
             enemy.move(speed)
             enemy.draw(window)
+        
+        # Move and draw all power-ups
+        for power_up in power_ups:
+            power_up.move(speed)
+            power_up.draw(window)
+        
+        # Move and draw all coins
+        for coin in coins:
+            coin.update(speed)
+            coin.draw(window)
 
         # If the cop has been spawned, move and update it
         if cop_spawned:
@@ -270,18 +317,6 @@ def main():
                         Splash_screen.SplashScreen.deathScreen(window, score, death_image)
                         pygame.display.flip()
 
-        # Check for coin collection
-        for coin in coins:
-            coin.draw(window)
-            if pygame.sprite.collide_rect(P1, coin):
-                coin_sound.play()  # Play the collection sound
-                cash_instance.collect()  # Increment coins collected in the cash instance
-                coin.kill()  # Remove the coin from the game
-
-        # Update coins and remove off-screen coins
-        coins.update(speed)
-        
-
         # Render the score
         Splash_screen.SplashScreen.display_text(window, 'Score: ' + str(score), 
                                             'Cooperplate Gothic Bold', fSizeScore, 
@@ -290,18 +325,24 @@ def main():
         # Display the number of coins collected using the Cash class
         cash_instance.display_coins(window, SCREEN_WIDTH)
 
-        # Check for collisions with the player and enemies
+        # Check for collisions with the player and other sprites
         hits_large = pygame.sprite.spritecollide(P1, large_enemies, False)
         hits_small = pygame.sprite.spritecollide(P1, small_enemies, False)
+        hits_boost = pygame.sprite.spritecollide(P1, power_ups, True)
+        hits_coin = pygame.sprite.spritecollide(P1, coins, True)
         if hits_large:
             pygame.mixer.Sound('assets/dumpster.mp3').play()
-            #P1.vel.x = 0
             P1.pos.x = hits_large[0].rect.left - P1.rect.width
         if hits_small:
             pygame.mixer.Sound('assets/cone.mp3').play()
-            #P1.vel.x -= 1
             P1.pos.x -= 5
+        if hits_boost:
+            P1.pos.x += 200
+        if hits_coin:
+            coin_sound.play()  # Play the collection sound
+            cash_instance.collect()  # Increment coins collected in the cash instance
         
+        # Update the player's x position
         P1.pos.x += (bx - P1.pos.x) * 0.01
         #print(P1.vel.x)
         #print("Bx: " + str(bx))
