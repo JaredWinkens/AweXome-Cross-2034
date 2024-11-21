@@ -250,6 +250,7 @@ def main():
                 if speed < 20:
                     speed += 0.02
                     #print(speed)
+                    print("Current Y velocity: " + str(P1.vel.y))
             if event.type == timerSpawnCop and not cop_spawned:
                 C1 = cop.Cop(SCREEN_WIDTH, SCREEN_HEIGHT, PT1, cop_image)  # Spawn the cop
                 all_sprites.add(C1)

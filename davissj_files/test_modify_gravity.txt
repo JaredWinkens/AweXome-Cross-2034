@@ -1,0 +1,78 @@
+Modify Gravity Test
+
+1. Y velocity (gravity) should always be around -0.5 while on a platform - PASSED
+2. Key Presses besides [SPACE] should not affect Y velocity - PASSED
+3. X axis collisons should not affect Y velocity  - PASSED
+4. Gravity should appeear natural - PASSED
+5. Jump and affect should appear natural- PASSED
+6. Platforms should invert Y velocity - PASSED
+
+
+Print Y Velocity Results:
+[-0.5..... is the resting Y velocity (gravity)]
+
+-Simple Jump W/ Bounce After
+Current Y velocity: -0.5275862124707351 
+Current Y velocity: -0.5275862069428384
+Current Y velocity: -0.5275862068969361
+Current Y velocity: -32.86
+Current Y velocity: -22.660000000000004
+Current Y velocity: -14.160000000000007
+Current Y velocity: -3.960000000000009
+Current Y velocity: 6.239999999999991
+Current Y velocity: 14.73999999999999
+Current Y velocity: 24.939999999999987
+Current Y velocity: -15.047999999999993
+Current Y velocity: -4.847999999999995
+Current Y velocity: 5.352000000000005
+Current Y velocity: -6.233400000000001
+Current Y velocity: 2.2665999999999986
+Current Y velocity: -0.49820898375000006
+Current Y velocity: -0.5273422653208294
+Current Y velocity: -0.5275907083047094
+Current Y velocity: -0.52758624427519
+-It can be seen that jump increases the Y velocity drastically, and the bounce effect also increases it but less and less each bounce
+
+
+-Another Simple Jump W/ Bounce After
+Current Y velocity: -0.5275862068965518
+Current Y velocity: -0.5275862068965518
+Current Y velocity: -24.360000000000003
+Current Y velocity: -14.160000000000007
+Current Y velocity: -3.960000000000009
+Current Y velocity: 6.239999999999991
+Current Y velocity: 16.43999999999999
+Current Y velocity: -7.057999999999995
+Current Y velocity: 3.142000000000005
+Current Y velocity: -1.073900000000002
+Current Y velocity: -0.4433783624999998
+Current Y velocity: -0.5268869646928963
+-Same is seen
+
+-Jump Onto A Platform with a fall and bounce after
+Current Y velocity: -0.5275862064961897
+Current Y velocity: 9.672413792923285
+Current speed: 6.179999999999975
+Current Y velocity: 19.872413792923282
+Current Y velocity: -8.602586206815477
+Current Y velocity: 1.5974137931845231
+Current Y velocity: -5.308836206933035
+Current Y velocity: -2.2010237068801346
+Current Y velocity: -32.86
+Current Y velocity: -22.660000000000004
+Current Y velocity: -12.460000000000008
+Current Y velocity: -2.2600000000000087
+Current Y velocity: 7.9399999999999915
+Current Y velocity: 18.13999999999999
+Current Y velocity: -5.357999999999995
+Current Y velocity: 4.842000000000005
+Current Y velocity: 0.6260999999999979
+Current Y velocity: -0.5654797368750001
+Current Y velocity: 4.5758668410227346
+Current Y velocity: 14.775866841022733
+Current Y velocity: 24.97586684102273
+Current Y velocity: -3.504140078460229
+Current Y velocity: 6.695859921539771
+Current Y velocity: -1.9081369646928963
+Current Y velocity: -0.5393977353503114
+-Velocity Increases until its on a platform, and then its decreases until it hits the ground in which the bounce proceeds
