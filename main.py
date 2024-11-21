@@ -139,7 +139,7 @@ def main():
             small_enemies.add(enemy)
             enemies.add(enemy)
             all_sprites.add(enemy)
-            #spawn_coin()
+            spawn_coin()
             #spawn_speed_boost()
             #if seed % 2 == 0 or seed == 1 or seed == 9:
             spawnRandomPlatform()
@@ -155,6 +155,8 @@ def main():
             #spawn_coin()
             #spawn_speed_boost()
         else:
+            spawn_coin()
+            spawn_speed_boost()
             spawnRandomPlatform()
             print("No enemy spawned")
 
@@ -236,13 +238,10 @@ def main():
                 score += REG_SCORE
                 if speed >= 15:
                     spawn_enemy()
-                    spawn_coin()
             if event.type == timerSec2:
                 if speed < 15:   
                     spawn_enemy()
-                    spawn_coin()        
             if event.type == timerSec3:
-                spawn_speed_boost()
                 print("Current speed: " + str(speed))
             if event.type == timerMin:
                 score += BONUS_SCORE
