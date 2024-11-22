@@ -131,6 +131,7 @@ def main():
 
     cop_spawned = False  # Track whether the cop has been spawned
     big_enemy_spawned = False  # Track whether the big enemy has been spawned
+    sm_obs_sound_played = False # Track whether the small obstacle sound has been played
 
     def spawn_enemy():
         seed = random.randint(1, 20)
@@ -247,7 +248,7 @@ def main():
                 score += BONUS_SCORE
             if event.type == timerSpeed:
                 if speed < 20:
-                    speed += 0.02
+                    speed += 0.01
                     #print(speed)
                     print("Current Y velocity: " + str(P1.vel.y))
             if event.type == timerSpawnCop and not cop_spawned:
@@ -334,8 +335,12 @@ def main():
             pygame.mixer.Sound('assets/dumpster.mp3').play()
             P1.pos.x = hits_large[0].rect.left - P1.rect.width
         if hits_small:
-            pygame.mixer.Sound('assets/cone.mp3').play()
+            if not sm_obs_sound_played:
+                pygame.mixer.Sound('assets/cone.mp3').play()
+                sm_obs_sound_played = True
             P1.pos.x -= 5
+        if not hits_small:
+            sm_obs_sound_played = False                
         if hits_boost:
             P1.pos.x += 200
         if hits_coin:
