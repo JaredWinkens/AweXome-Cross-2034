@@ -52,12 +52,6 @@ def cop(screen_width, screen_height, platform):
 
 # Written by: Chakriya Sou
 # Created: 10/08/2024
-# Test: Size of cop should be 2x the size of the player
-def test_copSize(cop):
-    assert cop.surf.get_size() == (163, 153)
-
-# Written by: Chakriya Sou
-# Created: 10/08/2024
 # Test: Simulate the cop's movement for a bit without jumping
 def test_cop_stays_on_platform_y_position(cop, platform):
     initial_y = cop.rect.y

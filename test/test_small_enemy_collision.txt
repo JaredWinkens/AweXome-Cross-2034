@@ -1,0 +1,15 @@
+Tester: Chakriya Sou
+Coder: Jared Winken
+Test: 11/29/2024 at 4p
+Feature: Player collsion with small enemy. 
+Description: Player moves to the left of the screen when colliding with a small enemy. 
+
+Code: (see test_small_enemy_collsion.py)
+    When colliding with small enemy the player moves to the left by five pixel then gradually
+    returns back to its initial position (passed). 
+
+Visual: 
+    Checked to see if the player collides with the cop when moving to the left of the screen. (Failed)
+        - Intentionally collided with a small enemy to check if the player and cop would collide 
+        immediately afterward. Ran the game 15 times, and the player and cop did collided 
+        in all 15 attempts (Failed).
