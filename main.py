@@ -338,7 +338,7 @@ def main():
             if not sm_obs_sound_played:
                 pygame.mixer.Sound('assets/cone.mp3').play()
                 sm_obs_sound_played = True
-            P1.pos.x -= speed/2
+            P1.pos.x -= speed/1.5
         if not hits_small:
             sm_obs_sound_played = False                
         if hits_boost:
