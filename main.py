@@ -214,7 +214,7 @@ def main():
         hits_small = pygame.sprite.spritecollideany(boost, small_enemies)
         if hits_large or hits_small:
             print("Boost collided with enemy")
-        elif seed <= 3:
+        elif seed <= 20:
             power_ups.add(boost)
             all_sprites.add(boost)
             
@@ -299,6 +299,7 @@ def main():
             # Check for collision between the player and cop
             if pygame.sprite.collide_rect(P1, C1):
                 entity.kill()
+                pygame.mixer.Sound('assets/handcuff.mp3').play()
                 save_cash(cash_instance.coins_collected)
             
                 while True:
@@ -338,11 +339,12 @@ def main():
             if not sm_obs_sound_played:
                 pygame.mixer.Sound('assets/cone.mp3').play()
                 sm_obs_sound_played = True
-            P1.pos.x -= speed/2
+            P1.pos.x -= speed/1.5
         if not hits_small:
             sm_obs_sound_played = False                
         if hits_boost:
             P1.pos.x += speed*30
+            pygame.mixer.Sound('assets/speed_up.mp3').play()
         if hits_coin:
             coin_sound.play()  # Play the collection sound
             cash_instance.collect()  # Increment coins collected in the cash instance
