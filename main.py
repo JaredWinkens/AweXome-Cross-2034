@@ -338,11 +338,11 @@ def main():
             if not sm_obs_sound_played:
                 pygame.mixer.Sound('assets/cone.mp3').play()
                 sm_obs_sound_played = True
-            P1.pos.x -= 5
+            P1.pos.x -= speed/2
         if not hits_small:
             sm_obs_sound_played = False                
         if hits_boost:
-            P1.pos.x += 200
+            P1.pos.x += speed*30
         if hits_coin:
             coin_sound.play()  # Play the collection sound
             cash_instance.collect()  # Increment coins collected in the cash instance
