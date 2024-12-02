@@ -45,16 +45,18 @@ class SplashScreen:
                     if event.key == pygame.K_SPACE:  # Start the game when space is pressed
                         splash_active = False
 
-    def deathScreen(displaysurface, score,death_image):
+    def deathScreen(displaysurface, coin, score,death_image):
         displaysurface.blit(death_image,(0, 0))
         w, h = displaysurface.get_size()
-        fSize = int(h / 8)
+        fSize = int(h / 13)
         fColor = (255, 0, 0)
         scoreColor = (255, 255, 255)
         SplashScreen.display_text(displaysurface, 'Game Over', 'Showcard Gothic', 
                                         fSize, fColor, int(w * 0.3), int(h * 0.01))
+        SplashScreen.display_text(displaysurface, 'Coins x 3: ' + str(coin), 
+                                'Showcard Gothic', fSize, (20, 20, 255), int(w * 0.025), int(h * 0.85))
         SplashScreen.display_text(displaysurface, 'Final Score: ' + str(score), 
-                                'Showcard Gothic', fSize, scoreColor, int(w * 0.2), int(h * 0.87))
+                                'Showcard Gothic', fSize, scoreColor, int(w * 0.025), int(h * 0.92))
         # Display "R to Restart" and "E to Exit" on the left side of the screen
         SplashScreen.display_text(displaysurface, 'R to Restart', 'Showcard Gothic', 50, red, int(w * 0.05), int(h * 0.2))
         SplashScreen.display_text(displaysurface, 'E to Exit', 'Showcard Gothic', 50, red, int(w * 0.05), int(h * 0.3))

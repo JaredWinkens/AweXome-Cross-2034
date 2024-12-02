@@ -221,6 +221,9 @@ def main():
     ##############################################
     # GAME LOOP
     ##############################################
+    finalScore = 0
+    totalCoin = 0
+    clock = pygame.time.Clock()
     while True:
         # Cycle through all events
         for event in pygame.event.get():
@@ -313,11 +316,22 @@ def main():
                             if event.key == pygame.K_e:  # Exit game
                                 pygame.quit()
                                 sys.exit()
-                        # Keep the death screen displayed until input is received
-                        pygame.time.delay(10)  # Slight delay to reduce CPU usage
-                        Splash_screen.SplashScreen.deathScreen(window, score, death_image)
-                        pygame.display.flip()
 
+                    # Render the death screen
+                    Splash_screen.SplashScreen.deathScreen(window, totalCoin, finalScore, death_image)
+                    
+                    # Increment the coins and score on the death screen
+                    if totalCoin < (cash_instance.coins_collected) * 3:
+                        totalCoin += 22
+                        if (cash_instance.coins_collected) * 3 - totalCoin < 22:
+                            totalCoin = totalCoin + ((cash_instance.coins_collected) * 3 - totalCoin)
+                    elif finalScore < score + totalCoin:
+                        finalScore += 56
+                        if (score + totalCoin) - finalScore < 56:
+                            finalScore = finalScore + ((score + totalCoin) - finalScore)
+
+                    pygame.display.flip()
+                    clock.tick(30)  # Limit updates to 30 FPS to reduce CPU usage
         # Render the score
         Splash_screen.SplashScreen.display_text(window, 'Score: ' + str(score), 
                                             'Showcard Gothic', fSizeScore, 
