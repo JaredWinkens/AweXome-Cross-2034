@@ -39,9 +39,9 @@ pygame.time.set_timer(timerSec, second)
 # Written by: Aiden Carter
 # Function name: display_text 
 # Description: Helper function to display text on the screen
-def display_text(displaysurface,text, style, size, color, x, y):
+def display_text(displaysurface,text, font, size, color, x, y):
         """Helper function to display text on the screen"""
-        font = pygame.font.SysFont(style, size)
+        font = pygame.font.SysFont(font, size)
         textImg = font.render(text, True, color)
         displaysurface.blit(textImg, (x, y))
 
@@ -58,6 +58,6 @@ while True:
           
     window.fill((0, 0, 0,))
 
-    display_text(window, 'Score: ' + str(score),'Cooperplate Gothic Bold', 
+    display_text(window, 'Score: ' + str(score),'ShowCard Gothic', 
                                 fSizeScore, fColor, scoreXPos, scoreYPos)
     pygame.display.update()

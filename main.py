@@ -233,7 +233,6 @@ def main():
                     Splash_screen.SplashScreen.pauseScreen(window, pause_image)
             if event.type == pygame.KEYDOWN:    
                 if event.key == pygame.K_SPACE:
-                    pygame.mixer.Sound('assets/jump.mp3').play()
                     P1.jump(platforms,ranPlat, SCREEN_HEIGHT)
             if event.type == timerSec:
                 score += REG_SCORE
@@ -321,7 +320,7 @@ def main():
 
         # Render the score
         Splash_screen.SplashScreen.display_text(window, 'Score: ' + str(score), 
-                                            'Cooperplate Gothic Bold', fSizeScore, 
+                                            'Showcard Gothic', fSizeScore, 
                                             fColor, scoreXPos, scoreYPos)
 
         # Display the number of coins collected using the Cash class

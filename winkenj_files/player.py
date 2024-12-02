@@ -69,6 +69,7 @@ class Player(pygame.sprite.Sprite):
         if hits or hits2:
             self.vel.y = -(screen_height * 0.040)
             self.rot_speed = 1/4
+            pygame.mixer.Sound('assets/jump.mp3').play()
     
     # Update the player
     def update(self,platforms,ranPlats,screen_width,speed):

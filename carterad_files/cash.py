@@ -34,7 +34,7 @@ class Cash(pygame.sprite.Sprite):
         self.coins_collected += 1  # Increment the number of coins collected
 
     def display_coins(self, window, screen_width):
-        font = pygame.font.SysFont('Cooperplate Gothic Bold', int(screen_width // 15))
+        font = pygame.font.SysFont('Showcard Gothic', int(screen_width // 15))
         coin_text = font.render(f'Coins: {self.coins_collected}', True, (0, 255, 0))
         window.blit(coin_text, (screen_width - coin_text.get_width() - 10, 10))  # Position in the top right corner
     
