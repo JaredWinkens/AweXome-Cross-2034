@@ -13,8 +13,6 @@ import pygame
 import sys
 from pygame.locals import *
 import random
-import time
-import math
 
 
 # Initialize Pygame
@@ -68,13 +66,13 @@ def main():
     r_platform_image = pygame.transform.scale(pygame.image.load('assets/new_platform2.png'), (SCREEN_WIDTH * .25, SCREEN_HEIGHT * .045))
     r_platform_image2 = pygame.transform.scale(pygame.image.load('assets/new_platform2.png'), (SCREEN_WIDTH * .15, SCREEN_HEIGHT * .045))
 
-    coin_image = pygame.transform.scale(pygame.image.load('assets/coin.png').convert_alpha(), (SCREEN_WIDTH * 0.05, SCREEN_HEIGHT * 0.05))  # Load coin image
+    coin_image = pygame.transform.scale(pygame.image.load('assets/coin_v2.png').convert_alpha(), (SCREEN_WIDTH * 0.05, SCREEN_HEIGHT * 0.06))  # Load coin image
     coin_sound = pygame.mixer.Sound('assets/coinGet.mp3')
 
     splash_image = pygame.transform.scale(pygame.image.load('assets/spalsh_screen.jpeg').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
     death_image = pygame.transform.scale(pygame.image.load('assets/death_screen.jpeg').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
     pause_image = pygame.transform.scale(pygame.image.load('assets/pause_screen.jpeg').convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
-    speed_boost_image = pygame.transform.scale(pygame.image.load('assets/speed_boost.png').convert_alpha(), (SCREEN_WIDTH * 0.05, SCREEN_HEIGHT * 0.05))
+    speed_boost_image = pygame.transform.scale(pygame.image.load('assets/speed_boost_v2.png').convert_alpha(), (SCREEN_WIDTH * 0.06, SCREEN_HEIGHT * 0.07))
 
     # Create the player and platform objects
     def create_objects():
@@ -214,7 +212,7 @@ def main():
         hits_small = pygame.sprite.spritecollideany(boost, small_enemies)
         if hits_large or hits_small:
             print("Boost collided with enemy")
-        elif seed <= 20:
+        elif seed <= 10:
             power_ups.add(boost)
             all_sprites.add(boost)
             
@@ -252,7 +250,7 @@ def main():
                 if speed < 20:
                     speed += 0.01
                     #print(speed)
-                    print("Current Y velocity: " + str(P1.vel.y))
+                    #print("Current Y velocity: " + str(P1.vel.y))
             if event.type == timerSpawnCop and not cop_spawned:
                 C1 = cop.Cop(SCREEN_WIDTH, SCREEN_HEIGHT, PT1, cop_image)  # Spawn the cop
                 all_sprites.add(C1)
@@ -266,7 +264,7 @@ def main():
 
         # update the player
         P1.update(platforms, ranPlat, SCREEN_WIDTH, speed)
-        P1.draw(window)
+        #P1.draw(window)
 
         # Render all sprites
         for entity in all_sprites:
@@ -275,28 +273,28 @@ def main():
         # Move and draw randomize platforms
         for plat in ranPlat:
             plat.move(speed)
-            plat.draw(window)
+            #plat.draw(window)
             
         # Move and draw all enemies
         for enemy in enemies:
             enemy.move(speed)
-            enemy.draw(window)
+            #enemy.draw(window)
         
         # Move and draw all power-ups
         for power_up in power_ups:
             power_up.move(speed)
-            power_up.draw(window)
+            #power_up.draw(window)
         
         # Move and draw all coins
         for coin in coins:
             coin.update(speed)
-            coin.draw(window)
+            #coin.draw(window)
 
         # If the cop has been spawned, move and update it
         if cop_spawned:
             C1.move(enemies, P1)  # Move cop
             C1.update(PT1)  # Update cop position if necessary
-            C1.draw(window)  # Draw the cop
+            #C1.draw(window)  # Draw the cop
 
             # Check for collision between the player and cop
             if pygame.sprite.collide_rect(P1, C1):
