@@ -1,5 +1,7 @@
 # Written by: Chakriya Sou
 # Created: 11/28/2024 at 6:00a
+# Updated: 12/03/2024 @ 10p (Check players x position after each frame to ensure it reaches the 
+#                            players initial position after collision)
 
 # Language: Python
 # Description: (pytest) These test functions will be implemented in
@@ -90,6 +92,28 @@ def test_player_collision_with_small_enemy(player, passible_enemy, cop):
     #assert distance > 0, "Cop collided with the player while slowing down"
     
     # Simulate the player returning to its original position
-    player.pos.x = initial_x_pos
+    player.pos.x += 5
 
     assert player.pos.x == initial_x_pos, "Player did not return to the original position after collision"
+
+# Written by: Chakriya Sou
+# Created: 12/03/2024 @ 10p
+# Description: This test ensures the player's position smoothly approaches its initial x position  
+# over 100 steps, using a scalar factor to control movement. It verifies the position consistently 
+# gets closer to the target and reaches it within a small tolerance of 0.01.
+
+# Due to the player's initial position being set at the center in the Player class, this test will 
+# always fail. To resolve this, the player's initial position should be changed to the default position 
+# (topleft). However, making this change will require adjustments to other game features 
+# to maintain consistency.
+'''def test_player_position_approaches_starting_position(player):
+
+    initial_XPos = player.pos.x
+    scalar = 0.01
+
+    for frame in range(100):
+        previous_XPos = player.pos.x
+        player.pos.x += (initial_XPos - player.pos.x) * scalar
+        assert abs(player.pos.x - initial_XPos) < abs(previous_XPos - initial_XPos), f"Frame {frame}: Player not approaching bx."
+
+    assert abs(player.pos.x - initial_XPos) < 0.01, "Player did not reach bx after sufficient frames."'''

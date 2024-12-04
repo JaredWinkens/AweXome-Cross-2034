@@ -8,6 +8,15 @@ Code: (see test_small_enemy_collsion.py)
     When colliding with small enemy the player moves to the left by five pixel then gradually
     returns back to its initial position (passed). 
 
+    Test to ensures the player's position smoothly approaches its initial x position  
+    over 100 steps, using a scalar factor to control movement. It verifies the position consistently 
+    gets closer to the target and reaches it within a small tolerance of 0.01. (Failed)
+
+        Due to the player's initial position being set at the center in the Player class, this test will 
+        always fail. To resolve this, the player's initial position should be changed to the default position 
+        (topleft). However, making this change will require adjustments to other game features 
+        to maintain consistency.
+        
 Visual: 
     Checked to see if the player collides with the cop when moving to the left of the screen. (Failed)
         - Intentionally collided with a small enemy to check if the player and cop would collide 
